@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: The description, if present, is a valid OpenAPI 3 document
+        run: |
+          python3 -m py_compile scripts/update.py
+          if [ -f openapi.json ]; then
+            python3 -c "import json,sys; d=json.load(open('openapi.json')); sys.exit(0 if str(d.get('openapi','')).startswith('3.') and d.get('paths') else 'not an OpenAPI 3 description')"
+          fi

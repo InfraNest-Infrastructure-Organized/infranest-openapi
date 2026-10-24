@@ -1,0 +1,40 @@
+name: Update the API description
+
+on:
+  schedule:
+    # Daily: a release of InfraNest reaches this repository within a day.
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Fetch the published description
+        id: fetch
+        run: python3 scripts/update.py
+
+      - name: Commit and release
+        if: steps.fetch.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTES: ${{ steps.fetch.outputs.notes }}
+        run: |
+          tag="v$(date -u +%Y.%m.%d)"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then tag="$tag.$(date -u +%H%M)"; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add openapi.json
+          git commit -m "The API description as published on $(date -u +%Y-%m-%d)"
+          git push origin HEAD:main
+          gh release create "$tag" openapi.json --target main --title "$tag" --notes "$NOTES"
