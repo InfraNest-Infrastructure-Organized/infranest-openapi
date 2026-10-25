@@ -15,9 +15,42 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: The description, if present, is a valid OpenAPI 3 document
+      - name: The sync script compiles
+        run: python3 -m py_compile scripts/update.py
+
+      - name: Every committed file is what it says it is
         run: |
-          python3 -m py_compile scripts/update.py
-          if [ -f openapi.json ]; then
-            python3 -c "import json,sys; d=json.load(open('openapi.json')); sys.exit(0 if str(d.get('openapi','')).startswith('3.') and d.get('paths') else 'not an OpenAPI 3 description')"
+          python3 - <<'PY'
+          import json, pathlib, sys
+          problems = []
+          spec = pathlib.Path("openapi.json")
+          if spec.exists():
+              d = json.loads(spec.read_text())
+              if not str(d.get("openapi", "")).startswith("3.") or not d.get("paths"):
+                  problems.append("openapi.json is not an OpenAPI 3 description")
+          for name in ("postman/infranest.postman_collection.json", "postman/infranest.postman_environment.json"):
+              p = pathlib.Path(name)
+              if p.exists():
+                  d = json.loads(p.read_text())
+                  if any(v.get("key") == "token" and v.get("value") for v in d.get("values", [])):
+                      problems.append(f"{name} carries a token value")
+          bruno = pathlib.Path("bruno")
+          if bruno.exists():
+              if not (bruno / "bruno.json").exists():
+                  problems.append("bruno/ has no bruno.json")
+              for f in bruno.rglob("*.bru"):
+                  text = f.read_text()
+                  if not text.startswith(("meta {", "vars {")):
+                      problems.append(f"{f} does not start with a meta or vars block")
+          print("\n".join(problems) or "ok")
+          sys.exit(1 if problems else 0)
+          PY
+
+      # The ruleset InfraNest lints its own description with, synced from the developer site.
+      - name: Lint the description (Spectral)
+        run: |
+          if [ -f openapi.json ] && [ -f .spectral.yaml ]; then
+            npx --yes @stoplight/spectral-cli@6.15.0 lint openapi.json --ruleset .spectral.yaml --fail-severity=warn
+          else
+            echo "Nothing to lint yet: the first sync has not committed openapi.json and .spectral.yaml."
           fi
