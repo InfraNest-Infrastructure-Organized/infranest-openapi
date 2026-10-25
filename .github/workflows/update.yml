@@ -20,9 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Fetch the published description
+      # The description, the Postman collection and environment, the Bruno collection and the lint ruleset, as the
+      # developer site publishes them. Writes `changed` and release notes when anything differs.
+      - name: Fetch what the developer site publishes
         id: fetch
         run: python3 scripts/update.py
+
+      # The same lint the CI workflow runs: a description that fails it is not committed or released.
+      - name: Lint the description
+        if: steps.fetch.outputs.changed == 'true'
+        run: npx --yes @stoplight/spectral-cli@6.15.0 lint openapi.json --ruleset .spectral.yaml --fail-severity=warn
 
       - name: Commit and release
         if: steps.fetch.outputs.changed == 'true'
@@ -34,7 +41,10 @@ jobs:
           if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then tag="$tag.$(date -u +%H%M)"; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add openapi.json
-          git commit -m "The API description as published on $(date -u +%Y-%m-%d)"
+          git add openapi.json postman bruno .spectral.yaml
+          git commit -m "The API description and collections as published on $(date -u +%Y-%m-%d)"
           git push origin HEAD:main
-          gh release create "$tag" openapi.json --target main --title "$tag" --notes "$NOTES"
+          (cd bruno && zip -qr ../infranest.bruno.zip . -x '.*')
+          gh release create "$tag" openapi.json postman/infranest.postman_collection.json \
+            postman/infranest.postman_environment.json infranest.bruno.zip \
+            --target main --title "$tag" --notes "$NOTES"
