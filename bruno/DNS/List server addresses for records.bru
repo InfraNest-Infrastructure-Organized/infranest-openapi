@@ -1,0 +1,25 @@
+meta {
+  name: List server addresses for records
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/server-addresses
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your servers that have an address, each with the IPv4 and IPv6 address an A or AAAA record should hold to reach it. Where a server holds a whole IPv6 block, `basis` says how the address was chosen.
+
+  Scope: `dns.read`
+}

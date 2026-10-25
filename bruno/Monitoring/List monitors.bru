@@ -1,0 +1,21 @@
+meta {
+  name: List monitors
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  A paginated list of your monitors with their type, target, interval, current status, 24-hour uptime and a 24-hour status chart, plus status counts in `meta`. Filter with `search`, `type`, `kind` (`own` or `external`), `status`, `enabled` and `tag`, and sort with `sort` and `dir`; pass `all=true` for a plain unpaginated list of every monitor.
+
+  Scope: `monitoring.read`
+}

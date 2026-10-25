@@ -1,0 +1,31 @@
+meta {
+  name: Set a server’s backup price
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/backup-pricing
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "backup_price_monthly": 1.58
+  }
+}
+
+docs {
+  Overrides the monthly backup cost InfraNest counts for this server with `backup_price_monthly`, net of tax. Send `null` to go back to the provider’s price; the server’s base price is not affected.
+
+  Scope: `cloud.write`
+}

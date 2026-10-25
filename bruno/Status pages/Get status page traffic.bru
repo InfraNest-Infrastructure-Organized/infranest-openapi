@@ -1,0 +1,25 @@
+meta {
+  name: Get status page traffic
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/analytics
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Views, unique visitors and subscribe clicks over the last `days` (7, 30 or 90; default 30), compared with the period before, with the busiest day and a daily series. Counts only; no individual visits are recorded.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: List custom field values for a record
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/custom-field-values
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The custom field values set on one record. `entity_type` and `entity_id` are required; returns 404 when the record is not in this organization.
+
+  Scope: `monitoring.read`
+}

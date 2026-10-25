@@ -1,0 +1,25 @@
+meta {
+  name: Get a certificate’s files from the provider
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/:sslCertificate_id/bundle
+  body: none
+  auth: inherit
+}
+
+params:path {
+  sslCertificate_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Asks the provider the certificate came from for its files and returns the files; each fetch is recorded in your audit log. Requires write access, and is refused when the certificate did not come from a connected provider that can hand files back or is not linked to a domain.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Create a maintenance window
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "Load balancer upgrade",
+    "starts_at": "2026-01-17T22:00:00Z",
+    "ends_at": "2026-01-17T23:00:00Z",
+    "suppress_alerts": true,
+    "check_ids": [
+      1
+    ]
+  }
+}
+
+docs {
+  Schedules maintenance for the monitors in `check_ids` and servers in `server_ids`; a window with no monitors applies to every monitor. A one-time window needs `starts_at` and `ends_at`, a `daily` or `weekly` one needs `start_time` and `duration_minutes`, and alerts are suppressed during it unless `suppress_alerts` is false. Subscribers of the affected status pages are told about the new window.
+
+  Scope: `monitoring.write`
+}

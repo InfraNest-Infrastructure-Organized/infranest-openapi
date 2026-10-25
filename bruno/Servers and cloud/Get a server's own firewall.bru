@@ -1,0 +1,25 @@
+meta {
+  name: Get a server’s own firewall
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/firewall
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The firewall attached to this server, read live from the cloud provider. Refused when the server has no linked provider account.
+
+  Scope: `cloud.read`
+}

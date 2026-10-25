@@ -1,0 +1,21 @@
+meta {
+  name: Get the subscription
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/subscription
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The organization’s subscription and plan, the plan whose limits currently apply, whether a free trial is still available and any discount in force. Read-only; returns 404 when there is no subscription.
+
+  Scope: `billing.read`
+}

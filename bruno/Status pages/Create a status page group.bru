@@ -1,0 +1,31 @@
+meta {
+  name: Create a status page group
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/component-groups
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "Customer apps"
+  }
+}
+
+docs {
+  Adds a group with a `name` at the end of the page. Names must be unique within the page.
+
+  Scope: `monitoring.write`
+}

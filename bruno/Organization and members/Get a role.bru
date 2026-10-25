@@ -1,0 +1,25 @@
+meta {
+  name: Get a role
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/roles/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One role and its permissions. Either a built-in role or one of this organization’s custom roles.
+
+  Scope: `members.read`
+}

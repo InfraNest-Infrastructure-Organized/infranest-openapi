@@ -1,0 +1,25 @@
+meta {
+  name: List outside changes to a zone
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/outside-changes
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Records changed at the DNS provider outside InfraNest that nobody has decided on yet, newest first, each with what the record was and is now. `writable` says whether your earlier value can be put back for this zone.
+
+  Scope: `dns.read`
+}

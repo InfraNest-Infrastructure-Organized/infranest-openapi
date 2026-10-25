@@ -1,0 +1,21 @@
+meta {
+  name: Get the DNS overview
+  type: http
+  seq: 27
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns/overview
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  A summary across all your DNS zones: what needs your attention, grouped by cause, the recent changes, where your DNS is hosted and what is worth tidying up. Changes nothing.
+
+  Scope: `dns.read`
+}

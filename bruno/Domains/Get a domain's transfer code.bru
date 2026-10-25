@@ -1,0 +1,25 @@
+meta {
+  name: Get a domain’s transfer code
+  type: http
+  seq: 26
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/epp-code
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Fetches the domain’s EPP (auth) code live from its registrar; InfraNest never stores it. Needs write access; answers 404 when no registrar is linked or the registrar cannot provide the code.
+
+  Scope: `domains.read`
+}

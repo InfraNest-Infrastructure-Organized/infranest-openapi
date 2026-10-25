@@ -1,0 +1,26 @@
+meta {
+  name: Preview a firewall template
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/firewall-templates/:templateKey/preview/:cloudFirewall_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  templateKey: 
+  cloudFirewall_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The rules a template would add to the given firewall, alongside how many rules the firewall has now. `templateKey` is a built-in template’s slug or a custom template’s id; nothing is changed.
+
+  Scope: `cloud.read`
+}

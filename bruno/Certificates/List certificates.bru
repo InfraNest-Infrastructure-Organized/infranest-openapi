@@ -1,0 +1,21 @@
+meta {
+  name: List certificates
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every TLS certificate in the organization, expired and expiring first, each with its health, findings and who renews it. Narrow it with `domain_id` or `monitoring_check_id`; the list is not paginated.
+
+  Scope: `monitoring.read`
+}

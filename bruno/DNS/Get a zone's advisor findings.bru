@@ -1,0 +1,25 @@
+meta {
+  name: Get a zone’s advisor findings
+  type: http
+  seq: 31
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/advisor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Findings about the zone’s stored records, such as missing or weak email protection, with the snapshot those findings were judged from. Changes nothing.
+
+  Scope: `dns.read`
+}

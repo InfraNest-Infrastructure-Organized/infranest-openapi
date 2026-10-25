@@ -1,0 +1,25 @@
+meta {
+  name: Get the current status of everything
+  type: http
+  seq: 24
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~tag: 7
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Everything in your organization as it stands right now, in one call: every monitor with its `status` (`up`, `down`, `degraded`, `paused` or `unknown`), when it was last checked and its 24-hour uptime; every server with its state, whether its agent is reporting (null when no agent is installed) and how many of its alert rules are breaching; the open incidents; the maintenance windows running now; and counts of each in `summary`. Pass `tag` (a tag ID) to narrow it to monitors and servers with that tag, their incidents, and maintenance that carries the tag or covers them. `servers` is null when the token has no Cloud scope or your role cannot see servers.
+
+  Scope: `monitoring.read`
+}

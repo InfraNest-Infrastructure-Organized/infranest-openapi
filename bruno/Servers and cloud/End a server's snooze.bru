@@ -1,0 +1,25 @@
+meta {
+  name: End a server’s snooze
+  type: http
+  seq: 38
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/snooze
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Ends a snooze before it runs out. Scheduled maintenance windows are left alone, so the response says whether anything was ended and until when alerts are still quiet.
+
+  Scope: `cloud.write`
+}

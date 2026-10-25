@@ -1,0 +1,25 @@
+meta {
+  name: List leftover records in a zone
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/leftovers
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Records the zone appears to have outgrown, such as old verification codes, addresses that stopped answering and duplicates, each with its reason and evidence. `writable` is false when InfraNest cannot change records in this zone.
+
+  Scope: `dns.read`
+}

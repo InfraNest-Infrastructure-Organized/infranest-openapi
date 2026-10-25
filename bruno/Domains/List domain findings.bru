@@ -1,0 +1,21 @@
+meta {
+  name: List domain findings
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domain-findings
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Advisor findings across all your domains, most urgent first, with one finding per cause naming every domain it affects.
+
+  Scope: `domains.read`
+}

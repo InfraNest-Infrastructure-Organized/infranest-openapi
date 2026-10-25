@@ -1,0 +1,25 @@
+meta {
+  name: Get a dynamic IP source
+  type: http
+  seq: 25
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One source with its targets, its 20 most recent address events and the server agent it follows, if any. The update token is never included; `can_reveal` says whether it can be shown again.
+
+  Scope: `monitoring.read`
+}

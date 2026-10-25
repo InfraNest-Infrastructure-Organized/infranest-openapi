@@ -1,0 +1,26 @@
+meta {
+  name: Get an integration account
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/integrations/:provider/accounts/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  provider: 
+  id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One connected account of an integration, whatever kind it is, with its status and health. Returns 404 when the account does not exist or does not belong to this integration and organization.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Delete a custom field
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/custom-fields/:customFieldDefinition_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  customFieldDefinition_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Deletes the field definition together with every value stored for it. Requires a plan that includes custom fields.
+
+  Scope: `monitoring.write`
+}

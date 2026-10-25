@@ -1,0 +1,21 @@
+meta {
+  name: List automations
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automations
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every automation, newest first, with its tags and run statistics: runs in the last 30 and 7 days, success rate, average duration and the last run’s status. Test runs are not counted.
+
+  Scope: `monitoring.read`
+}

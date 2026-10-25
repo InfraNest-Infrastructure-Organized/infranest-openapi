@@ -1,0 +1,32 @@
+meta {
+  name: Override an alert rule for a server
+  type: http
+  seq: 48
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/alert-rule-overrides
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "key": "cpu_percent",
+    "threshold": 85
+  }
+}
+
+docs {
+  Sets this server’s own version of an organization alert, identified by `default_id` or a catalogue `key`, with any of `operator`, `threshold`, `duration_minutes` and `is_active`. Send `is_active: false` to stop watching it on this server only; anything you leave out is copied from the organization default.
+
+  Scope: `cloud.write`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Preview email DNS monitors for a domain
+  type: http
+  seq: 28
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/email-dns-monitors
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Looks up the MX, SPF and DMARC records the domain in `domain` publishes and returns the DNS monitors that would watch those records. Nothing is created; `resolved` is false when the lookup failed.
+
+  Scope: `monitoring.read`
+}

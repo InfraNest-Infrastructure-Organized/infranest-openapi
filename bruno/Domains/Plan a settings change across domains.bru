@@ -1,0 +1,21 @@
+meta {
+  name: Plan a settings change across domains
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/settings-plan
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For each domain in `ids` (up to 500), who would carry out turning `setting` on or off (`value`, default true). Changes nothing; each setting is changed through its own endpoint.
+
+  Scope: `domains.read`
+}

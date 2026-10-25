@@ -1,0 +1,21 @@
+meta {
+  name: List invoices
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/invoices
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your most recent 100 invoices, newest first, with their status, totals, billing period and links to view or download each one. Read-only.
+
+  Scope: `billing.read`
+}

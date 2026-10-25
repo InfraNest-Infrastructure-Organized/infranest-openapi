@@ -1,0 +1,25 @@
+meta {
+  name: Delete a tag
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/tags/:tag_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  tag_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Deletes the tag and removes it from every resource that carried it. The resources themselves are kept.
+
+  Scope: `monitoring.write`
+}

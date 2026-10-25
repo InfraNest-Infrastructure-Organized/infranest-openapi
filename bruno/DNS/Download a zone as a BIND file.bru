@@ -1,0 +1,25 @@
+meta {
+  name: Download a zone as a BIND file
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/zone-file
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Returns the zone’s records as a BIND master file, in plain text, as an attachment named after the zone. The export is recorded in your audit log.
+
+  Scope: `dns.read`
+}

@@ -1,0 +1,43 @@
+meta {
+  name: Update a custom field
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/custom-fields/:customFieldDefinition_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  customFieldDefinition_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "entity_types": [
+      "server",
+      "domain"
+    ],
+    "key": "cost_centre",
+    "label": "Responsible team",
+    "type": "select",
+    "options": [
+      "Platform",
+      "Marketing",
+      "Data",
+      "Internal tools"
+    ]
+  }
+}
+
+docs {
+  Replaces the field’s definition; send the full set of fields, as on create. Requires a plan that includes custom fields.
+
+  Scope: `monitoring.write`
+}

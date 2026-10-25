@@ -1,0 +1,25 @@
+meta {
+  name: List registration attempts
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/:watchedDomain_id/registration-logs
+  body: none
+  auth: inherit
+}
+
+params:path {
+  watchedDomain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every attempt to register the watched domain, newest first, 50 per page.
+
+  Scope: `drop-catch.read`
+}

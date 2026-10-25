@@ -1,0 +1,25 @@
+meta {
+  name: Get a network
+  type: http
+  seq: 28
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-networks/:cloudNetwork_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudNetwork_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One private network with its tags and what its provider allows.
+
+  Scope: `cloud.read`
+}

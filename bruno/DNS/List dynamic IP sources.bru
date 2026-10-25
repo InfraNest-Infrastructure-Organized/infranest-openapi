@@ -1,0 +1,21 @@
+meta {
+  name: List dynamic IP sources
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your dynamic IP sources (connections whose address changes, such as a home or office line), ordered by label, each with its tags and the DNS records and firewalls it keeps up to date.
+
+  Scope: `monitoring.read`
+}

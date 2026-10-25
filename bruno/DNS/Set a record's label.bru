@@ -1,0 +1,32 @@
+meta {
+  name: Set a record’s label
+  type: http
+  seq: 14
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/dns-records/:record_id/label
+  body: json
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+  record_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "label": "Main website"
+  }
+}
+
+docs {
+  Sets or clears a note on what the record is for (`label`, up to 120 characters; empty or null clears it). Kept in InfraNest only and never written to the DNS provider; a labelled record is never proposed as a leftover.
+
+  Scope: `dns.write`
+}

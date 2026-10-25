@@ -1,0 +1,35 @@
+meta {
+  name: Add several monitors to a status page
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/components/bulk
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "monitoring_check_ids": [
+      1,
+      2,
+      3
+    ]
+  }
+}
+
+docs {
+  Adds a component for each of up to 50 monitors in `monitoring_check_ids`, named after the monitor and optionally placed in `group_name`. Monitors already on the page are skipped and listed in `skipped`; third-party monitors are added ungrouped and do not affect the page’s overall status.
+
+  Scope: `monitoring.write`
+}

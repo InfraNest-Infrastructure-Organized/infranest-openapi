@@ -1,0 +1,21 @@
+meta {
+  name: List tags
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/tags
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every tag in the organization, with its colour, whether it names a client, its uptime target and how many resources carry it (`usage_count`).
+
+  Scope: `monitoring.read`
+}

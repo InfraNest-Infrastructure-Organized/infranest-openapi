@@ -1,0 +1,32 @@
+meta {
+  name: Update a status page group
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/component-groups/:componentGroup_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+  componentGroup_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "Customer-facing apps"
+  }
+}
+
+docs {
+  Renames the group for every component in it. Setting `shows_platform_status` to true on one group clears it from every other group on the page.
+
+  Scope: `monitoring.write`
+}

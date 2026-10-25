@@ -1,0 +1,30 @@
+meta {
+  name: Create a monitor
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "Checkout API",
+    "type": "http",
+    "target": "https://example.com/health",
+    "interval": 300
+  }
+}
+
+docs {
+  Creates a monitor and queues its first check. Pass `external_service_id` instead of a target to watch a third-party status page; a heartbeat monitor gets its own ping URL as its target. Refused when the monitor count, interval, check type or regions are beyond your plan.
+
+  Scope: `monitoring.write`
+}

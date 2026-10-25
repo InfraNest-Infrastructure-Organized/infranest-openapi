@@ -1,0 +1,26 @@
+meta {
+  name: Remove a contact from a domain
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/contacts/:contact_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+  contact_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Unassigns the contact from the domain in every role it held. The contact itself is kept.
+
+  Scope: `domains.write`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Plan email protection across domains
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/email-protection-plan
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For each domain in `ids` (up to 200), the email protection plan for `mode` (`protect` or `no_mail`) and its `route`: `here`, `elsewhere` (records to copy to your DNS host), `reconnect`, `unchanged`, `refused` or `none` (no zone held). Changes nothing; apply it through each zone’s email protection endpoint.
+
+  Scope: `domains.read`
+}

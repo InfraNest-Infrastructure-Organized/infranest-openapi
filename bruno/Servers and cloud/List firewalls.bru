@@ -1,0 +1,21 @@
+meta {
+  name: List firewalls
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-firewalls
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every cloud firewall InfraNest tracks in the organization, a page at a time (`per_page`, default 20), ordered by account and name. Each includes the entries a Dynamic IP keeps up to date in it.
+
+  Scope: `cloud.read`
+}

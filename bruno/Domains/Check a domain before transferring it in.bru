@@ -1,0 +1,21 @@
+meta {
+  name: Check a domain before transferring it in
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/transfer-preflight
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Checks the usual reasons an inbound transfer fails for the domain given by `name` and `tld`, before you submit it. Optionally pass `credential_id` for the registrar that would receive it; counts toward your plan’s hourly domain-check limit.
+
+  Scope: `domains.read`
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Edit a monitor incident
+  type: http
+  seq: 17
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/incidents/:incident_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "description": "Caused by an expired upstream certificate.",
+    "is_planned": false
+  }
+}
+
+docs {
+  Changes an incident’s `description`, or marks it as planned with `is_planned`, which takes it out of uptime figures and the status page’s incident history. Incidents imported from a third-party status page cannot be edited.
+
+  Scope: `monitoring.write`
+}

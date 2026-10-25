@@ -1,0 +1,21 @@
+meta {
+  name: List members
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/members
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every member of the organization with their role. `email_undeliverable` is true when email to that address can no longer be delivered.
+
+  Scope: `members.read`
+}

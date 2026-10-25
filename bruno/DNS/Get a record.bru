@@ -1,0 +1,26 @@
+meta {
+  name: Get a record
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/dns-records/:record_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+  record_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One record in the zone. Answers 404 when the record belongs to another zone.
+
+  Scope: `dns.read`
+}

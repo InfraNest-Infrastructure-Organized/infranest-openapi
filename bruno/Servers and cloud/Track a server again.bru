@@ -1,0 +1,25 @@
+meta {
+  name: Track a server again
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:serverId/retrack
+  body: none
+  auth: inherit
+}
+
+params:path {
+  serverId: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Brings an untracked server back into lists, costs and alerts, with its history, tags and alert rules intact. It counts towards your plan again, so it is refused when you have reached your server limit.
+
+  Scope: `cloud.write`
+}

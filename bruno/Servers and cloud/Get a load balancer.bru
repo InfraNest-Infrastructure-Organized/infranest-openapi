@@ -1,0 +1,25 @@
+meta {
+  name: Get a load balancer
+  type: http
+  seq: 25
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-load-balancers/:cloudLoadBalancer_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudLoadBalancer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One load balancer with its tags and what its provider allows.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: List connect requests
+  type: http
+  seq: 51
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/connect-requests
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The 20 most recent links you created to ask someone else to connect a provider account, newest first, with who requested each one. Filter with `provider` or `kind`; the response also gives how many days a new link stays valid.
+
+  Scope: `cloud.read`
+}

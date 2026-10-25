@@ -1,0 +1,25 @@
+meta {
+  name: Get an address’s monitor
+  type: http
+  seq: 50
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/endpoints/:endpoint_id/monitor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  endpoint_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What the monitor on this address knows: its status, 30-day uptime, response time, the certificate each probe location receives and where its alerts go. `monitor` is null when nothing watches the address.
+
+  Scope: `monitoring.read`
+}

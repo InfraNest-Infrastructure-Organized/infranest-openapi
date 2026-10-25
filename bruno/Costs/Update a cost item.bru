@@ -1,0 +1,33 @@
+meta {
+  name: Update a cost item
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cost-items/:costItem_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  costItem_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "label": "Status page SMS credits",
+    "amount": 15,
+    "currency": "EUR"
+  }
+}
+
+docs {
+  Changes the cost’s `label`, `amount`, `currency` and `period`. `label`, `amount` and `currency` are required on every update; an omitted `period` resets to monthly.
+
+  Scope: `monitoring.write`
+}

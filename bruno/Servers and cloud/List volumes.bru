@@ -1,0 +1,21 @@
+meta {
+  name: List volumes
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-volumes
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every storage volume InfraNest tracks in the organization, a page at a time, with the server it is attached to. Filter with `search`, `attached`, `unattached`, `server_id`, `status`, `tag` or `credential`, and sort with `sort` and `dir`.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Update a certificate
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/:sslCertificate_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  sslCertificate_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "owner": "Platform team",
+    "notes": "Renewed automatically by the load balancer."
+  }
+}
+
+docs {
+  Changes InfraNest’s record of the certificate: owner, notes, subscription end date, seller, tags and any corrections to how it is classified (purpose, trust, validation, managed, renewal type). Only the fields you send change; `owner_user_id` must be a member of the organization.
+
+  Scope: `monitoring.write`
+}

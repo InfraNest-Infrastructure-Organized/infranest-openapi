@@ -1,0 +1,21 @@
+meta {
+  name: List registrars for an extension
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/registrars
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The connected registrar accounts that can register a caught domain. With `tld`, each says whether it carries that extension and what it charges, and `requirements` lists what the extension asks of a registrant, or null when nothing is on file.
+
+  Scope: `drop-catch.read`
+}

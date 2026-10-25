@@ -1,0 +1,25 @@
+meta {
+  name: List a domain’s running registrar actions
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/actions
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The action currently running at the registrar for this domain, where the registrar reports one; `can_retry` says whether it can be retried. An empty list when no registrar is linked or the registrar does not offer this.
+
+  Scope: `domains.read`
+}

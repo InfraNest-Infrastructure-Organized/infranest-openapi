@@ -1,0 +1,25 @@
+meta {
+  name: List a server’s alert rules
+  type: http
+  seq: 45
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/alert-rules
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, plus any older standalone rules. With `active=1` it returns only the rules actually being evaluated, as a flat list.
+
+  Scope: `cloud.read`
+}

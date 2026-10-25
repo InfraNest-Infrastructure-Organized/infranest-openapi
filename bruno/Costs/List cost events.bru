@@ -1,0 +1,21 @@
+meta {
+  name: List cost events
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cost-events
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Money spent on a date, such as registrations, renewals, transfers and purchases, newest first, up to 500 entries. Narrow with `entity_type`, `entity_id`, `from` and `to`. Requires a plan that includes cost reporting.
+
+  Scope: `monitoring.read`
+}

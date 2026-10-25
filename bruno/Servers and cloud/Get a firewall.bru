@@ -1,0 +1,25 @@
+meta {
+  name: Get a firewall
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-firewalls/:cloudFirewall_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudFirewall_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One firewall with its rules, tags, Dynamic IP entries, what its provider allows and the protocols it accepts.
+
+  Scope: `cloud.read`
+}

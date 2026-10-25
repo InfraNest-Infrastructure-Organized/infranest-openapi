@@ -1,0 +1,21 @@
+meta {
+  name: List DNS host moves
+  type: http
+  seq: 29
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns/moves
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The 200 most recent moves of a domain’s DNS to another DNS host, newest first, each with its domain, target connection, current `state` and timestamps.
+
+  Scope: `dns.read`
+}

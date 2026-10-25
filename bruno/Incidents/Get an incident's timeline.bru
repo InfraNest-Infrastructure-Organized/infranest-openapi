@@ -1,0 +1,25 @@
+meta {
+  name: Get an incident’s timeline
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/updates
+  body: none
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The incident’s public status updates and internal team notes, plus the alert channels that were notified, deploys shortly before it began, who PagerDuty is paging, notes from PagerDuty and tickets opened for it.
+
+  Scope: `monitoring.read`
+}

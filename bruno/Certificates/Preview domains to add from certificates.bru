@@ -1,0 +1,21 @@
+meta {
+  name: Preview domains to add from certificates
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/fixes/domains
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The domain names your certificates use that InfraNest does not track yet, where each is registered as far as is known, and the certificates that use it. Also says how many more domains your plan allows; nothing is changed.
+
+  Scope: `domains.read`
+}

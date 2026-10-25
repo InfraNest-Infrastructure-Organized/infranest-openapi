@@ -1,0 +1,32 @@
+meta {
+  name: Update a tag
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/tags/:tag_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  tag_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "color": "#22C55E",
+    "uptime_target_pct": 99.9
+  }
+}
+
+docs {
+  Changes any of `name`, `color`, `is_client` and `uptime_target_pct` (0 to 100, or null to clear it). Refused with 422 when the new name is already taken.
+
+  Scope: `monitoring.write`
+}

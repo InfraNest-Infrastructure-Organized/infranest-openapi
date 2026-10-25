@@ -1,0 +1,25 @@
+meta {
+  name: List availability checks
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/:watchedDomain_id/check-logs
+  body: none
+  auth: inherit
+}
+
+params:path {
+  watchedDomain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every availability check run on the watched domain, newest first, 100 per page. Filter with `status`.
+
+  Scope: `drop-catch.read`
+}

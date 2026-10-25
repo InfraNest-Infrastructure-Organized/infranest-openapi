@@ -1,0 +1,25 @@
+meta {
+  name: Get a contact
+  type: http
+  seq: 29
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/contacts/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One contact with the domains it is assigned to.
+
+  Scope: `domains.read`
+}

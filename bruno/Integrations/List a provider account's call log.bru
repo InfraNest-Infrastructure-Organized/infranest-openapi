@@ -1,0 +1,25 @@
+meta {
+  name: List a provider account’s call log
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/provider-credentials/:providerCredential_id/logs
+  body: none
+  auth: inherit
+}
+
+params:path {
+  providerCredential_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The most recent 200 calls InfraNest made with this account, newest first. Filter with `status` (`success` or `failure`) and the dates `from` and `to`.
+
+  Scope: `cloud.read`
+}

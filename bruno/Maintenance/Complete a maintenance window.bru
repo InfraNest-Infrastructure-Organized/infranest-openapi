@@ -1,0 +1,25 @@
+meta {
+  name: Complete a maintenance window
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows/:maintenanceWindow_id/complete
+  body: none
+  auth: inherit
+}
+
+params:path {
+  maintenanceWindow_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Marks a window that is in progress or verifying as completed. Refused for a window in any other state.
+
+  Scope: `monitoring.write`
+}

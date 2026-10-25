@@ -1,0 +1,27 @@
+meta {
+  name: Track a domain by name
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/track
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "northwind-studio.com"
+  }
+}
+
+docs {
+  Adds a domain held at a registrar InfraNest is not connected to; its registrar, dates, status and nameservers are read from the public registry, now and daily. Only `name` is accepted; it counts toward your plan’s domain limit, and a domain already in your organization is refused with 422.
+
+  Scope: `domains.write`
+}

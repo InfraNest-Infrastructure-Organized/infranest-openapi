@@ -1,0 +1,26 @@
+meta {
+  name: Reset or delete a server alert rule
+  type: http
+  seq: 47
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/alert-rules/:alertRule_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+  alertRule_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Removes the rule from this server. For an override, the organization’s default applies again; an older standalone rule is simply deleted.
+
+  Scope: `cloud.write`
+}

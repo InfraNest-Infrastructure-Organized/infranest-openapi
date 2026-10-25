@@ -1,0 +1,25 @@
+meta {
+  name: List an automation’s runs
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automations/:automationRule_id/runs
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationRule_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The automation’s run history with each run’s steps, newest first, 25 per page. Filter with `status` and the dates `from` and `to`. Unless you may edit automations, what triggered each run is left out and `details_hidden` is true.
+
+  Scope: `monitoring.read`
+}

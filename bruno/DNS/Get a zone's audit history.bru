@@ -1,0 +1,25 @@
+meta {
+  name: Get a zone’s audit history
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/history
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The 50 most recent audit-log entries for the zone and its records, deleted records included, newest first.
+
+  Scope: `dns.read`
+}

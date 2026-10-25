@@ -1,0 +1,31 @@
+meta {
+  name: Add a component to a status page
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/components
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "display_name": "Payments API"
+  }
+}
+
+docs {
+  Adds a component with a `display_name`, optionally linked to one of your monitors with `monitoring_check_id`. A `group_name` that does not exist yet creates that group, and a `runbook_url` must start with https:// and is only shown internally.
+
+  Scope: `monitoring.write`
+}

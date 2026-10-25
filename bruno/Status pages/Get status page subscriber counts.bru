@@ -1,0 +1,25 @@
+meta {
+  name: Get status page subscriber counts
+  type: http
+  seq: 22
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/subscribers
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  How many people subscribe to the page, how many have confirmed or are pending, a count per channel, and a 90-day growth curve. Counts only; use the subscriber list for individual entries.
+
+  Scope: `monitoring.read`
+}

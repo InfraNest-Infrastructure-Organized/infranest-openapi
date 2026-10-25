@@ -1,0 +1,21 @@
+meta {
+  name: List active probe regions
+  type: http
+  seq: 26
+}
+
+get {
+  url: {{baseUrl}}/api/monitoring/active-regions
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The regions that currently have at least one active probe, as a sorted list of region names. Use these values when choosing where a monitor runs.
+
+  Scope: `monitoring.read`
+}

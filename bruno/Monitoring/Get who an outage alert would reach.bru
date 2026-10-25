@@ -1,0 +1,25 @@
+meta {
+  name: Get who an outage alert would reach
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/reach
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether an outage on this monitor would reach anybody right now: `state` is `ok`, `nobody` or `failing`, with the alert channels it would use, how many members get the status email, and whether it would escalate.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List a server’s add-ons
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/addons
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The add-ons the cloud provider reports for this server, asked live. Empty when the provider account’s access does not cover it; refused when the server has no linked provider account.
+
+  Scope: `cloud.read`
+}

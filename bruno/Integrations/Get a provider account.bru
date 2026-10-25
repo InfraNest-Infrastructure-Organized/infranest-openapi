@@ -1,0 +1,25 @@
+meta {
+  name: Get a provider account
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/provider-credentials/:providerCredential_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  providerCredential_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One connected provider account with its health, how many zones, domains, certificates and servers it holds, the registrar operations it supports and the result of its last permission check. Secrets are never returned.
+
+  Scope: `cloud.read`
+}

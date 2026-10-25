@@ -1,0 +1,31 @@
+meta {
+  name: Silence a monitor’s alerts
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/silence
+  body: json
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "duration_minutes": 60
+  }
+}
+
+docs {
+  Mutes the monitor’s alerts for `duration_minutes` (1 to 10,080), or until you unsilence it when you leave that out. The monitor keeps running.
+
+  Scope: `monitoring.write`
+}

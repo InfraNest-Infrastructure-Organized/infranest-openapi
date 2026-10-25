@@ -1,0 +1,40 @@
+meta {
+  name: Reorder status page components
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/components/sort
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "order": [
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ]
+  }
+}
+
+docs {
+  Sets the display order from `order`, a list of component IDs. Every ID must belong to this page.
+
+  Scope: `monitoring.write`
+}

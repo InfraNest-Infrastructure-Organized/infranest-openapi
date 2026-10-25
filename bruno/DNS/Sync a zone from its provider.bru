@@ -1,0 +1,25 @@
+meta {
+  name: Sync a zone from its provider
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/sync
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Queues a fresh import of the zone’s records from its DNS provider and answers with `queued: true`. Refused with 422 for a zone with no linked provider connection; manual syncs are limited per hour by your plan.
+
+  Scope: `dns.write`
+}

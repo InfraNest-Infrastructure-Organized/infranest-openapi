@@ -1,0 +1,21 @@
+meta {
+  name: List registrar moves
+  type: http
+  seq: 32
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/registrar-moves
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The 200 most recent moves of domains to another registrar you have connected, newest first, each with its domain, source and target connection, and current state.
+
+  Scope: `domains.read`
+}

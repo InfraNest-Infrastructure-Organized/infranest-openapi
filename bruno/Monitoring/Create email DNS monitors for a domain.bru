@@ -1,0 +1,21 @@
+meta {
+  name: Create email DNS monitors for a domain
+  type: http
+  seq: 29
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/email-dns-monitors
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Creates one DNS monitor for each MX, SPF and DMARC record the domain in `domain` publishes right now, and queues a first check of each. Either every monitor is created or none is: the request is refused when the domain publishes none of those records or the monitors would exceed your plan.
+
+  Scope: `monitoring.write`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Get a monitor’s uptime and response-time stats
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/stats
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Uptime for the last 24 hours, 7 days and 30 days, incident counts, response-time figures and chart series for the chosen `period` (`24h`, `7d` or `30d`, default `24h`). Pass `region` to narrow the figures to one probe region; the regions with data are listed in `regions`.
+
+  Scope: `monitoring.read`
+}

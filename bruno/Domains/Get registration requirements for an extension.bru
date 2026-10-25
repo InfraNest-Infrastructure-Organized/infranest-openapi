@@ -1,0 +1,21 @@
+meta {
+  name: Get registration requirements for an extension
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/registration-fields
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The extra fields a registrar needs to register a domain under `tld` (for example the nexus details some country extensions ask for) and the registration periods it offers. `credential_id` and `tld` are required; `unknown` is true when the registrar could not be asked, in which case it may still refuse.
+
+  Scope: `domains.read`
+}

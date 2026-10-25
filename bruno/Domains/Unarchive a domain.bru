@@ -1,0 +1,25 @@
+meta {
+  name: Unarchive a domain
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/unarchive
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Brings an archived domain back into your working list, where it counts toward your plan’s domain limit again. A domain that is not archived is returned unchanged.
+
+  Scope: `domains.write`
+}

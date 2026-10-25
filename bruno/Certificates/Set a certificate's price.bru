@@ -1,0 +1,32 @@
+meta {
+  name: Set a certificate’s price
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/:sslCertificate_id/pricing
+  body: json
+  auth: inherit
+}
+
+params:path {
+  sslCertificate_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "price_yearly": 59,
+    "currency": "EUR"
+  }
+}
+
+docs {
+  Sets the yearly price InfraNest counts for this certificate, with optional currency and billing interval. Send an empty price to go back to the provider’s figure.
+
+  Scope: `monitoring.write`
+}

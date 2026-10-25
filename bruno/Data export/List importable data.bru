@@ -1,0 +1,21 @@
+meta {
+  name: List importable data
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/import
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The kinds of data you can import from CSV, with the column headers each expects, and whether your plan allows importing (`allowed`). Requires permission to manage the organization.
+
+  Scope: `data.read`
+}

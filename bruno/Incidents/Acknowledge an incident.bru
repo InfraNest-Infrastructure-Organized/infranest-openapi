@@ -1,0 +1,25 @@
+meta {
+  name: Acknowledge an incident
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/acknowledge
+  body: none
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Marks the incident as acknowledged by you, so your team knows someone is on it, and returns it with who acknowledged it.
+
+  Scope: `monitoring.write`
+}

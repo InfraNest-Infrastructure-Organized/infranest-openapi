@@ -1,0 +1,25 @@
+meta {
+  name: Get a volume
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-volumes/:cloudVolume_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudVolume_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One volume with its server, tags, what its provider allows and the provider’s size limits where known.
+
+  Scope: `cloud.read`
+}

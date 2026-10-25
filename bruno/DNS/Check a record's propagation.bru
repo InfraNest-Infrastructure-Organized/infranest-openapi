@@ -1,0 +1,26 @@
+meta {
+  name: Check a record’s propagation
+  type: http
+  seq: 35
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/dns-records/:record_id/propagation
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+  record_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Asks public DNS resolvers for the record and reports, per resolver, whether its stored value is live yet; `tier=fast` uses only the quicker resolvers. With `landing=1` it instead reports whether the record’s latest change (or the one in `change_id`) has taken effect, and `landing` is null when nothing changed recently.
+
+  Scope: `dns.read`
+}

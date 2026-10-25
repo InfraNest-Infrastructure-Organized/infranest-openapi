@@ -1,0 +1,32 @@
+meta {
+  name: Create a custom field
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/custom-fields
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "entity_types": [
+      "server"
+    ],
+    "key": "cost_center",
+    "label": "Cost center",
+    "type": "text"
+  }
+}
+
+docs {
+  Defines a custom field with `entity_types`, a unique `key`, a `label` and a `type`; select and multi-select fields also need `options`. Requires a plan that includes custom fields.
+
+  Scope: `monitoring.write`
+}

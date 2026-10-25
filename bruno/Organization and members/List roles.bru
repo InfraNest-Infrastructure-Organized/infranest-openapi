@@ -1,0 +1,21 @@
+meta {
+  name: List roles
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/roles
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The built-in roles followed by the organization’s custom roles, each with its permissions.
+
+  Scope: `members.read`
+}

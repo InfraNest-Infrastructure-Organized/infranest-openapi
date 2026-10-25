@@ -1,0 +1,39 @@
+meta {
+  name: Update a record
+  type: http
+  seq: 21
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/dns-records/:record_id
+  body: json
+  auth: inherit
+}
+
+params:query {
+  ~dry_run: true
+}
+
+params:path {
+  dnsZone_id: 
+  record_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "type": "A",
+    "name": "www",
+    "value": "192.0.2.11",
+    "ttl": 3600
+  }
+}
+
+docs {
+  Changes the record and pushes the change to the DNS provider; `dry_run=1` returns the change without making it. Refused with 422 when the zone is read-only or a new A/AAAA value is an address your fleet released, and with 409 when an apex CAA change would block a certificate’s renewal, unless `confirm_caa_impact` is sent.
+
+  Scope: `dns.write`
+}

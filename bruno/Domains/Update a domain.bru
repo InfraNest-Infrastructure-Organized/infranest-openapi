@@ -1,0 +1,31 @@
+meta {
+  name: Update a domain
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "notes": "Main brand domain. Renew three years ahead."
+  }
+}
+
+docs {
+  Updates what InfraNest keeps for the domain: `notes`, `serves_website`, `expected_issuers`, `nameservers`, `registrar_contacts`, pricing and `tag_ids`. Registration data such as the expiry date and auto-renew is not accepted here; returns the domain’s full details.
+
+  Scope: `domains.write`
+}

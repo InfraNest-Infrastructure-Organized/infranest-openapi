@@ -1,0 +1,29 @@
+meta {
+  name: Check whether an address left your fleet
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/released-address
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~address: 203.0.113.7
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Says whether the `address` query parameter (required) belongs to one of your servers, or is an address one of your servers held and released. A record cannot be pointed at a released address.
+
+  Scope: `dns.read`
+}

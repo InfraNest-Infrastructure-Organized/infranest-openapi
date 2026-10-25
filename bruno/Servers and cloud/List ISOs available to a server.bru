@@ -1,0 +1,25 @@
+meta {
+  name: List ISOs available to a server
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/isos
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The ISO images the cloud provider offers for this server’s type, under `isos`. Refused when the server has no linked provider account.
+
+  Scope: `cloud.read`
+}

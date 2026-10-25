@@ -1,0 +1,21 @@
+meta {
+  name: Plan CAA protection across domains
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/caa-protection-plan
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For each domain in `ids` (up to 200), the CAA plan and its `route`, as for the email protection plan. Changes nothing; apply it through each zone’s CAA protection endpoint, which checks the zone’s certificates first.
+
+  Scope: `domains.read`
+}

@@ -1,0 +1,30 @@
+meta {
+  name: Set a custom field value
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/custom-field-values
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "entity_type": "server",
+    "entity_id": 1,
+    "definition_id": 1,
+    "value": "Platform"
+  }
+}
+
+docs {
+  Sets the `value` of one field (`definition_id`) on one record (`entity_type`, `entity_id`), checked against the field’s type and options. A null value clears it and returns 204. Requires a plan that includes custom fields.
+
+  Scope: `monitoring.write`
+}

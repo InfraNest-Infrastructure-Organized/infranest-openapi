@@ -1,0 +1,25 @@
+meta {
+  name: Get a domain’s registry record
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/registry-record
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What the registry itself says about the domain: its status codes, created and updated dates, the source (RDAP or WHOIS) and an excerpt of the raw answer.
+
+  Scope: `domains.read`
+}

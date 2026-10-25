@@ -1,0 +1,21 @@
+meta {
+  name: List snapshots
+  type: http
+  seq: 29
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-snapshots
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every server snapshot InfraNest tracks in the organization, a page at a time, with the server it belongs to. Filter with `server_id`, `status`, `credential` or `search`, and sort with `sort` and `dir`.
+
+  Scope: `cloud.read`
+}

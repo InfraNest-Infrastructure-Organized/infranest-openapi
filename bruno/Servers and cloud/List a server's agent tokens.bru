@@ -1,0 +1,25 @@
+meta {
+  name: List a server’s agent tokens
+  type: http
+  seq: 44
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/agent-tokens
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The tokens the monitoring agent on this server can report with, newest first, with who created each and when it was last used. The token values themselves are never returned.
+
+  Scope: `cloud.read`
+}

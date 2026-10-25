@@ -1,0 +1,25 @@
+meta {
+  name: Get a server’s provider metrics
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/metrics
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  CPU, disk and network figures asked live from the cloud provider. Pick the figures with `types` (default `cpu,disk,network`) and set the window with `start`, `end` and `step` in seconds (default: the last hour at 60 seconds); refused when the server has no linked provider account.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Get the domains overview
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/overview
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  A summary of your domains: what needs your attention, what the next year of renewals costs in your base currency, and how the portfolio is protected.
+
+  Scope: `domains.read`
+}

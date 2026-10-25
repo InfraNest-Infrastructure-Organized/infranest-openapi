@@ -1,0 +1,21 @@
+meta {
+  name: Search records across all zones
+  type: http
+  seq: 28
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns/search
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Finds DNS records in any of your zones that match the `q` query parameter, by name, value or address, grouped by zone with the reason each one matched. A query shorter than two characters returns nothing with `too_short` set; at most 100 records are returned, with `truncated` set when there were more.
+
+  Scope: `dns.read`
+}

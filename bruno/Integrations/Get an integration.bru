@@ -1,0 +1,25 @@
+meta {
+  name: Get an integration
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/integrations/:provider
+  body: none
+  auth: inherit
+}
+
+params:path {
+  provider: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What the integration offers, the organization’s connections to it, and whether your plan allows connecting it. Returns 404 for an unknown integration.
+
+  Scope: `cloud.read`
+}

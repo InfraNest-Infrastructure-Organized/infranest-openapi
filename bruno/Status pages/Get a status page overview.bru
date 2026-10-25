@@ -1,0 +1,25 @@
+meta {
+  name: Get a status page overview
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/overview
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The page at a glance: setup (components, custom domain, subscribers, whether it is public), uptime over the page’s history window, current status with active incidents, and the next maintenance and announcement due to end.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Get what a zone’s records point at
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/record-context
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For each record in the zone, keyed by record id: what it points at (one of your servers, a recognised service, a connection or a released address) and what uses it, such as monitors, certificates and status pages. Records with neither are left out; `long_ttl` is the TTL above which InfraNest calls a TTL long.
+
+  Scope: `dns.read`
+}

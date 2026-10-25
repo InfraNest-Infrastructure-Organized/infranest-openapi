@@ -1,0 +1,25 @@
+meta {
+  name: Unsilence a monitor’s alerts
+  type: http
+  seq: 19
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/silence
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Lifts a silence straight away so the monitor’s alerts are sent again, and returns the updated monitor.
+
+  Scope: `monitoring.write`
+}

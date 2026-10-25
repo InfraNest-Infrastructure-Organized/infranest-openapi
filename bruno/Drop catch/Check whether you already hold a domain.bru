@@ -1,0 +1,21 @@
+meta {
+  name: Check whether you already hold a domain
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/held
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The domain in your organization matching `name` and `tld` (both required) that you hold or are registering, or null when there is none.
+
+  Scope: `drop-catch.read`
+}

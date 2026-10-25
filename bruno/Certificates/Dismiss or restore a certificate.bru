@@ -1,0 +1,25 @@
+meta {
+  name: Dismiss or restore a certificate
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/:sslCertificate_id/dismiss
+  body: none
+  auth: inherit
+}
+
+params:path {
+  sslCertificate_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Sets the certificate aside so it no longer counts towards domain coverage. Send `dismissed: false` to restore it.
+
+  Scope: `monitoring.write`
+}

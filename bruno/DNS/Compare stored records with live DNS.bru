@@ -1,0 +1,25 @@
+meta {
+  name: Compare stored records with live DNS
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/live-mismatch
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Records whose stored value differs from what public resolvers last answered, each with both values, the likely cause and whether taking the live value is offered. Also returns the zone’s delegation state; changes nothing.
+
+  Scope: `dns.read`
+}

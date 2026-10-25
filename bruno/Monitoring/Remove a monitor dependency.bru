@@ -1,0 +1,26 @@
+meta {
+  name: Remove a monitor dependency
+  type: http
+  seq: 32
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/dependencies/:otherCheck_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+  otherCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Removes the dependency between the two monitors, in whichever direction it runs.
+
+  Scope: `monitoring.write`
+}

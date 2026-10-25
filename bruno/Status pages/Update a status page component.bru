@@ -1,0 +1,33 @@
+meta {
+  name: Update a status page component
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/components/:component_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+  component_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "display_name": "Checkout",
+    "description": "Payments and order confirmation"
+  }
+}
+
+docs {
+  Changes the fields you send, such as the name, description, linked monitor, status override, group or runbook link. A new `group_name` creates that group.
+
+  Scope: `monitoring.write`
+}

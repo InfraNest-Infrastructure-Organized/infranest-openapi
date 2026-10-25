@@ -1,0 +1,31 @@
+meta {
+  name: Add a monitor dependency
+  type: http
+  seq: 31
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/dependencies
+  body: json
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "child_check_id": 3
+  }
+}
+
+docs {
+  Pass `parent_check_id` to make this monitor depend on another, or `child_check_id` to make another depend on it. Both monitors must be yours, and a dependency on itself or one that would form a loop is refused.
+
+  Scope: `monitoring.write`
+}

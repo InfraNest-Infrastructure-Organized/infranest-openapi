@@ -1,0 +1,32 @@
+meta {
+  name: Set a server’s price
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/pricing
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "price_monthly": 7.9,
+    "currency": "EUR"
+  }
+}
+
+docs {
+  Sets a manual price for the server in InfraNest, with optional currency and billing interval. A manual price is no longer overwritten by the provider’s price at each sync; nothing changes at the provider.
+
+  Scope: `cloud.write`
+}

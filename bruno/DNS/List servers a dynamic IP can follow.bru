@@ -1,0 +1,21 @@
+meta {
+  name: List servers a dynamic IP can follow
+  type: http
+  seq: 24
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/agent-servers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your servers with an InfraNest agent, which a dynamic IP source can take its address from, most recent agent check-in first.
+
+  Scope: `monitoring.read`
+}

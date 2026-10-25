@@ -1,0 +1,32 @@
+meta {
+  name: Update a contact
+  type: http
+  seq: 30
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/contacts/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "company": "Northwind Cloud GmbH",
+    "city": "Köln"
+  }
+}
+
+docs {
+  Updates the contact and, when `tag_ids` is sent, its tags. Recorded in InfraNest only; nothing is sent to a registrar.
+
+  Scope: `domains.write`
+}

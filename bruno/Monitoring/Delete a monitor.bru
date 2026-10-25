@@ -1,0 +1,25 @@
+meta {
+  name: Delete a monitor
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Permanently deletes the monitor. A monitor locked because it is over your plan’s limit cannot be deleted this way.
+
+  Scope: `monitoring.write`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Get the certificate overview
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/overview
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  An address-by-address view of the certificates your visitors actually receive, grouped by domain, with a summary, what needs you, the renewals due in the next 90 days and recommendations. Also lists the members who can be made a certificate’s owner.
+
+  Scope: `monitoring.read`
+}

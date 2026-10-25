@@ -1,0 +1,31 @@
+meta {
+  name: Remove a container name
+  type: http
+  seq: 35
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/container-names
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "container_id": "3f2a9c1b7d4e"
+  }
+}
+
+docs {
+  Removes the display name saved for the container given in `container_id`. Returns the server’s remaining saved container names.
+
+  Scope: `cloud.write`
+}

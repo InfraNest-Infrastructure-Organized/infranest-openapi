@@ -1,0 +1,31 @@
+meta {
+  name: Attach an alert channel to a monitor
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/alerts
+  body: json
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "alert_channel_id": 1
+  }
+}
+
+docs {
+  Sends this monitor’s alerts to the alert channel in `alert_channel_id`, which must belong to your organization. Refused if the channel is already attached.
+
+  Scope: `monitoring.write`
+}

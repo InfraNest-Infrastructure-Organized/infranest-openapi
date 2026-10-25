@@ -1,0 +1,21 @@
+meta {
+  name: List automation connections
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automation-connections
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The accounts automations can act through, such as GitHub, Jira or PagerDuty, with each one’s status, whether it is paused and whether its triggers can fire.
+
+  Scope: `monitoring.read`
+}

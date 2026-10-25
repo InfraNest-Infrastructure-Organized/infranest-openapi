@@ -1,0 +1,30 @@
+meta {
+  name: Preview what a record value would point at
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/points-at
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~type: A
+  ~value: 203.0.113.7
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Says what a record of the given `type` with the given `value` (both required) would point at, before you save it. `points_at` is null when nothing is recognised.
+
+  Scope: `dns.read`
+}

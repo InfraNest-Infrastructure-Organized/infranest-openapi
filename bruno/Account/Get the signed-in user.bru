@@ -1,0 +1,19 @@
+meta {
+  name: Get the signed-in user
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/auth/me
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your user profile, the organizations you belong to with your role in each, and the state of your account security (two-factor, passkeys, password). A token bound to one organization lists only that organization.
+}

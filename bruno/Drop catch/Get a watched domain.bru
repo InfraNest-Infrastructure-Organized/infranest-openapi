@@ -1,0 +1,25 @@
+meta {
+  name: Get a watched domain
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/:watchedDomain_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  watchedDomain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One watched domain with its stored WHOIS record, lifecycle dates, estimated drop date, the check schedule still ahead and drop statistics for its extension.
+
+  Scope: `drop-catch.read`
+}

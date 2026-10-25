@@ -1,0 +1,21 @@
+meta {
+  name: List custom fields
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/custom-fields
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The organization’s custom field definitions in display order. Pass `entity_type` to list only the fields that apply to that kind of record.
+
+  Scope: `monitoring.read`
+}

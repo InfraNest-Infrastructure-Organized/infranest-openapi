@@ -1,0 +1,30 @@
+meta {
+  name: Create a contact
+  type: http
+  seq: 28
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/contacts
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "first_name": "Ada",
+    "last_name": "Brandt",
+    "email": "ada@northwind.example",
+    "country": "DE"
+  }
+}
+
+docs {
+  Creates a contact you can assign to domains as registrant, admin, tech or billing contact, optionally tagged with `tag_ids`.
+
+  Scope: `domains.write`
+}

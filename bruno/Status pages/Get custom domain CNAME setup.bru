@@ -1,0 +1,25 @@
+meta {
+  name: Get custom domain CNAME setup
+  type: http
+  seq: 24
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/cname-setup
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether the page’s custom domain, or the one in `domain`, sits in a DNS zone you manage in InfraNest, whether InfraNest can create the CNAME record there for you, and whether it is already published. Includes the CNAME target to point the domain at.
+
+  Scope: `monitoring.read`
+}

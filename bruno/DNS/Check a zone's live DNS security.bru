@@ -1,0 +1,25 @@
+meta {
+  name: Check a zone’s live DNS security
+  type: http
+  seq: 30
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/security-check
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Resolves the zone’s SPF, DMARC, DKIM, MX, CAA, MTA-STS, BIMI, NS, address and DNSSEC answers from public DNS right now, with findings judged by the same rules as the stored-record advisor. Reflects what the internet answers, not what InfraNest stores.
+
+  Scope: `dns.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: List watched domains
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your watched domains, paginated with `per_page` (default 25, at most 200) and sorted with `sort` and `dir`. Filter with `search`, `tag` and flags such as `active`, `available`, `registered`, `failed`, `paused` and `in_auction`; `meta` carries counts per status.
+
+  Scope: `drop-catch.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List a monitor’s dependencies
+  type: http
+  seq: 30
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/dependencies
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The monitors this one depends on (`parents`) and the monitors that depend on it (`children`), each with its name, type, target and current status.
+
+  Scope: `monitoring.read`
+}

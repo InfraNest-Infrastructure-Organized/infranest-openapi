@@ -1,0 +1,25 @@
+meta {
+  name: List a zone’s recorded changes
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/changes
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The zone’s record changes from its last 50 operations, newest first, grouped by the operation that made each batch, each with whether it can still be undone or restored to. Also returns a merged timeline and how many days of changes your plan keeps.
+
+  Scope: `dns.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Preview monitors to add for certificates
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/fixes/monitors
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The addresses InfraNest suggests watching with an SSL monitor, the monitor each would get and the certificates involved. Also says how many more monitors your plan allows; nothing is changed.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Delete a status page group
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/component-groups/:componentGroup_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+  componentGroup_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Removes the group but keeps its components, which become ungrouped. The response says how many were ungrouped.
+
+  Scope: `monitoring.write`
+}

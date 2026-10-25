@@ -1,0 +1,25 @@
+meta {
+  name: Get what a deploy changed
+  type: http
+  seq: 40
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-events/:deployEvent_id/changes
+  body: none
+  auth: inherit
+}
+
+params:path {
+  deployEvent_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The commits and pull requests since the previous successful deploy to the same place. Returns `first: true` when there is no earlier deploy to compare with, and `unavailable: true` when GitHub could not say.
+
+  Scope: `monitoring.read`
+}

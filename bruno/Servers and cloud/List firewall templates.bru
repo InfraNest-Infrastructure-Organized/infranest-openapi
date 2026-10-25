@@ -1,0 +1,21 @@
+meta {
+  name: List firewall templates
+  type: http
+  seq: 22
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/firewall-templates
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The built-in firewall templates and the custom templates your organization has saved, with their rules.
+
+  Scope: `cloud.read`
+}

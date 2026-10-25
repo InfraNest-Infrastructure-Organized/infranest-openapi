@@ -1,0 +1,27 @@
+meta {
+  name: Plan moving records to another server
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns/address-move
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~from_server_id: 12
+  ~record_ids: 41,42
+  ~to_server_id: 14
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Shows what moving A/AAAA records from one server to another would change: each record with its new value, the records left out and why, and the monitors that would follow. Send `from_server_id` or `record_ids`, and optionally `to_server_id`; changes nothing.
+
+  Scope: `dns.read`
+}

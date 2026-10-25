@@ -1,0 +1,19 @@
+meta {
+  name: Reset a sandbox
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/sandbox/reset
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Removes everything in your sandbox organization and restores its sample zones, records, monitors, server and tags. Works only on a sandbox, with its own test token or from the app; any other organization answers 404.
+}

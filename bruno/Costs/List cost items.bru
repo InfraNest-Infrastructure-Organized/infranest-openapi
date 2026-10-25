@@ -1,0 +1,21 @@
+meta {
+  name: List cost items
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cost-items
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The recurring costs you recorded on one resource. `entity_type` is required, and `entity_id` too unless `entity_type` is `organization`, which lists costs that belong to the whole organization.
+
+  Scope: `monitoring.read`
+}

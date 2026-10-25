@@ -1,0 +1,31 @@
+meta {
+  name: Stop ignoring a failed service
+  type: http
+  seq: 40
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/ignored-units
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "unit": "snapd.service"
+  }
+}
+
+docs {
+  Lets the service named in `unit` raise alerts again on this server; if it is still failed, it counts from now. Returns the remaining ignored units.
+
+  Scope: `cloud.write`
+}

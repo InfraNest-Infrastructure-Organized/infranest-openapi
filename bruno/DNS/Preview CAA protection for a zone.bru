@@ -1,0 +1,29 @@
+meta {
+  name: Preview CAA protection for a zone
+  type: http
+  seq: 33
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/caa-protection
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~live: true
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Shows the CAA records that would be added, each of the zone’s certificates and whether it stays renewable, or why a change is refused. `live=1` also checks each record against public DNS. Changes nothing.
+
+  Scope: `dns.read`
+}

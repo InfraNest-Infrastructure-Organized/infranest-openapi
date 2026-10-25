@@ -1,0 +1,21 @@
+meta {
+  name: List deploy tokens
+  type: http
+  seq: 41
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-tokens
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your deploy tokens, newest first, with their name, creator, the monitors each token applies to, whether a signature is required and when each token was last used. Token secrets are never returned.
+
+  Scope: `monitoring.read`
+}

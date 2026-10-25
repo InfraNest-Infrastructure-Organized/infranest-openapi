@@ -1,0 +1,21 @@
+meta {
+  name: Get account credit
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/account-credit
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Money InfraNest holds for you — for example after a downgrade or a refund — which comes off your next invoice. One balance per currency, in the currency’s smallest unit; empty when you have none. Read-only.
+
+  Scope: `billing.read`
+}

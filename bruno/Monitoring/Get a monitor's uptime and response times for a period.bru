@@ -1,0 +1,32 @@
+meta {
+  name: Get a monitor’s uptime and response times for a period
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/aggregates
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~period: 7d
+  ~from: 2026-01-15T09:30:00
+  ~to: 2026-01-15T09:30:00
+  ~region: eu
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Totals for one window: `uptime_percent` (the share of the time no confirmed outage covered, the figure the app shows), `up_percent` (the share of checks that came back up), checks by outcome, p50 and p95 response time in milliseconds, and the number and minutes of unplanned incidents. Pick `period` (`24h`, `7d`, `30d` or `90d`, default `24h`) or set `from` and `to` (ISO 8601, at most 366 days apart; longer is refused with `range_too_large`); the window starts on the hour `from` falls in. Pass `region` for one probe region, where `uptime_percent` is the share of checks that were up. Response times over more than one hour or probe are averaged from hourly figures, weighted by the number of checks, so they are close rather than exact. `uptime_percent` is null when nothing was measured.
+
+  Scope: `monitoring.read`
+}

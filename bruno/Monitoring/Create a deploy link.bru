@@ -1,0 +1,29 @@
+meta {
+  name: Create a deploy link
+  type: http
+  seq: 34
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-links
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "repository": "northwind-cloud/app",
+    "target_type": "server",
+    "target_id": 1
+  }
+}
+
+docs {
+  Links deploys of a `repository` to a monitor, server or tag (`target_type` and `target_id`). `kind` chooses what counts as a deploy: `deployment` (optionally for one `environment`), `workflow` (a `workflow` file, optionally on one `branch`) or `release`; earlier deploys are imported in the background.
+
+  Scope: `monitoring.write`
+}

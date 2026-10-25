@@ -1,0 +1,21 @@
+meta {
+  name: List registrars available for catching
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/registrars/identities
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The connected registrar accounts that can register a caught domain, by name, and whether each may race for it. Makes no calls to the registrars.
+
+  Scope: `drop-catch.read`
+}

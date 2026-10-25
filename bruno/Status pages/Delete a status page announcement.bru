@@ -1,0 +1,26 @@
+meta {
+  name: Delete a status page announcement
+  type: http
+  seq: 21
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/announcements/:announcement_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+  announcement_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Removes the announcement from the page permanently.
+
+  Scope: `monitoring.write`
+}

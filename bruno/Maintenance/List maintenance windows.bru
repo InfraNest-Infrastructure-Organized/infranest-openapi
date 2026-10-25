@@ -1,0 +1,21 @@
+meta {
+  name: List maintenance windows
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  A paginated list of your maintenance windows with the monitors, servers and tags each window covers, whether each window is in effect and its current or next occurrence, plus counts in `meta`. Filter with `search`, `tag` and `status` (`active`, `scheduled`, `recurring` or `completed`), and sort with `sort` (`schedule`, `name`, `monitors` or `status`) and `dir`.
+
+  Scope: `monitoring.read`
+}

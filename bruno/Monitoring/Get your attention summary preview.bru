@@ -1,0 +1,21 @@
+meta {
+  name: Get your attention summary preview
+  type: http
+  seq: 42
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/attention-summary
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  When your next “needs you” summary for this organization is due, how it is delivered, and a preview of up to 10 items it would contain. `receives` is false when you have turned the summary off, and `available` is false when it cannot be put together right now.
+
+  Scope: `monitoring.read`
+}

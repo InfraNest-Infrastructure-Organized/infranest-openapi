@@ -1,0 +1,25 @@
+meta {
+  name: List a monitor’s incidents
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/incidents
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The monitor’s 20 most recent incidents, newest first, with their status, impact, start and end times and duration.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: List price changes for a resource
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/price-changes
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  How one resource’s price has changed over time, newest first, up to 100 entries. `entity_type` and `entity_id` are required.
+
+  Scope: `monitoring.read`
+}

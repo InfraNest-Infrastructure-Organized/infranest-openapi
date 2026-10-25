@@ -1,0 +1,21 @@
+meta {
+  name: List IP addresses
+  type: http
+  seq: 26
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-primary-ips
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The IP addresses across your cloud accounts, with the server each is attached to. Where a provider cannot list addresses directly, the list is built from your servers and misses unattached addresses; those accounts are named in `server_derived_credentials`.
+
+  Scope: `cloud.read`
+}

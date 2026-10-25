@@ -1,0 +1,31 @@
+meta {
+  name: Add a team note to an incident
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/notes
+  body: json
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "body": "Rolled back release 2026.01.15 — error rate back to normal."
+  }
+}
+
+docs {
+  Adds an internal note in `body` for your team. Notes never appear on a status page.
+
+  Scope: `monitoring.write`
+}

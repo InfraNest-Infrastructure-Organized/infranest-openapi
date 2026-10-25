@@ -1,0 +1,27 @@
+meta {
+  name: Unlink a resource from an external service
+  type: http
+  seq: 22
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/affected/:type/:resourceId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+  type: 
+  resourceId: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Removes a resource you linked to the third-party service this monitor watches. Automatically detected links cannot be removed this way.
+
+  Scope: `monitoring.write`
+}

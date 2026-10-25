@@ -1,0 +1,25 @@
+meta {
+  name: Delete a contact
+  type: http
+  seq: 31
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/contacts/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Deletes the contact from your organization.
+
+  Scope: `domains.write`
+}

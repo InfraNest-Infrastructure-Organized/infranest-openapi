@@ -1,0 +1,29 @@
+meta {
+  name: Preview restoring a zone to an earlier point
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/restore-preview
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~batch_id: 9b2c6a1e-3f7d-4a8e-9c1b-2d3e4f5a6b7c
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Shows what putting every record back the way it was just after the batch `batch_id` (required) would change. Changes nothing; answers 404 when that batch is not in the zone’s history.
+
+  Scope: `dns.read`
+}

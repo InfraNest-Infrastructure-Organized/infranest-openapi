@@ -1,0 +1,25 @@
+meta {
+  name: Get a status page
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One status page with its settings, its components with the monitor and group behind each, and counts of components, announcements and subscribers.
+
+  Scope: `monitoring.read`
+}

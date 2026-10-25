@@ -1,0 +1,21 @@
+meta {
+  name: List DNS zones
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your DNS zones, paginated with `page` and `per_page` (up to 200), each with its provider, record count, tags and delegation state. Filter with `search`, `credential`, `tag` or `status` (`active`, `stale`, `drift` for records changed at the provider, or `security`) and sort with `sort` (`zone`, `provider`, `records`, `synced`) and `dir`; `meta.counts` holds the totals.
+
+  Scope: `dns.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Export integration activity as CSV
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/integrations/:provider/activity/export
+  body: none
+  auth: inherit
+}
+
+params:path {
+  provider: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Downloads every call logged for this integration as a CSV file, newest first. Takes the same `status`, `capability`, `direction`, `credential_id` and `search` filters as the activity list.
+
+  Scope: `cloud.read`
+}

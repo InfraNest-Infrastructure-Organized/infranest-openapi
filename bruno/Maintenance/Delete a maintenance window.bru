@@ -1,0 +1,25 @@
+meta {
+  name: Delete a maintenance window
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows/:maintenanceWindow_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  maintenanceWindow_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Permanently deletes the maintenance window.
+
+  Scope: `monitoring.write`
+}

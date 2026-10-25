@@ -1,0 +1,32 @@
+meta {
+  name: Name a container
+  type: http
+  seq: 34
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/container-names
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "container_id": "3f2a9c1b7d4e",
+    "display_name": "web"
+  }
+}
+
+docs {
+  Gives one of the server’s reported containers a display name in InfraNest, identified by `container_id`. Returns the server’s full list of saved container names; each server has a cap on saved names.
+
+  Scope: `cloud.write`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Export the audit log as CSV
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/audit-logs/export
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Downloads every matching entry as a CSV file, with the same filters as the list and no paging. The export is itself recorded in the audit log.
+
+  Scope: `audit-log.read`
+}

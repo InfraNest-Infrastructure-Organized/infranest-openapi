@@ -1,0 +1,25 @@
+meta {
+  name: List what an external service affects
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/affected
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For a monitor that watches a third-party status page: the DNS zones, domains, monitors and servers of yours that depend on that service. Each has a `source` of `manual` (linked by you) or `auto` (zones and domains at the matching provider, detected by InfraNest).
+
+  Scope: `monitoring.read`
+}

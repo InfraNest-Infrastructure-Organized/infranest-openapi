@@ -1,0 +1,26 @@
+meta {
+  name: Preview applying a template
+  type: http
+  seq: 37
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-templates/:templateKey/preview/:zone_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  templateKey: 
+  zone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Shows each of the template’s records for the zone with its status (such as `add`, `overwrite` or `unchanged`), the existing value it would replace and the TTL the zone will actually get. `templateKey` is a built-in template’s slug or a custom template’s id; changes nothing.
+
+  Scope: `dns.read`
+}

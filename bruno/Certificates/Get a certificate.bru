@@ -1,0 +1,25 @@
+meta {
+  name: Get a certificate
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/:sslCertificate_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  sslCertificate_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One certificate with its domain, server, monitor, owner and tags, where it is served and its place in the renewal series. Also includes its findings and whether its files can be fetched from the provider.
+
+  Scope: `monitoring.read`
+}

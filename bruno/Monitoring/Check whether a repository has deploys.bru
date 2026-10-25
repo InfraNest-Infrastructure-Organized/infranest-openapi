@@ -1,0 +1,21 @@
+meta {
+  name: Check whether a repository has deploys
+  type: http
+  seq: 36
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-links/check
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether GitHub has any deployment for `repository`, so you can tell before linking one that never deploys. `has_deployments` is null when GitHub could not be asked.
+
+  Scope: `monitoring.read`
+}

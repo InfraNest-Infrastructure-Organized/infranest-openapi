@@ -1,0 +1,21 @@
+meta {
+  name: Download the monthly uptime report as CSV
+  type: http
+  seq: 25
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/uptime-report/export
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The same report as a CSV file, one row per monitor. Takes the same `month` and `tag` parameters, and every download is recorded in your audit log.
+
+  Scope: `monitoring.read`
+}

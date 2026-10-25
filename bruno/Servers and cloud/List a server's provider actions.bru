@@ -1,0 +1,25 @@
+meta {
+  name: List a server’s provider actions
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/provider-actions
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The recent actions the cloud provider reports for this server, asked live. Empty when the provider account’s access does not cover it; refused when the server has no linked provider account.
+
+  Scope: `cloud.read`
+}

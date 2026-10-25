@@ -1,0 +1,25 @@
+meta {
+  name: Get a domain’s audit history
+  type: http
+  seq: 25
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/history
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The 50 most recent audit-log entries for the domain and its manual cost items, newest first.
+
+  Scope: `domains.read`
+}

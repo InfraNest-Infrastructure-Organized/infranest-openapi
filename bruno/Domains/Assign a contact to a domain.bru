@@ -1,0 +1,32 @@
+meta {
+  name: Assign a contact to a domain
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/contacts
+  body: json
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "contact_id": 1,
+    "type": "admin"
+  }
+}
+
+docs {
+  Assigns one of your contacts (`contact_id`) to the domain as `registrant`, `admin`, `tech` or `billing`, replacing whoever held that role. Recorded in InfraNest only; nothing is sent to the registrar.
+
+  Scope: `domains.write`
+}

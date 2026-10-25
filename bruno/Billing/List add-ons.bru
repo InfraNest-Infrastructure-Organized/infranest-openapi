@@ -1,0 +1,21 @@
+meta {
+  name: List add-ons
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/subscription/addons
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The add-ons on offer with their prices, each marked `owned` when the organization already has it. Read-only.
+
+  Scope: `billing.read`
+}

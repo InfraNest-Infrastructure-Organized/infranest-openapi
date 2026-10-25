@@ -1,0 +1,25 @@
+meta {
+  name: Run a monitor now
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/run
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Queues an immediate check of the monitor and answers 202 straight away; the result appears in its results once the check has run. Limited by your plan’s hourly allowance of manual checks.
+
+  Scope: `monitoring.write`
+}

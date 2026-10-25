@@ -1,0 +1,32 @@
+meta {
+  name: Post an incident update
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/updates
+  body: json
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "status": "monitoring",
+    "message": "A fix is out; we are watching checkout recover."
+  }
+}
+
+docs {
+  Posts a public status update with a `status` and `message`, and moves the incident to that status (`resolved` resolves it). Status page subscribers are notified unless you send `notify_subscribers: false`; incidents imported from a third-party status page cannot be updated.
+
+  Scope: `monitoring.write`
+}

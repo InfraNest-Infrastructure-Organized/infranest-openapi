@@ -1,0 +1,25 @@
+meta {
+  name: List records in a zone
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/dns-records
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every record in the zone, ordered by type and name, with the dynamic IP source that keeps it up to date, if any. Filter by record type with `type`.
+
+  Scope: `dns.read`
+}

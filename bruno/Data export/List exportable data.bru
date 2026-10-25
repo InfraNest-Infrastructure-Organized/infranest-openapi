@@ -1,0 +1,21 @@
+meta {
+  name: List exportable data
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/export
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The kinds of data you can export and the formats available, each marked `locked` when your plan does not include it. CSV is always available; JSON and XML need a plan with advanced export.
+
+  Scope: `data.read`
+}

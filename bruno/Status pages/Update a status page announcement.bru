@@ -1,0 +1,33 @@
+meta {
+  name: Update a status page announcement
+  type: http
+  seq: 20
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/announcements/:announcement_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+  announcement_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "title": "Status page has moved",
+    "kind": "information"
+  }
+}
+
+docs {
+  Changes the announcement’s title, body, kind or display window.
+
+  Scope: `monitoring.write`
+}

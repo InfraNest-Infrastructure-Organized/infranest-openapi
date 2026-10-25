@@ -1,0 +1,25 @@
+meta {
+  name: Get what needs attention on a server
+  type: http
+  seq: 36
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/attention
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  A short summary of the server: its uptime, whether alerts are quiet and until when, and the metric trend closest to crossing its alert threshold. Fields are null when there is nothing to say.
+
+  Scope: `cloud.read`
+}

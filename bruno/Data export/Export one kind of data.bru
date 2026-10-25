@@ -1,0 +1,25 @@
+meta {
+  name: Export one kind of data
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/export/:resource
+  body: none
+  auth: inherit
+}
+
+params:path {
+  resource: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Downloads every record of one kind as a file, in `format` `csv` (default), `json` or `xml`; pass `ids[]` to export only those records. Refused when your role may not read that data or your plan does not include the resource or format.
+
+  Scope: `data.read`
+}

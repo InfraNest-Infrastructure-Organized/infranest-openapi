@@ -1,0 +1,25 @@
+meta {
+  name: List a server’s backups
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/backups
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The backups the cloud provider holds for this server, asked live. Empty when the provider account’s access does not cover it; refused when the server has no linked provider account.
+
+  Scope: `cloud.read`
+}

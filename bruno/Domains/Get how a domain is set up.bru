@@ -1,0 +1,25 @@
+meta {
+  name: Get how a domain is set up
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/setup
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Who hosts the domain’s DNS and whether its nameservers answer, its mail provider, and the servers, certificates, monitors and status pages behind its addresses. Based on the DNS zone InfraNest holds; a domain whose DNS is hosted elsewhere gets no website or email details.
+
+  Scope: `domains.read`
+}

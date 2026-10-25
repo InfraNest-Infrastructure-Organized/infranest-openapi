@@ -1,0 +1,21 @@
+meta {
+  name: List certificate fixes already applied
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/fixes/done
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The certificate recommendations already acted on, newest first: monitors and domains added from a recommendation and CAA records added to unblock a renewal, with who did it and when.
+
+  Scope: `monitoring.read`
+}

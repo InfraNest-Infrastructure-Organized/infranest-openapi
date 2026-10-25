@@ -1,0 +1,25 @@
+meta {
+  name: Stop tracking a server
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/untrack
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Hides the server from every list, cost and alert in InfraNest without touching it at the provider, where it keeps running. It no longer counts towards your plan, and tracking it again restores its history.
+
+  Scope: `cloud.write`
+}

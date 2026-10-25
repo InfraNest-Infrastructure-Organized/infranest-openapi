@@ -1,0 +1,25 @@
+meta {
+  name: Get a snapshot
+  type: http
+  seq: 30
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-snapshots/:cloudSnapshot_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudSnapshot_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One snapshot with the server it was taken from.
+
+  Scope: `cloud.read`
+}

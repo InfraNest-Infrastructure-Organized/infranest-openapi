@@ -1,0 +1,25 @@
+meta {
+  name: List status page subscribers
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/subscribers/list
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The page’s subscribers, newest first, with their channel, label, confirmation date and whether delivery is failing. Filter with `q` (searches email addresses) and `status` (`confirmed` or `pending`), and page with `per_page` (10 to 100); reading the list is recorded in your audit log, and webhook addresses are never shown in full.
+
+  Scope: `monitoring.read`
+}

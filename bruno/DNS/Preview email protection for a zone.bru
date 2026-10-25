@@ -1,0 +1,32 @@
+meta {
+  name: Preview email protection for a zone
+  type: http
+  seq: 32
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/email-protection
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~mode: protect
+  ~provider: google_workspace
+  ~live: true
+  ~dkim_target: selector1-acme-com._domainkey.contoso.onmicrosoft.com
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Shows each email record (such as SPF and DMARC) as it is and as it would be, or why a change is refused. `mode` is required: `protect` for a domain that receives mail, `no_mail` for one that sends none; `live=1` also checks against public DNS. Changes nothing.
+
+  Scope: `dns.read`
+}

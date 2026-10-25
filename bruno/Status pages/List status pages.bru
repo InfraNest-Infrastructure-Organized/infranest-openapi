@@ -1,0 +1,21 @@
+meta {
+  name: List status pages
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every status page in your organization with its component and subscriber counts, how many components are operational or degraded, which are down, and the page’s 90-day uptime.
+
+  Scope: `monitoring.read`
+}

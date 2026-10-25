@@ -1,0 +1,21 @@
+meta {
+  name: Get the outbound webhook JSON Schema
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/webhook-endpoints/schema
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The JSON Schema of the payload InfraNest sends to your webhook endpoints, for tools that type a payload from a schema. Narrow it with `events[]`; with none, it covers every event. `events` lists every event you can name.
+
+  Scope: `monitoring.read`
+}

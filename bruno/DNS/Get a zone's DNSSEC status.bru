@@ -1,0 +1,25 @@
+meta {
+  name: Get a zone’s DNSSEC status
+  type: http
+  seq: 34
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/dnssec
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Reads the zone’s DNSSEC state from its DNS provider, including the DS details to add at your registrar when signing is waiting on that step. `status` is null when the provider cannot sign the zone or its state could not be read.
+
+  Scope: `dns.read`
+}

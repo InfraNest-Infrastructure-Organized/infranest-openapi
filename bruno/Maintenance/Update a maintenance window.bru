@@ -1,0 +1,31 @@
+meta {
+  name: Update a maintenance window
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows/:maintenanceWindow_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  maintenanceWindow_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "description": "Primary database moves to PostgreSQL 17. Expect two minutes of read-only mode."
+  }
+}
+
+docs {
+  Changes the fields you send. Sending `check_ids` or `server_ids` replaces what the window covers, and an empty list clears it.
+
+  Scope: `monitoring.write`
+}

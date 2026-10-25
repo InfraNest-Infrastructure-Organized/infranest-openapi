@@ -1,0 +1,25 @@
+meta {
+  name: Get a DNS zone
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dnsZone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One zone with all its records, its provider connection, whether record changes can be pushed to the provider, its delegation and DNSSEC details, and findings such as records pointing at released addresses. Opening it may queue fresh nameserver and live-DNS checks in the background.
+
+  Scope: `dns.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List incidents and maintenance on a status page
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/other-notices
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The incidents and maintenance windows that appear on this page automatically from its monitors, from the last 90 days or still open. Read-only; edit each one on the incident or maintenance window itself.
+
+  Scope: `monitoring.read`
+}

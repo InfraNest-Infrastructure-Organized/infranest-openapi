@@ -1,0 +1,21 @@
+meta {
+  name: Get certificate coverage per domain
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/coverage
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For each of your domains, whether a certificate covers it (`covered`, `expiring`, `expired` or `uncovered`) and the best certificate that does. Superseded and dismissed certificates are left out.
+
+  Scope: `monitoring.read`
+}

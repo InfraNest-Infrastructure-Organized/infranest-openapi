@@ -1,0 +1,21 @@
+meta {
+  name: List deploy link targets
+  type: http
+  seq: 35
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-links/targets
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The monitors, servers and tags a deploy link can point at, by ID and name.
+
+  Scope: `monitoring.read`
+}

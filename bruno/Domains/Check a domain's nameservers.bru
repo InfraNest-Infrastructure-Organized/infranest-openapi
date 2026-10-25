@@ -1,0 +1,25 @@
+meta {
+  name: Check a domain’s nameservers
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/ns-health
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Checks each of the domain’s nameservers now: whether it answers on port 53 and is authoritative, whether the nameservers agree with each other, and whether DNSSEC validates. Empty when the domain has no nameservers; the result is kept for the advisor.
+
+  Scope: `domains.read`
+}

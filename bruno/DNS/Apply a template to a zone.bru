@@ -1,0 +1,30 @@
+meta {
+  name: Apply a template to a zone
+  type: http
+  seq: 38
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-templates/:templateKey/apply/:zone_id
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~dry_run: true
+}
+
+params:path {
+  templateKey: 
+  zone_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Creates or updates the template’s records in the zone and pushes each change to the DNS provider; with `overwrite=false`, records that already exist with the same type and name are left alone. `dry_run=1` returns the changes without making any. A CAA record that would block a certificate’s renewal is refused with 409 unless `confirm_caa_impact` is sent.
+
+  Scope: `dns.write`
+}

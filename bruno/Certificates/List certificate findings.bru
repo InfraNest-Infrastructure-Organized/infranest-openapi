@@ -1,0 +1,21 @@
+meta {
+  name: List certificate findings
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/findings
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Everything InfraNest found about your certificates that may need attention, from problems to recommendations, with counts per tier.
+
+  Scope: `monitoring.read`
+}

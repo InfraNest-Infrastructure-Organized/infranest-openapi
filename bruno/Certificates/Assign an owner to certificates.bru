@@ -1,0 +1,30 @@
+meta {
+  name: Assign an owner to certificates
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/owner
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "certificate_ids": [
+      1
+    ],
+    "user_id": 1
+  }
+}
+
+docs {
+  Makes the member given in `user_id` the owner of each certificate in `certificate_ids` (up to 200). Refused when that person is not a member of the organization.
+
+  Scope: `monitoring.write`
+}

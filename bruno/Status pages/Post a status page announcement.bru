@@ -1,0 +1,32 @@
+meta {
+  name: Post a status page announcement
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/announcements
+  body: json
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "title": "New status page address",
+    "body": "This page now also answers at status.northwind.example."
+  }
+}
+
+docs {
+  Publishes a notice with a `title` and `body` on the public page. `kind` is `information` or `warning`, and `show_from` and `show_until` limit when it is shown.
+
+  Scope: `monitoring.write`
+}

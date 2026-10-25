@@ -1,0 +1,21 @@
+meta {
+  name: List connected integrations
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/integrations
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Everything the organization has connected — cloud, DNS, registrar and certificate accounts, alert destinations, outbound webhooks, automation connections and calendars — each with its status and health. Also returns summary counts and the integrations your plan does not include (`locks`).
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Detach an alert channel from a monitor
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/alerts/:alertChannel_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+  alertChannel_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Stops sending this monitor’s alerts to the channel. A monitor with no channels left keeps running, but no channel receives its alerts.
+
+  Scope: `monitoring.write`
+}

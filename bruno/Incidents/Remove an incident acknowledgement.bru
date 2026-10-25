@@ -1,0 +1,25 @@
+meta {
+  name: Remove an incident acknowledgement
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/unacknowledge
+  body: none
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Clears the acknowledgement so the incident reads as unhandled again.
+
+  Scope: `monitoring.write`
+}

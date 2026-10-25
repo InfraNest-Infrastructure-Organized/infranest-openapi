@@ -1,0 +1,21 @@
+meta {
+  name: List repositories that have deployed
+  type: http
+  seq: 39
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-events/sources
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Each repository and environment that has already reported a deploy to your organization, up to 500.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Download a full data export
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/export/bundle
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  A ZIP file with a CSV and a JSON file for every kind of data your role may read, plus a `manifest.json` that lists what is included.
+
+  Scope: `data.read`
+}

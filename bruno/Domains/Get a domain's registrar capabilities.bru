@@ -1,0 +1,25 @@
+meta {
+  name: Get a domain’s registrar capabilities
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/capabilities
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Which registrar operations are available for this domain, given what its registrar and extension support, with a `reason` when something is unavailable.
+
+  Scope: `domains.read`
+}

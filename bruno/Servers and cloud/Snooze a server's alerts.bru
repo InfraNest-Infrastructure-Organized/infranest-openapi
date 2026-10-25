@@ -1,0 +1,31 @@
+meta {
+  name: Snooze a server’s alerts
+  type: http
+  seq: 37
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/snooze
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "minutes": 60
+  }
+}
+
+docs {
+  Silences the server’s alerts for `minutes` (5 to 1440) by creating a short maintenance window, and returns when it ends. Refused when your plan does not include maintenance windows.
+
+  Scope: `cloud.write`
+}

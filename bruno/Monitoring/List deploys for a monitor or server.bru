@@ -1,0 +1,21 @@
+meta {
+  name: List deploys for a monitor or server
+  type: http
+  seq: 38
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-events
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The deploys linked to one monitor (`monitor`) or server (`server`) between `from` and `to`; the window defaults to the 24 hours before `to`, which defaults to now. Also lists the repositories linked to it.
+
+  Scope: `monitoring.read`
+}

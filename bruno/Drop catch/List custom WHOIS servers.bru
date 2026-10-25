@@ -1,0 +1,21 @@
+meta {
+  name: List custom WHOIS servers
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/whois-servers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The WHOIS servers you set per extension to use instead of the default ones, sorted by extension.
+
+  Scope: `drop-catch.read`
+}

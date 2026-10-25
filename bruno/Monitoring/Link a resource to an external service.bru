@@ -1,0 +1,25 @@
+meta {
+  name: Link a resource to an external service
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/affected
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Records that one of your resources, given by `resource_type` and `resource_id`, depends on the third-party service this monitor watches. Only works on monitors that watch a third-party status page.
+
+  Scope: `monitoring.write`
+}

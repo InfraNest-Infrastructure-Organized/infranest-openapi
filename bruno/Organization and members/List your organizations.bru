@@ -1,0 +1,21 @@
+meta {
+  name: List your organizations
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every organization you are a member of, with your role and its member count. An organization that requires its own single sign-on, which this session has not used, is listed by name only.
+
+  Scope: `members.read`
+}

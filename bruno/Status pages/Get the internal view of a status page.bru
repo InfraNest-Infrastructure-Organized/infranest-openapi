@@ -1,0 +1,25 @@
+meta {
+  name: Get the internal view of a status page
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/internal
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The team-only view of the page: each component with its monitor, runbook link, regions reporting and 30 days of uptime, plus active incidents, the next maintenance and the on-call note. These internal fields are never shown on the public page, and this view needs a plan that includes private status pages.
+
+  Scope: `monitoring.read`
+}

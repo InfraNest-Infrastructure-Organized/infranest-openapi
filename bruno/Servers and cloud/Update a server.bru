@@ -1,0 +1,31 @@
+meta {
+  name: Update a server
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "office-nas-01"
+  }
+}
+
+docs {
+  Changes a server’s name, city, country or tags; only the fields you send change. A new name is sent to the cloud provider first and refused when the provider cannot rename servers, while the provider’s own facts (addresses, type, status) can only be edited on a self-managed server.
+
+  Scope: `cloud.write`
+}

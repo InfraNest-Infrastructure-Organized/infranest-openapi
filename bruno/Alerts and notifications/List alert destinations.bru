@@ -1,0 +1,21 @@
+meta {
+  name: List alert destinations
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/alert-channels
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every place the organization sends alerts, such as email, Slack or Telegram, with how many checks use each and how many alerts it missed while it refused messages. Pass `personal=1` for only your own personal destinations.
+
+  Scope: `monitoring.read`
+}

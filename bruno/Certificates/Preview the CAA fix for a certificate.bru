@@ -1,0 +1,25 @@
+meta {
+  name: Preview the CAA fix for a certificate
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/certificates/:sslCertificate_id/caa-fix
+  body: none
+  auth: inherit
+}
+
+params:path {
+  sslCertificate_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The exact CAA record that would let this certificate’s authority issue it again, the DNS zone it would go in, the CAA records already there and any other certificate it would block. Refused when the certificate’s CAA policy does not block its renewal; nothing is changed.
+
+  Scope: `monitoring.read`
+}

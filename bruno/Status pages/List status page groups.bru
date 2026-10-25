@@ -1,0 +1,25 @@
+meta {
+  name: List status page groups
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/component-groups
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The page’s component groups in display order, each with how many components it holds.
+
+  Scope: `monitoring.read`
+}

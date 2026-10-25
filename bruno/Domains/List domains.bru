@@ -1,0 +1,21 @@
+meta {
+  name: List domains
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your domains, paginated with `page` and `per_page` (up to 200), each with its tags, advisor issue count and who hosts its website and mail. Filter with `search`, `credential`, `tag`, `active`, `expiring_soon`, `autorenew_off`, `website`, `mail` or `archived` (archived domains are left out unless asked for). Registration orders that failed are not domains you hold and are left out too; pass `include_failed=1` to list them, and `meta.counts.failed` says how many there are. Sort with `sort` (`domain`, `registrar`, `expires`) and `dir`.
+
+  Scope: `domains.read`
+}

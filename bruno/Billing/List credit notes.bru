@@ -1,0 +1,21 @@
+meta {
+  name: List credit notes
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/credit-notes
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Credit notes issued against your invoices, with the invoice each one credits, its amounts (negative, in the currency’s smallest unit), how it was settled and a PDF link. Read-only.
+
+  Scope: `billing.read`
+}

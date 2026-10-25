@@ -1,0 +1,26 @@
+meta {
+  name: Remove a component from a status page
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/components/:component_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+  component_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Deletes the component from the page. The monitor behind it is not affected.
+
+  Scope: `monitoring.write`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List a domain’s contacts
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/contacts
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The contacts assigned to the domain, each with its role in `pivot.type`.
+
+  Scope: `domains.read`
+}

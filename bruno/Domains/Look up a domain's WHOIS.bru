@@ -1,0 +1,25 @@
+meta {
+  name: Look up a domain’s WHOIS
+  type: http
+  seq: 24
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/whois
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  A live WHOIS lookup for the domain. Answers 422 with a message when the lookup fails.
+
+  Scope: `domains.read`
+}

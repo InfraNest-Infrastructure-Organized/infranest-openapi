@@ -1,0 +1,21 @@
+meta {
+  name: List pending invitations
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/invitations
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Invitations that have not been accepted yet, with who sent each one and the role it grants.
+
+  Scope: `members.read`
+}

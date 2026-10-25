@@ -1,0 +1,25 @@
+meta {
+  name: Archive a domain
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/archive
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Takes the domain out of your working list while keeping it, its costs and its links; it keeps syncing and stops counting toward your plan’s domain limit. Refused with 422 while the domain is still active at a connected registrar.
+
+  Scope: `domains.write`
+}

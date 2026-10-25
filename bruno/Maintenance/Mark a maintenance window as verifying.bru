@@ -1,0 +1,25 @@
+meta {
+  name: Mark a maintenance window as verifying
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows/:maintenanceWindow_id/verifying
+  body: none
+  auth: inherit
+}
+
+params:path {
+  maintenanceWindow_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Moves a window that is in progress to `verifying`, while you check that everything works again. Refused for a window in any other state.
+
+  Scope: `monitoring.write`
+}

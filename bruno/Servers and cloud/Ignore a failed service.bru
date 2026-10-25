@@ -1,0 +1,31 @@
+meta {
+  name: Ignore a failed service
+  type: http
+  seq: 39
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/ignored-units
+  body: json
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "unit": "snapd.service"
+  }
+}
+
+docs {
+  Stops a failed system service, named in `unit`, from raising alerts on this server, without silencing other service failures. Any name is accepted; returns the server’s list of ignored units.
+
+  Scope: `cloud.write`
+}

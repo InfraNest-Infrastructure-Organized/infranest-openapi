@@ -1,0 +1,25 @@
+meta {
+  name: Reset a server’s price
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/reset-pricing
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Drops the manual price and goes back to the price last synced from the provider. Returns the server with its updated cost breakdown.
+
+  Scope: `cloud.write`
+}

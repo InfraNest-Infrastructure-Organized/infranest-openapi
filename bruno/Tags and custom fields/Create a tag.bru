@@ -1,0 +1,28 @@
+meta {
+  name: Create a tag
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/tags
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "Payments",
+    "color": "#3B82F6"
+  }
+}
+
+docs {
+  Creates a tag from a `name` (up to 50 characters) and a hex `color` such as `#ff8800`; `is_client` is optional. Refused with 422 when a tag with that name already exists.
+
+  Scope: `monitoring.write`
+}

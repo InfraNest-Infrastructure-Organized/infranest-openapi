@@ -1,0 +1,25 @@
+meta {
+  name: Get what refers to a server’s addresses
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/address-references
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The DNS records, firewall rules and monitors that name this server’s IPv4 or IPv6 address, with a total. Also lists the other servers a DNS record could be moved to, which is useful before deleting the server.
+
+  Scope: `cloud.read`
+}

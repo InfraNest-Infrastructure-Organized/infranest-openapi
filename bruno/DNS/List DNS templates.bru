@@ -1,0 +1,21 @@
+meta {
+  name: List DNS templates
+  type: http
+  seq: 36
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-templates
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The built-in DNS templates followed by your organization’s custom templates, each with its records, plus the TTL values a template can use.
+
+  Scope: `dns.read`
+}

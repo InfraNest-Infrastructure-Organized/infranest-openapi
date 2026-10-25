@@ -1,0 +1,21 @@
+meta {
+  name: List load balancers
+  type: http
+  seq: 24
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-load-balancers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every load balancer InfraNest tracks in the organization, a page at a time. Filter with `search`, `running`, `status`, `datacenter`, `tag` or `credential`, and sort with `sort` and `dir`.
+
+  Scope: `cloud.read`
+}

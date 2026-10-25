@@ -1,0 +1,71 @@
+# Spectral ruleset for the public InfraNest API description (#4707): `spectral:oas` plus a few house rules.
+#
+# Lives beside openapi.json and is published with it (https://developers.infranest.io/spectral.yaml), so the public
+# infranest-openapi repository syncs the very same file and lints every version it commits with it. In InfraNest's own
+# CI, .github/workflows/developer-site.yml runs it on the generated description. Most of what spectral:oas would find is
+# put right where the description is built (`BuildPublicApiSpec::wellFormed()`), not silenced here.
+#
+#   npx @stoplight/spectral-cli@6.15.0 lint openapi.json --ruleset spectral.yaml --fail-severity=warn
+extends: [[spectral:oas, recommended]]
+formats: [oas3]
+documentationUrl: https://developers.infranest.io/api-clients
+
+rules:
+  # A client generator names its methods after operationId: one missing is an unusable client, not a style issue.
+  operation-operationId: error
+  operation-operationId-unique: error
+  # Every path parameter declared on its operation; spectral:oas says so too, at error, kept explicit here.
+  path-params: error
+
+  infranest-kebab-case-paths:
+    description: Path segments are kebab-case; parameters are {snake_case}.
+    message: '{{property}} is not kebab-case.'
+    severity: error
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: ^(/([a-z0-9]+(-[a-z0-9]+)*|\{[a-zA-Z0-9_]+\}|\.well-known))+$
+
+  infranest-summary:
+    description: Every operation has a summary — the reference's heading and the name Postman and Bruno show.
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: summary
+      function: truthy
+
+  infranest-module:
+    description: Every operation names its reference page (x-infranest-module).
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: x-infranest-module
+      function: truthy
+
+  infranest-scope-declared:
+    description: Every operation says which token scope it needs (x-infranest-scope; null for none).
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: x-infranest-scope
+      function: defined
+
+  infranest-error-codes:
+    description: Every operation lists the error codes it can answer (x-infranest-errors).
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: x-infranest-errors
+      function: truthy
+
+overrides:
+  # A false positive: Spectral takes any object with a `type` and a `default` for a schema, and an integration's
+  # recorded answer lists its credential fields as data shaped exactly like that (`"type": "text"`, `"default": null`).
+  # The braces are percent-encoded: Spectral reads the path as a glob, where `{…}` means alternatives. Paths are relative
+  # to this file, and openapi.json sits beside it both here and in infranest-openapi; `**/` covers a copy elsewhere.
+  - files:
+      - 'openapi.json#/paths/~1api~1organizations~1%7Borganization_id%7D~1integrations~1%7Bprovider%7D/get/responses/200/content/application~1json/example'
+      - '**/openapi.json#/paths/~1api~1organizations~1%7Borganization_id%7D~1integrations~1%7Bprovider%7D/get/responses/200/content/application~1json/example'
+    rules:
+      oas3-valid-schema-example: 'off'

@@ -1,0 +1,25 @@
+meta {
+  name: Get a domain
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One domain with its full details. A domain over your plan’s domain limit is locked and cannot be opened; stale renewal pricing is refreshed in the background.
+
+  Scope: `domains.read`
+}

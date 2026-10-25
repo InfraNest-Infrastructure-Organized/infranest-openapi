@@ -1,0 +1,35 @@
+meta {
+  name: List a monitor’s check results
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/results
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~resolution: hour
+  ~from: 2026-01-15T09:30:00
+  ~to: 2026-01-15T09:30:00
+  ~status: down
+  ~region: eu
+  ~per_page: 100
+  ~page: 1
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The monitor’s check results, newest first. With `resolution=raw` (the default) each result is one check by one probe, filterable by `status`; individual results are kept for 3 days. With `resolution=hour` or `day` each row sums one hour or one day across probes: checks by outcome (`checks_up`, `checks_degraded` for slow checks, `checks_down` for failures), `up_percent` and the p50 and p95 response times, reaching back as far as your plan keeps history. Set the window with `from` and `to` (ISO 8601; default: everything kept for raw, the last 24 hours for hours, the last 30 days for days), narrow it to one probe `region`, and page with `page` and `per_page` (up to 500, default 50). A range longer than the resolution allows — 3 days raw, 31 days by hour, 366 days by day — is refused with `range_too_large`. `window` repeats the range that was applied.
+
+  Scope: `monitoring.read`
+}

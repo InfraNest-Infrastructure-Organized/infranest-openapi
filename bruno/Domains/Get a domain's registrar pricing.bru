@@ -1,0 +1,25 @@
+meta {
+  name: Get a domain’s registrar pricing
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/pricing
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The registrar’s current prices for the domain’s extension, asked live. Answers 404 when no registrar connection is linked; `pricing` is null when the registrar does not allow price lookups with your key.
+
+  Scope: `domains.read`
+}

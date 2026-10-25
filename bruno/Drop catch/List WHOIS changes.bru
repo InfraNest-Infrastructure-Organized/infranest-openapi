@@ -1,0 +1,25 @@
+meta {
+  name: List WHOIS changes
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/:watchedDomain_id/whois-changes
+  body: none
+  auth: inherit
+}
+
+params:path {
+  watchedDomain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Changes detected in the watched domain’s WHOIS record, newest first, 50 per page.
+
+  Scope: `drop-catch.read`
+}

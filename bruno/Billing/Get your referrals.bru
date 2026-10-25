@@ -1,0 +1,21 @@
+meta {
+  name: Get your referrals
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/referrals
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your referral link, what it has earned and how much discount is left, and the workspaces that signed up with it — names partly hidden, with where each referral has got to. `enabled` is false when the referral programme is switched off. Read-only.
+
+  Scope: `billing.read`
+}

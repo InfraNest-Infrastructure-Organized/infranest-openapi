@@ -1,0 +1,21 @@
+meta {
+  name: Undo a DNS change
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-changes/undo
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Undoes one recorded change (`change_id`) or every change in a batch (`batch_id`), even across zones, pushing each one to the DNS provider. A change whose record has changed since, or that a dynamic IP keeps up to date, is skipped with its reason; answers 404 when nothing matches.
+
+  Scope: `dns.write`
+}

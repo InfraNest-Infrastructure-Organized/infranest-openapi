@@ -1,0 +1,21 @@
+meta {
+  name: List networks
+  type: http
+  seq: 27
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-networks
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every private network InfraNest tracks in the organization, ordered by name, with its tags. Not paginated.
+
+  Scope: `cloud.read`
+}

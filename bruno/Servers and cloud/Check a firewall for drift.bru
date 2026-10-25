@@ -1,0 +1,25 @@
+meta {
+  name: Check a firewall for drift
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-firewalls/:cloudFirewall_id/drift
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudFirewall_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Compares the firewall’s rules in InfraNest with the rules live at the cloud provider and returns `drifted` with the provider’s rules. When the provider cannot be asked, `drifted` is false and `provider_rules` is null.
+
+  Scope: `cloud.read`
+}

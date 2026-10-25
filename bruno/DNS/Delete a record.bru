@@ -1,0 +1,31 @@
+meta {
+  name: Delete a record
+  type: http
+  seq: 22
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dns-zones/:dnsZone_id/dns-records/:record_id
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~confirm_caa_impact: true
+  ~dry_run: true
+}
+
+params:path {
+  dnsZone_id: 
+  record_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Deletes the record at the DNS provider first, then in InfraNest; if the provider refuses, the record is kept and 502 is returned. Supports `dry_run=1`, and `confirm_caa_impact=1` after a 409 for an apex CAA record whose removal would block a certificate’s renewal.
+
+  Scope: `dns.write`
+}

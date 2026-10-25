@@ -1,0 +1,30 @@
+meta {
+  name: Create a cost item
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cost-items
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "entity_type": "organization",
+    "label": "Uptime SMS credits",
+    "amount": 9,
+    "currency": "EUR"
+  }
+}
+
+docs {
+  Records a recurring cost with a `label`, `amount`, `currency` and optional `period` (default monthly) on a resource (`entity_type`, `entity_id`), or on the whole organization with `entity_type` `organization`.
+
+  Scope: `monitoring.write`
+}

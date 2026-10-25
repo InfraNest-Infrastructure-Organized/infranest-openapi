@@ -1,0 +1,25 @@
+meta {
+  name: Get a domain’s advisor findings
+  type: http
+  seq: 22
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/domains/:domain_id/advisor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  domain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The current advisor findings for one domain, taking into account what its registrar supports.
+
+  Scope: `domains.read`
+}

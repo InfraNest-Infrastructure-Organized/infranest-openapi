@@ -1,0 +1,25 @@
+meta {
+  name: Track an address again
+  type: http
+  seq: 49
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/endpoints/:endpointId/retrack
+  body: none
+  auth: inherit
+}
+
+params:path {
+  endpointId: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Brings an untracked address back so it is checked and shown again. Its certificates and monitor were never changed.
+
+  Scope: `cloud.write`
+}

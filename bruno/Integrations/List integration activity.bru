@@ -1,0 +1,25 @@
+meta {
+  name: List integration activity
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/integrations/:provider/activity
+  body: none
+  auth: inherit
+}
+
+params:path {
+  provider: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The calls made to and received from this integration, newest first, paginated with `per_page` (5 to 100, default 20). Filter with `status` (`success` or `error`), `capability`, `direction`, `credential_id` and `search`; `meta` lists the accounts and filter values available.
+
+  Scope: `cloud.read`
+}

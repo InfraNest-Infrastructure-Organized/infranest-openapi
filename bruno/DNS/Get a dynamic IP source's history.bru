@@ -1,0 +1,25 @@
+meta {
+  name: Get a dynamic IP source’s history
+  type: http
+  seq: 26
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id/history
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Address changes, what each one updated or failed to update, and changes to the source’s settings, newest first. Drawn from your audit log, so it ages out with your plan’s audit retention.
+
+  Scope: `monitoring.read`
+}

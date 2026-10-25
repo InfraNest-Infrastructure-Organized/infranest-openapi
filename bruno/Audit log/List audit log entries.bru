@@ -1,0 +1,21 @@
+meta {
+  name: List audit log entries
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/audit-logs
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Who changed what in the organization, newest first. Filter with the dates `from` and `to`, `action` (matches part of the name), `resource_type` and `token_id` for changes made through one API token; page with `per_page` (default 25, at most 100) and `page`.
+
+  Scope: `audit-log.read`
+}

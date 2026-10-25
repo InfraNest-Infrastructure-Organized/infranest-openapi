@@ -1,0 +1,21 @@
+meta {
+  name: Get the monthly uptime report
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/uptime-report
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Uptime per monitor for one calendar month, with downtime, incidents, longest outage and the basis of each figure. Pass `month` as `YYYY-MM` (default: the last full month) and `tag` to limit it to monitors with that tag.
+
+  Scope: `monitoring.read`
+}

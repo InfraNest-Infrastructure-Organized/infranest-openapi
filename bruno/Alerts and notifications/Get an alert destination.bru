@@ -1,0 +1,25 @@
+meta {
+  name: Get an alert destination
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/alert-channels/:alertChannel_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  alertChannel_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One alert destination with the checks that send to it.
+
+  Scope: `monitoring.read`
+}

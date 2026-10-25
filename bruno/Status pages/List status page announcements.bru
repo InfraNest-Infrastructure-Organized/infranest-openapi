@@ -1,0 +1,25 @@
+meta {
+  name: List status page announcements
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/status-pages/:statusPage_id/announcements
+  body: none
+  auth: inherit
+}
+
+params:path {
+  statusPage_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The announcements you posted on this page, newest first, including ones scheduled for later or no longer shown.
+
+  Scope: `monitoring.read`
+}
