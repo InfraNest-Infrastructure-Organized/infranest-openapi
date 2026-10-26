@@ -113,6 +113,7 @@ InfraNest and reaches this repository from there.
 - [Sandbox](https://developers.infranest.io/sandbox): a free organization to try everything safely
 - [Use with Postman, Bruno or Insomnia](https://developers.infranest.io/api-clients)
 - [MCP server](https://developers.infranest.io/ai-assistants): Claude, ChatGPT, Cursor and VS Code read your account
+  ([infranest-mcp](https://github.com/InfraNest-Infrastructure-Organized/infranest-mcp))
 - [infranest-examples](https://github.com/InfraNest-Infrastructure-Organized/infranest-examples): ready-to-run scripts
 - [infranest-action](https://github.com/InfraNest-Infrastructure-Organized/infranest-action): InfraNest in a GitHub Actions workflow
 - [Service status](https://status.infranest.io)
