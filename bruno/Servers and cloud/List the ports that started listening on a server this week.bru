@@ -1,0 +1,25 @@
+meta {
+  name: List the ports that started listening on a server this week
+  type: http
+  seq: 25
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/new-ports
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Each port the server's agent saw start listening in the last seven days, measured against the agent's first reading of what listens there: a port that was already listening when the agent began is never new, and one that stopped and came back within the week is not either. Ports bound to loopback only are left out. Each has `first_seen_at`, `exposure` — how far it reaches, from its bind address and the firewall rules applied to the server: `everyone`, `no_firewall` (a public address with no firewall InfraNest sees in front of it), `limited`, `blocked`, `private` or `unknown` (a firewall is on whose rules are not known) — `level` (`critical`, `warning` or `info`), and `around`: deploys of a repository linked to the server, service units that started and restarts from 15 minutes before it was first seen to 2 minutes after. `guess` is the service usually found on a well-known port, never the program the agent saw. `decided` is set when someone marked the port as expected or set it aside; you make that decision with the attention decisions endpoint and the port's `key`.
+
+  Scope: `cloud.read`
+}

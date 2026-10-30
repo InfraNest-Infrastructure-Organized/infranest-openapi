@@ -27,7 +27,7 @@ body:json {
 }
 
 docs {
-  Schedules maintenance for the monitors in `check_ids` and servers in `server_ids`; a window with no monitors applies to every monitor. A one-time window needs `starts_at` and `ends_at`, a `daily` or `weekly` one needs `start_time` and `duration_minutes`, and alerts are suppressed during it unless `suppress_alerts` is false. Subscribers of the affected status pages are told about the new window.
+  Schedules maintenance for the monitors in `check_ids` and servers in `server_ids`; a window with no monitors applies to every monitor. A one-time window needs `starts_at` and `ends_at`, a `daily` or `weekly` one needs `start_time` and `duration_minutes`, and alerts are suppressed during it unless `suppress_alerts` is false. Status pages and their subscribers see only `public_notice`, the text written for the public, and only on the pages whose monitors the window covers, from a week before a one-time window starts until it ends. Send it empty or null to keep the window internal. Leave it out and the window stays internal too, unless your workspace posts drafted status updates without asking (`auto_post` in `GET …/incident-status-rule`): then it carries the notice drafted from what it covers, the one `GET …/maintenance-windows/notice-draft` returns, and the response shows it in `public_notice`. The name and description are never published.
 
   Scope: `monitoring.write`
 }

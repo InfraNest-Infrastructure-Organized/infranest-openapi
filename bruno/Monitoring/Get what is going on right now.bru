@@ -1,0 +1,25 @@
+meta {
+  name: Get what is going on right now
+  type: http
+  seq: 32
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring/situation
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~subject: monitor:12
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One answer for the top of a monitoring page: `state` is `down`, `degraded`, `maintenance`, `recovered` or `clear`, in that order of precedence. `problems` groups what is wrong by root cause, cause first: a server and the monitors on it are one problem, with the server as `cause` and the monitors in `affected`. A problem that fails from only some locations carries `regional`, and is degraded rather than down. Each problem also says what it breaks: `why` is why its first failing monitor fails (the monitor `type`, the reason `code` and `params`, else the probe’s `message`), `locations` names the probe locations its monitors fail from right now, `status_pages` lists your status pages that show one of its monitors, with those `components`, and `long_standing` is true once it has been open for more than 7 days. Anything in a running maintenance window, silenced, or held back because its parent is down is not a problem; `maintenance` lists the windows and what they mute. For an hour after an incident closes, `recovered` says what it was and how long it lasted; after that it moves to `last_problem`. `provider_outages` lists the providers you watch with a third-party status monitor that report a problem right now, with the monitors that sit behind each one: by a DNS zone or a proxied record at that provider, a server there, or what you linked to the status monitor yourself (`via` is `dns`, `proxy`, `server` or `linked`). A provider you run on but do not watch is listed too, with `subscription` null, while it has an open incident that is a major outage or that names a region one of your servers is in there, and only when something of yours sits behind it. A server is listed only when it is in a region the provider reports failing; when the provider names no region, every server you have there is listed and `regions_unnamed` is true. Those monitors, and the status monitor itself, are listed there rather than in `problems`; if any of them fail, the state is `degraded`, never `down`. Each provider outage carries `service_id` and `incident_keys`, the provider’s own ids for the incidents it is made of. An incident you said does not affect you is left out until the provider closes it, and an incident that touches only components you stopped following is left out for good; the monitors behind either are then ordinary monitors again, listed in `problems` when they fail and alerting on their own. `provider_quieted` lists both, so they can be taken back: `incidents` with who said so and when, and `unfollowed` with the component and its provider. Pass `subject` as `monitor:{id}`, `server:{id}` or `incident:{id}` to narrow it to one thing. Server causes need a Cloud scope.
+
+  Scope: `monitoring.read`
+}

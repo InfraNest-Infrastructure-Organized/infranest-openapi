@@ -1,0 +1,29 @@
+meta {
+  name: Get a monitor on one time axis
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/timeline
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~period: 7d
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For `period` `24h` or `7d` (hourly buckets) or `30d` or `90d` (daily): the bucket starts, an `overall` status per bucket (coloured by confirmed downtime, or `planned` when the only downtime in it was planned maintenance) and `overall_uptime` (the share of the period no confirmed, unplanned incident covered, the figure the app shows), a `lanes` entry per location with its statuses and `uptime` (the share of its checks that came back up), the type's `main` lane (`response` with p50/p95 in milliseconds for HTTP, API, keyword, port, ping and redirect monitors, plus a `summary` of the period's p50 and p95 weighted by the number of checks; `days_left` for SSL; null otherwise), `regions` (for response monitors, the same p50/p95 per location), `breakdown` (for HTTP, API and keyword monitors, where the time goes per location: the period's median `dns`, `connect`, `tls`, `server` and `download` time in milliseconds, with the number of `checks` behind them; empty until your monitor has been checked by a location that measures them), `events` on the same axis (deploys, changes to what the monitor watches, its incidents, its maintenance), `deploy_shift` for response monitors — what the newest successful deploy in the period did to response time per location: the `deploy`, the `minutes` compared on each side (up to an hour, shorter when the deploy is younger or followed another one sooner; null under 15 minutes or without a deploy), the `before` and `after` windows, and per location the `checks`, median (`p50`) and `p95` on each side with the `change` (`slower`, `faster` or `same` — a move of at least a quarter and 20 ms for the median, 50 ms for p95 — or `insufficient` under 10 checks a side) and its `percent` — `upcoming_maintenance` that will mute it in the next 30 days, and `provider_maintenance`: the planned maintenance a provider published on its status page that this monitor will see in the next 14 days — on a monitor that watches a third-party status page, maintenance on the components it follows; on any other, maintenance at the providers it sits behind — each with its `id`, `title`, `status` (`scheduled` or `in_progress`), `starts_at` and `ends_at` (null where the provider gave none), `url`, the `components` it names, the `subscription` that follows it, how many `monitors` silencing it would cover, whether it is `silenceable` (it has a start and an end) and `silenced_window_id` once you silenced it. A monitor that watches a third-party status page and follows up to 12 of its components also carries `components`: one lane per followed component, with its `id`, `name`, the worst status it had in each bucket (null before its history begins) and its `uptime`.
+
+  Scope: `monitoring.read`
+}

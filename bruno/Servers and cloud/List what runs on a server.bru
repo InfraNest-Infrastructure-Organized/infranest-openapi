@@ -1,0 +1,25 @@
+meta {
+  name: List what runs on a server
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/workloads
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The agent's processes, systemd services and timers, and containers, as workloads: processes attached to the service or container the agent says they run under (`attributed` is `cgroup`), or, where it did not say, grouped by command and attached to the service they are named after (`attributed` is `name`); timers carry `last_run_at` and `next_run_at`. Each with memory, CPU where known, restarts in the last 24 hours (`restarts_24h`) and the last 7 days (`restarts_7d`; when `restarts_7d_capped` is true the count reached the 100 InfraNest keeps, so read it as "at least"), a 7-day hourly memory `trend` (oldest first, null where nothing was sampled) and `observations`: `failed`, `restart_loop`, `memory_leak` (grows and resets on restart) or `no_heartbeat` (a scheduled job of yours that no heartbeat monitor watches), each with a `certainty`. Problems come first. Needs the server's agent.
+
+  Scope: `cloud.read`
+}

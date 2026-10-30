@@ -1,0 +1,31 @@
+meta {
+  name: Keep a DNS record up to date with a source
+  type: http
+  seq: 33
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id/targets
+  body: json
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "dns_record_id": 89
+  }
+}
+
+docs {
+  Attaches an existing A or AAAA record (`dns_record_id`), or creates one (`create`: `dns_zone_id`, `name`, `family` `v4` or `v6`), and sets it to the source’s current address. From then on every address change updates it. Firewall rules are attached in the app.
+
+  Scope: `monitoring.write`
+}

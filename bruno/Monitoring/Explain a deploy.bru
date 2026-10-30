@@ -1,0 +1,25 @@
+meta {
+  name: Explain a deploy
+  type: http
+  seq: 56
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-events/:deployEvent_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  deployEvent_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One deploy and what followed it. `effects` lists what changed in the `window` minutes after it (30, 60, 240 or 1440; default 60) against as long before it, each line with its `source`: the agent (CPU, memory, services that restarted by themselves) or your monitors (p95 response time and the share of failed checks, per location, from at least 10 checks a side). `verification` is the stored verdict on the hour after the deploy, as in the deploy list; with the default window the lines for monitors are drawn from it. `servers` says, per linked server, which version it runs when your pipeline reported it through the deploy hook after the deploy began (`reported_current` for this deploy's commit or tag, `reported_other` with the `version` it still runs — reported, so a fact), and otherwise whether its agent saw something start with the deploy (`restarted`), saw nothing start (`not_restarted`, inferred), or cannot tell; `partial_rollout` is true when some got it and some did not, `partial_reported` when that comes from reported versions, and `rollout_inferred` when any line is inferred from restarts. `expected` is who marked the deploy's side effects as intended, and when (null until someone did): such a deploy is no longer named as the likely cause of the slowdowns and resource changes it explains. `redeploy` says whether the previous version can be redeployed from the page (`state` `available`, or why not: `not_allowed` until a link for these deploys allows it, `no_app`, `no_previous`, `release`, `not_github`), how (`rerun` of the previous workflow run, or a new GitHub `deployment`), the `previous` deploy, a `github_url` to do it by hand, and the `last` redeploy started from the page. `changes` lists the pull requests in it, each with a `suspicion` level (`likely`, `possible` or `unrelated`) and the reason, when something changed after the deploy.
+
+  Scope: `monitoring.read`
+}

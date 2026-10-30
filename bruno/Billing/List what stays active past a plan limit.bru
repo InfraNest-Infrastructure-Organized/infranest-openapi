@@ -1,0 +1,21 @@
+meta {
+  name: List what stays active past a plan limit
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/plan-keep
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every kind of item (domains, DNS zones, servers, monitors, cloud volumes, firewalls, load balancers, networks) the organization has more of than its plan includes, with each item, whether it was chosen to stay active (`kept`) and whether it is past the limit (`locks`). Kinds within their limit are left out. Read-only.
+
+  Scope: `billing.read`
+}

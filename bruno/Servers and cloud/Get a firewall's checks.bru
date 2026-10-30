@@ -1,0 +1,25 @@
+meta {
+  name: Get a firewall’s checks
+  type: http
+  seq: 74
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-firewalls/:cloudFirewall_id/advisor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudFirewall_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether the firewall is applied to any server, for providers where a firewall is applied to servers, and — where the agent reads what listens on those servers — whether a rule is open for nothing. Each check has a `status` and the evidence behind it. `rules` lists each inbound rule with its `verdict` across the servers it applies to (`in_use`, `open_for_nothing`, `unclear`, `any_port` or `rule_only`) and each server’s own answer.
+
+  Scope: `cloud.read`
+}

@@ -1,7 +1,7 @@
 meta {
   name: Get a server’s provider metrics
   type: http
-  seq: 9
+  seq: 15
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  CPU, disk and network figures asked live from the cloud provider. Pick the figures with `types` (default `cpu,disk,network`) and set the window with `start`, `end` and `step` in seconds (default: the last hour at 60 seconds); refused when the server has no linked provider account.
+  CPU, disk and network figures asked live from the cloud provider. Pick the figures with `types` (default `cpu,disk,network`; `memory` and `filesystem` add memory and root disk space in bytes where the provider reports them) and set the window with `start`, `end` and `step` in seconds (default: the last hour at 60 seconds); refused when the server has no linked provider account. For a server created within the last hour whose provider has no readings yet, the series are empty and `no_data_yet` is `true`.
 
   Scope: `cloud.read`
 }

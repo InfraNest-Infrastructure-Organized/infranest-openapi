@@ -20,7 +20,7 @@ headers {
 }
 
 docs {
-  One connected account of an integration, whatever kind it is, with its status and health. Returns 404 when the account does not exist or does not belong to this integration and organization.
+  One connected account of an integration, whatever kind it is, with its status and health. A provider account also carries `provider_status`, the same as in the list of integrations. Returns 404 when the account does not exist or does not belong to this integration and organization.
 
   Scope: `cloud.read`
 }

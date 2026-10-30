@@ -1,0 +1,25 @@
+meta {
+  name: Get what a server listens on and what its firewalls let in
+  type: http
+  seq: 24
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/ports
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every port the server listens on, as its agent read it, and every port its firewall rules open, each with a `verdict`: `open_for_nothing` (a rule opens it and nothing listens), `only_private_peers` (open to everyone and only private addresses connect), `no_rule` (listening on every address with no firewall in front, where it should not be public), `exposed` (a database, Remote Desktop or SSH open to everyone), `expected`, `local` (loopback only), `unclear` (nothing listens on the host but that cannot prove it unused — containers, or a cut-short reading) or `rule_only` (no reading to judge with). `basis` is `agent` when a reading from the last day was judged and `rules` when only the rules are known; `reading.state` says why (`no_agent`, `too_old`, `off`, `failed`, `pending`, `stale` or `ok`). Peer counts are counts of distinct addresses by class, never the addresses. `guess` is the service usually found on a well-known port: a guess, never the program the agent saw. `new` is true for a port that started listening in the last seven days, after the agent's first reading; `listened_before_at` is set when a port came back after stopping within the week.
+
+  Scope: `cloud.read`
+}

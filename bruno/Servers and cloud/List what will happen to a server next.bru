@@ -1,0 +1,25 @@
+meta {
+  name: List what will happen to a server next
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/coming-up
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  By date: disks forecast to fill (per mount), memory, CPU or load reaching its alert threshold at the current trend, scheduled reboots, certificates it serves renewing or expiring, Ubuntu Pro lapsing and the operating system leaving support. Forecasts without an honest fit and operating systems without a known support date are left out.
+
+  Scope: `cloud.read`
+}

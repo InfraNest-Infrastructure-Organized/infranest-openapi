@@ -1,0 +1,21 @@
+meta {
+  name: Get drop-catch results
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/drop-catch/results
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  How your watches ended over a window set with `days` (`30`, `90`, `365` or `all`; default `90`): counts of names caught, renewed by their owner, sent to auction and lost, why each was lost, what the catches cost, and one row per outcome, newest first.
+
+  Scope: `drop-catch.read`
+}

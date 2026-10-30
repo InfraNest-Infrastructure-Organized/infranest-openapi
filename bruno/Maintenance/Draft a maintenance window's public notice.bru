@@ -1,0 +1,21 @@
+meta {
+  name: Draft a maintenance window’s public notice
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows/notice-draft
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The public notice a window covering the monitors in `check_ids` and the servers in `server_ids` would carry, written in your workspace’s language, and the status `pages` (with their `components`) it would appear on. With neither, the window covers every monitor, so every status page. `notice` is null when the window would appear on no status page. Nothing is saved: put the text in the window’s `public_notice` to publish it.
+
+  Scope: `monitoring.read`
+}

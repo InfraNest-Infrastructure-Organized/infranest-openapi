@@ -1,0 +1,21 @@
+meta {
+  name: Suggest external services you depend on
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/external-service-suggestions
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The third-party services your own records say you depend on and you do not follow yet: your DNS zones and their MX, SPF, CNAME and verification TXT records, your connected integrations, your servers, your registered domains and the issuers of your certificates. Nothing is looked up and nothing is stored; each answer is worked out when you ask. Each suggestion has its `reasons` (the `signal` — `mx`, `spf`, `cname`, `txt`, `zone`, `integration`, `server`, `registrar` or `issuer` — and the record or resource it came from), whether InfraNest can read its status (`readable`), the catalogue entry to follow (`external_service_id`, null when the page is not in your catalogue yet: add it by its `status_url`), the components to follow (`component_ids`) and the resources of yours to link (`links`). A reason drawn from DNS records, a registration or an integration is shown only when you may read DNS, domains or integrations. `dismissed` lists the keys you dismissed (an advisor dismissal of type `external_service`, check `suggested`).
+
+  Scope: `monitoring.read`
+}

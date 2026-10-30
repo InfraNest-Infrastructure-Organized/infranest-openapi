@@ -1,7 +1,7 @@
 meta {
   name: List snapshots
   type: http
-  seq: 29
+  seq: 50
 }
 
 get {
@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Every server snapshot InfraNest tracks in the organization, a page at a time, with the server it belongs to. Filter with `server_id`, `status`, `credential` or `search`, and sort with `sort` and `dir`.
+  Every snapshot InfraNest tracks in the organization, a page at a time: of a server (`kind: server`, with the server it belongs to) or of a volume (`kind: volume`, with the volume, where the provider lists them). Filter with `server_id`, `volume_id`, `status`, `credential` or `search`, and sort with `sort` and `dir`.
 
   Scope: `cloud.read`
 }

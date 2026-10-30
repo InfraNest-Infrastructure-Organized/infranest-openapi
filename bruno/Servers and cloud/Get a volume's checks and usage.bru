@@ -1,0 +1,25 @@
+meta {
+  name: Get a volume’s checks and usage
+  type: http
+  seq: 73
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-volumes/:cloudVolume_id/advisor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudVolume_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether the volume is attached to a server, and — when the agent runs on that server — how full it is and when it will be full at its current rate, by the mount point the volume is at. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. `usage` is null when no agent reports the volume.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Get an incident’s drafted summary
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/write-up
+  body: none
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The incident’s summary as InfraNest drafts it from what it recorded, in Markdown: what was down and for how long, what else it affected, the first failure, the alert, the acknowledgement and the recovery, the likely cause and the changes just before it, and what it was if someone said so. Written in `locale` (`en`, `nl`, `de` or `fr`; your own language by default), with times in your time zone. `summary` is the summary saved on the incident, or null; a monthly client report uses the saved one, or this draft.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Suggest what to link to an external service
+  type: http
+  seq: 28
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/link-suggestions
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For a monitor that watches a third-party status page: your DNS zones, domains, servers and monitors that your own records tie to that service and that are not linked to it yet, each with the `reason` it was found by. A status page component is suggested only when the monitor that feeds it is already linked to the service or suggested here, never because of its name; its `reason` has `signal` `component`, the component as `subject` and that monitor as `detail`. Link one with the link endpoint above. Empty for a service InfraNest does not recognise and nothing of yours is linked to.
+
+  Scope: `monitoring.read`
+}

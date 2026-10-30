@@ -1,0 +1,30 @@
+meta {
+  name: Compare a server's workloads with a week earlier
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/workload-change
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~from: 2026-01-15T09:30:00
+  ~to: 2026-01-15T09:30:00
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Each workload's average memory (`memory_bytes`) and CPU (`cpu_percent`, the share of the whole machine) between `from` and `to` (ISO 8601; default the last 24 hours, at most 8 days), as `now`, and over the same hours a week earlier (`compared_with`), as `then`. Read from the hourly samples kept for 15 days, so a window that starts more than 8 days ago has nothing to compare with. A side is null when the workload was not sampled in that window; CPU is null for a service or container whose processes your agent did not place. Workloads are services, containers and the heaviest process groups, each with its `kind`, `key` and display `name`. A longer window is refused with `range_too_large`. Needs the server's agent.
+
+  Scope: `cloud.read`
+}

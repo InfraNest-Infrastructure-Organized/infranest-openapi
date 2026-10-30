@@ -1,0 +1,21 @@
+meta {
+  name: Preview what a plan change would lock
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/subscription/impact
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What changes for this organization if it moves to another plan: the items over a limit that would be locked (with the first few named), the counts that stay but cannot grow, monitors that would check less often, and the features it would lose. Pass `plan_id` for a plan change, or leave it out to preview where the organization lands when its subscription ends. `lines` words the same changes in `locale` (en, nl, de or fr). Read-only; empty when nothing changes.
+
+  Scope: `billing.read`
+}

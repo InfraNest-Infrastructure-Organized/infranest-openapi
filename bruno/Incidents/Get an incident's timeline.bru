@@ -1,7 +1,7 @@
 meta {
   name: Get an incident’s timeline
   type: http
-  seq: 3
+  seq: 4
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  The incident’s public status updates and internal team notes, plus the alert channels that were notified, deploys shortly before it began, who PagerDuty is paging, notes from PagerDuty and tickets opened for it.
+  The incident’s public status updates and internal team notes, plus the alert channels that were notified, deploys shortly before it began, who PagerDuty is paging, notes from PagerDuty and tickets opened for it. An update with `posted_automatically` was posted by InfraNest from the incident’s draft, because your workspace lets drafts post without asking. `status_draft` is the status page update this incident would post, ready for you to send with `POST …/updates`: `kind` is `opened` (the outage is real by your rule in `GET …/incident-status-rule` and nothing has been posted about it yet) or `resolved` (it recovered after an update was posted, and nobody has said it is over). It carries the `status` and `message` to send, the status `pages` and `components` it names, how long it has been down (`down_minutes`), from how many locations it was seen down (`locations_down` of `locations_checked`, null when the monitor has no per-location results) and whether your workspace posts it without asking (`auto_post`). `targets` lists where it is posted: once per status page it names, on an incident that page shows (`incident_id`, the `page_ids` showing it, and `notify_page_ids` when only some of those pages’ subscribers are told, because another update already reached the rest). For an outage across several monitors on different status pages, that is more than this incident. It is null for a blip, for an incident on no status page, for planned work and for a monitor behind a provider that reports its own outage.
 
   Scope: `monitoring.read`
 }

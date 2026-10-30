@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  A paginated list of your monitors’ incidents with their monitor, status, impact, latest update and who acknowledged each one, plus counts in `meta`. `period` is `24h`, `7d` (default), `30d` or `all`; filter with `status` (`open`, `acked` or `resolved`) and `search`, or pass `incident` to fetch a single incident whatever its age.
+  A paginated list of your monitors’ incidents with their monitor, status, impact, latest update and who acknowledged each one, and `affected`: how many monitors, servers and status pages it took down, counted across the incidents grouped with it. Counts are in `meta`. `period` is `24h`, `7d` (default), `30d` or `all`; filter with `status` (`open`, `acked` or `resolved`) and `search`, or pass `incident` to fetch a single incident whatever its age.
 
   Scope: `monitoring.read`
 }

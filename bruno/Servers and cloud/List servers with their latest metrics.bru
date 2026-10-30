@@ -1,7 +1,7 @@
 meta {
   name: List servers with their latest metrics
   type: http
-  seq: 31
+  seq: 52
 }
 
 get {
@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Every server in the organization with its latest CPU, memory, disk, load and network readings, its alert-rule counts and whether it is breaching, a page at a time. Monitored servers come first; filter with `search`, `credential`, `tag` or `status` (for example `breaching`, `norules`, `notreporting`, `monitored`).
+  Every server in the organization with its latest CPU, memory, disk, load and network readings, its alert-rule counts and whether it is breaching, and `roles`: what each server is (see the server’s `role`), a page at a time. `normal_now` gives, for CPU, memory and load, the range the server normally sits in at this hour of the week (`low`, `typical`, `high`: its 10th, 50th and 90th percentile, and the `weeks` behind it); it is null until four weeks are learned, unless the range is borrowed from a peer named in `borrowed_from`. Monitored servers come first; filter with `search`, `credential`, `tag` or `status` (for example `breaching`, `norules`, `notreporting`, `monitored`).
 
   Scope: `cloud.read`
 }

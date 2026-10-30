@@ -1,0 +1,21 @@
+meta {
+  name: List monitors with their locations, 30 days and alert reach
+  type: http
+  seq: 38
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring/board
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every monitor except third-party status monitors, one row each, by name: its `state` and `since` when it last changed; `group`, the key it falls under by domain (`domain:example.nl`, else `server:{id}`, else `other`) and by server (`server:{id}` or `other`, with `server_name`); `locations`, the newest result from each probe location in the last 30 minutes; `bars`, its last 30 days, each with its uptime and `s`, the day as the monitor’s own page draws it (`up`, `degraded`, `down`, `planned`, or null with nothing measured); `uptime` over them; `hours`, its last 24 hours the same way, oldest first, the last one the hour in progress; `spark`, its median response per hour over the last 12 hours (null for an hour with none); `ms`, the newest response time if it was up; `regional`, true when it fails from some locations and not from others right now; `flapping`, true while it is in an unstable period; `cause`, for a monitor that is down or degraded, the server that took it down when that server is in trouble itself (an open server incident, or not running), otherwise null; and `alerts`: `state` (`ok`, `nobody` or `failing`), the alert `channels` by name and the `people` who take the status email. Answers are up to a minute old.
+
+  Scope: `monitoring.read`
+}

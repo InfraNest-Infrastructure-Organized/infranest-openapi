@@ -1,0 +1,26 @@
+meta {
+  name: Get the map of what reaches what
+  type: http
+  seq: 34
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring/map
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~hours: 6
+  ~incident: 91
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your monitoring as a map, built only from what you already have in InfraNest. `nodes` are the visitors, every address a monitor watches, the load balancers and servers those addresses reach, and the servers they depend on; each has a `column` (0 visitors to 4 data), a `route` to its page and its `facts` (the monitors on an address, the firewalls applied to a server, how many of a load balancer’s targets your provider reports healthy). `edges` say how each link is known in `via`: `dns` (an A/AAAA record in your zones, or one CNAME inside them), `ip` (the monitor watches the address itself), `monitor` (the monitor’s server link), `load_balancer` (a target) or `agent` (connections the agent saw repeatedly, with their `ports`). Nothing is matched by name. Colours come from the situation: `problems` is the same list as the situation’s, and `paths` lists each broken path from the visitors to its cause. `replay.frames` gives the map at each moment of the window — `states` per node, the `causes`, the `broken` edges by index, and the edges that did not exist at that moment in `absent` — and `replay.events` the failures, recoveries and changes in it. A past moment is drawn as it was: `edges` also holds the links the window had that are gone now (a DNS record since moved, a server since taken out of a load balancer), and a node only such a link reaches carries `past: true`. Links are kept for 14 days from `replay.edges_since`; before it, or while it is null, a moment is drawn on today’s links. A past moment is coloured by the incidents open then, and a monitor that was slow, or failing from some places while others reached it, reads `degraded` there. Pass `hours` (1, 6 or 24) for a longer window, or `incident` to see only that incident’s path over its own span. Servers, load balancers and firewalls need a Cloud scope; links from DNS need a DNS scope. At most 150 addresses are drawn, failing ones first; `truncated` says when more exist.
+
+  Scope: `monitoring.read`
+}

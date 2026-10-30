@@ -1,0 +1,31 @@
+meta {
+  name: Set a dynamic IP source’s address
+  type: http
+  seq: 32
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id/address
+  body: json
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "ipv4": "198.51.100.23"
+  }
+}
+
+docs {
+  Sets the source’s current address to `ipv4` and/or `ipv6` (at least one) and updates the DNS records it keeps up to date, exactly as a router check-in would: the history, the change alert and the `dynamic_ip.changed` event follow. `changed` is false when the address was already this one. A source that keeps a firewall rule up to date answers 403 `not_token_writable`: use the app or the source’s own update URL. At most 60 calls a minute.
+
+  Scope: `monitoring.write`
+}

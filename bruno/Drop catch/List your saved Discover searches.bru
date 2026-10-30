@@ -1,0 +1,21 @@
+meta {
+  name: List your saved Discover searches
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/drop-catch/searches
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The Discover searches you saved in this organization, newest first: the word (`q`), the window (`within`: `today`, `7d` or `30d`), the longest name wanted (`max_length`, or null for any) and whether names with a bad reputation are hidden. `last_sent_at` and `last_sent_count` say when the morning email last sent new matches and how many. Only your own searches; nobody else in the organization sees them.
+
+  Scope: `drop-catch.read`
+}

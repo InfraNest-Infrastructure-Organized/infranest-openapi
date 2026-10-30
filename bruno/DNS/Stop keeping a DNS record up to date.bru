@@ -1,0 +1,26 @@
+meta {
+  name: Stop keeping a DNS record up to date
+  type: http
+  seq: 34
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id/targets/:target_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+  target_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Detaches a DNS record from the source; the record keeps its current value. Detaching a firewall rule is refused for an API token.
+
+  Scope: `monitoring.write`
+}

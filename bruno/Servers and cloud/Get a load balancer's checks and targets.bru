@@ -1,0 +1,25 @@
+meta {
+  name: Get a load balancer’s checks and targets
+  type: http
+  seq: 75
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-load-balancers/:cloudLoadBalancer_id/advisor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudLoadBalancer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether the load balancer has services and targets, whether a target fails the provider’s health check, and — where a monitor watches the load balancer — which targets have no monitor of their own. `targets` lists each target as the server it is, with its health and whether a monitor watches it.
+
+  Scope: `cloud.read`
+}

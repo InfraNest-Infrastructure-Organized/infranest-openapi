@@ -1,0 +1,25 @@
+meta {
+  name: Get the sizes a server can be resized to
+  type: http
+  seq: 30
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/resize-options
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Before a resize: whether it can be done here (`available`, or `reason` why not: `self_managed`, `no_provider`, `provider`, `catalogue`), the size the server has now (`current`, with the disk it really has), and every size its provider offers it (`targets`), each with its monthly price, the `difference` to today's price, whether its disk is larger (`disk_grows`), and `blocked: disk` when its disk is smaller than the server's — a disk never shrinks. `rules` is the provider's: `power_off` (it resizes a stopped machine only, so the server is shut down first and started after), `disk_optional` (the disk may stay as it is, which keeps a later move back down possible), `upgrade_only` (larger sizes only, with no way back). `steps` lists what the resize runs, and `limits` how long each wait may take.
+
+  Scope: `cloud.read`
+}

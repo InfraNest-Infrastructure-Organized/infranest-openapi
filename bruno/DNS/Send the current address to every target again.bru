@@ -1,0 +1,25 @@
+meta {
+  name: Send the current address to every target again
+  type: http
+  seq: 30
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id/recheck
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Re-applies the source’s current address to the DNS records and firewall rules it keeps up to date — after you fixed a record by hand, or after a provider refused an update. Changes no address. `applied` is how many targets were written.
+
+  Scope: `monitoring.write`
+}

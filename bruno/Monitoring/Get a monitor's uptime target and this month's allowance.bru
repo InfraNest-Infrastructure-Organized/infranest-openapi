@@ -1,0 +1,25 @@
+meta {
+  name: Get a monitor’s uptime target and this month’s allowance
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/uptime-target
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The monitor’s `uptime_target` (a percentage, or null) and `uptime_alerts` (`outage` alerts on each outage, `burn_rate` only when the allowance is being spent fast enough to miss the target), with the current calendar month so far: `uptime_pct` and `downtime_minutes`, the same figures the monthly uptime report gives. When a target is set, `allowance` gives the `allowed_minutes` of downtime this month, `used_minutes`, `remaining_minutes`, the month-end `projected_uptime_pct` at the pace so far, `projected_miss_on` (the day the allowance runs out at that pace, or null) and a `status`: `on_track`, `at_risk`, `missed` or `no_data`. `alerts` lists the allowance alerts sent this month. `available` is false when your plan does not include uptime targets.
+
+  Scope: `monitoring.read`
+}

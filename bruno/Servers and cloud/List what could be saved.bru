@@ -1,0 +1,21 @@
+meta {
+  name: List what could be saved
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-savings
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Cloud resources that cost money and do nothing — idle servers, volumes attached to nothing, addresses assigned to nothing, snapshots older than 90 days or of deleted servers, load balancers with no targets — and servers that could run one size smaller. Each comes with the evidence it rests on, what it costs a month and whether it can be acted on from InfraNest; `decided` lists the ones somebody chose to keep or be asked about later.
+
+  Scope: `cloud.read`
+}

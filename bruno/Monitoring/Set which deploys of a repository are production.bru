@@ -1,0 +1,28 @@
+meta {
+  name: Set which deploys of a repository are production
+  type: http
+  seq: 52
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/deploy-sources
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "repository": "northwind-cloud/app",
+    "production": "always"
+  }
+}
+
+docs {
+  Whether deploys of a linked `repository` are treated as production, which is what decides whether a deploy is verified. `production` is `auto` (the default: a workflow run on the repository's default branch, a GitHub deployment GitHub or its environment name marks as production, and every release), `always` or `never`. Returns the setting with the `default_branch` GitHub last named. 404 for a repository this organization does not link.
+
+  Scope: `monitoring.write`
+}

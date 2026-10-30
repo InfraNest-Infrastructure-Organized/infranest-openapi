@@ -1,0 +1,25 @@
+meta {
+  name: Check whether a server could be one size smaller
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/right-sizing
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Judged on the highest CPU, memory and load the monitoring agent saw over the last 30 days, moved onto the next size down at the same provider: suggested only when every peak stays under 60% of the smaller size and its disk is no smaller. `status` says why when it is not suggested — no agent, not enough data, too busy, a disk that cannot shrink, or already the smallest size.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,30 @@
+meta {
+  name: List what happened on a server
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/events
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~from: 2026-01-15T09:30:00
+  ~to: 2026-01-15T09:30:00
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Everything that happened on this server between `from` and `to` (ISO 8601; default the last 24 hours, at most 31 days), oldest first: deploys and releases, changes to the server, its firewalls and the DNS records pointing at it, reboots and unexpected restarts, provider outages, certificate renewals, scheduled job runs (timers that run more than 24 times a day are left out), backups your cloud provider took (`backup`, at the provider's own time, once your server's backup list has been read) and alerts. Each has a `kind`, the time `at`, a `title` (text, or a copy key with parameters) and a `link` to it in the app. A longer window is refused with `range_too_large`.
+
+  Scope: `cloud.read`
+}

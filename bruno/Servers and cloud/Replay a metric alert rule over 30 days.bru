@@ -1,0 +1,25 @@
+meta {
+  name: Replay a metric alert rule over 30 days
+  type: http
+  seq: 22
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/alert-rule-evidence
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What a metric rule (`metric`, `operator`, `threshold`, `duration_minutes`) would have done on this server over the last 30 days, replayed on the hourly rollup: the hourly `series` (average and peak), the effective `line` (load thresholds are per CPU core), the `peak`, and `would_fire` as a range — `at_least` from hours whose average crossed for the whole window, `at_most` from hours whose peak crossed (null for a `<` rule). `firings` lists them, flagging those inside a maintenance window, which are not counted. `pattern` is set when every firing starts at the same hour (`daily`) or the same weekday and hour (`weekly`), in the organization's timezone. Pass `default_id` / `override_id` from the rule to get `fired`, the incidents it actually raised. `available` is false for a metric with no hourly history (load 5/15, inodes, security updates). `suggested` offers a better threshold, in the rule’s own units, only where the month shows one: `cannotFire` when the line sits far above the highest normal hour, `tooOften` when the rule fired ten times or more. Otherwise it is null, and always before the server has 28 days of history (`history_days`, `min_history_days`). Hours inside maintenance are not counted as normal. `normal` says where the metric normally tops out across the server’s week: the highest hour’s 90th percentile (`high`) and which hour of the week it is (`hour_of_week`, 0 = Monday 00:00 UTC), or `ready` false with the `weeks` learned so far.
+
+  Scope: `cloud.read`
+}

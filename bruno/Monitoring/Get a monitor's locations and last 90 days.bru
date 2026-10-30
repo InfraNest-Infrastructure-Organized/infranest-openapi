@@ -1,0 +1,25 @@
+meta {
+  name: Get a monitor's locations and last 90 days
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/summary
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  `locations`: one entry per probe location that checked the monitor in the last hour — its last `status`, response time (`ms`), when, and `failing_since` when it is failing (the first failure after its last good check). `uptime`: 90 daily `bars` (uptime, colour band, and `m`, the minutes of planned maintenance that day), the overall `pct`, the number of unplanned `incidents`, the `minutes_down` and the `planned_minutes` of planned maintenance in those 90 days. Planned maintenance is left out of `pct` and `minutes_down`.
+
+  Scope: `monitoring.read`
+}

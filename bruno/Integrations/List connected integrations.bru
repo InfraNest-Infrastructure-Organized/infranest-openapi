@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Everything the organization has connected — cloud, DNS, registrar and certificate accounts, alert destinations, outbound webhooks, automation connections and calendars — each with its status and health. Also returns summary counts and the integrations your plan does not include (`locks`).
+  Everything the organization has connected — cloud, DNS, registrar and certificate accounts, alert destinations, outbound webhooks, automation connections and calendars — each with its status and health. A cloud, DNS, registrar or certificate account also carries `provider_status`: what the provider itself has wrong right now that concerns you — open incidents from its status page or feed, and failures InfraNest sees on its own calls to the provider across several workspaces — with `explains_failures` true when it is the provider’s API that is failing, so a failing account is the provider’s outage rather than its credential. It is null when nothing is wrong. Also returns summary counts and the integrations your plan does not include (`locks`).
 
   Scope: `cloud.read`
 }

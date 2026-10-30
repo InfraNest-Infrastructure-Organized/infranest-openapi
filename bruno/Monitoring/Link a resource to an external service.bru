@@ -1,7 +1,7 @@
 meta {
   name: Link a resource to an external service
   type: http
-  seq: 21
+  seq: 27
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  Records that one of your resources, given by `resource_type` and `resource_id`, depends on the third-party service this monitor watches. Only works on monitors that watch a third-party status page.
+  Records that one of your resources, given by `resource_type` (`dns_zone`, `domain`, `monitor`, `server` or `status_page_component`) and `resource_id`, depends on the third-party service this monitor watches. A linked status page component counts through the monitor that feeds it: when the service reports an outage, that monitor is treated as behind it. Only works on monitors that watch a third-party status page.
 
   Scope: `monitoring.write`
 }

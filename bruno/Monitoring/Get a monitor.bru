@@ -1,7 +1,7 @@
 meta {
   name: Get a monitor
   type: http
-  seq: 3
+  seq: 5
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  One monitor with its settings, alert channels, tags, dependencies, maintenance windows, the status pages it appears on, its 30 most recent results and the interval it actually runs at under your plan.
+  One monitor with its settings, alert channels, tags, dependencies, maintenance windows, the status pages it appears on, its 30 most recent results and the interval it actually runs at under your plan. A monitor that watches a third-party status page also carries `external_service` with its components (each with the `status` it reads as — `up`, `degraded` or `down` — and, where the page gives it, `vendor_status`, the provider's own word, such as `under_maintenance`), `uptime_90d`, and `provider_incidents`: the incidents open on that status page that touch the components the monitor follows, each with its `title`, the provider’s `vendor_status`, its `impact` (`up`, `degraded` or `down`), a `url` to the provider’s page, the `components` it names and the `updates` the provider posted, newest first. Each incident also carries its `key`, the provider’s own id for it (its title when the page gives none), which is what you send to say an incident does not affect you; `provider_verdicts` lists the incidents of that status page you said do not affect you, with the `keys` each covers, its `title`, who said so (`by`) and when (`at`), until the provider closes them. `provider_month` says, for this calendar month, how many `incidents` the provider had on the components the monitor follows, how many of them `reached` your own monitors (grouped under it, or failing while it lasted, among the monitors that sit behind that provider) and for how many `minutes`. `provider_probe` is what InfraNest's probes saw of the provider's open incident, when it names a place one of them stands in or near: `state` `confirmed` (one of your monitors behind the provider failed from there, named in `failing`) or `no_effect` (they were checked from there and all came back up), with the `place`, whether the probe is only `near` it (in the same country), how many monitors were `checked` and `since` when; null when there is no such incident, probe or check to go on.
 
   Scope: `monitoring.read`
 }

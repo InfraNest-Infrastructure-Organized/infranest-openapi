@@ -1,0 +1,31 @@
+meta {
+  name: Hand an incident over to a teammate
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/hand-over
+  body: json
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "user_id": 2
+  }
+}
+
+docs {
+  Passes an open incident to the teammate in `user_id`: it is acknowledged as theirs, they are told by a push notification or, when no push reaches them, by email, and the hand over appears on the incident’s timeline. An incident nobody had acknowledged is acknowledged by you first. The teammate must be able to act on incidents in this workspace; `story` lists who qualifies in `hand_over_to`. Returns the incident with who has it now.
+
+  Scope: `monitoring.write`
+}

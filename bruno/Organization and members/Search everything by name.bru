@@ -1,0 +1,23 @@
+meta {
+  name: Search everything by name
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/search
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~q: northwind
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Up to five matches per kind for `q` (at least 2 characters): domains, servers, DNS zones, monitors (by name or target), certificates, contacts, status pages, watched domains, load balancers, volumes, firewalls and dynamic IP sources. Each match has its `id`, a `label`, sometimes a `sublabel` (an address or target) and the `url` of its page in the app. A kind your token or role may not read is left out. `related`, when `q` is exactly one of your domains, lists what that domain is connected to.
+}

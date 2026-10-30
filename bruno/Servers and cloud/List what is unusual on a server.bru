@@ -1,0 +1,25 @@
+meta {
+  name: List what is unusual on a server
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/unusual
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What your server did in the last 24 hours that does not match its normal, in `findings`, biggest departure first. Normal is the server's own range over the 14 days before (`normal.low` and `normal.high`, the 10th and 90th percentile of its hourly averages); a finding is a run of 15-minute steps above `normal.line`, with its `from`, `to`, `peak`, whether it is `ongoing`, and the metric's 96 steps in `series`. Each finding says how sure the cause is in `certainty`: `known` (you confirmed it before, or a scheduled job ran just before the same hour on at least three of the last seven days), `likely` (one cause and a second piece of evidence agrees) or `together` (several causes, or one with nothing to back it, or none). `cause` is null whenever `certainty` is `together`; `candidates` lists what came in the half hour before (deploys, changes, reboots and restarts, provider outages, scheduled jobs, services that restarted or ran out of memory, traffic above its normal, and the mount that grew), `rejected` what lined up but you said was not it, and `evidence` the supporting facts as copy keys. `enough_history` is false, with no findings, until the server has three days of hourly history (`history_hours`).
+
+  Scope: `cloud.read`
+}

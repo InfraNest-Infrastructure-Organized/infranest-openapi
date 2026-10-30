@@ -1,0 +1,25 @@
+meta {
+  name: List the status page updates your providers’ outages would post
+  type: http
+  seq: 33
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring/provider-status-drafts
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~group: provider:12
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One drafted status page update for each provider outage your monitors fail behind right now (the situation’s `provider_outages` where one of the `monitors` is down or degraded). The `message` names the provider as the cause, in your workspace’s language and timezone, and the components those monitors feed on your status pages, which `pages` lists. An outage gets no draft when none of your monitors behind it fail, when none of them is on a status page, when it has been going on for less than the minutes your incident status rule asks for, when you said it does not affect you, or once anybody has posted to the status page about any of those monitors’ incidents. `targets` lists every incident it is posted on, once per status page it names. To send it, post `status`, `message` and `every_page: true` to `POST /organizations/{organization}/incidents/{incident}/updates` with the draft’s `incident_id`; when `auto_post` is true, your workspace posts drafts without asking and this one is posted within a minute. Pass `group` to get only the outage with that group.
+
+  Scope: `monitoring.read`
+}

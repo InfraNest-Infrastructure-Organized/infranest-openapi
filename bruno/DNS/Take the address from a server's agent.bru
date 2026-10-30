@@ -1,0 +1,31 @@
+meta {
+  name: Take the address from a server’s agent
+  type: http
+  seq: 28
+}
+
+put {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id/agent
+  body: json
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "server_id": null
+  }
+}
+
+docs {
+  Makes the source follow the public address the InfraNest agent on `server_id` reports (a server from *List servers a dynamic IP can follow*), or stop following with `server_id: null`. Refused for a source that keeps a firewall rule up to date.
+
+  Scope: `monitoring.write`
+}

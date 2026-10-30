@@ -1,7 +1,7 @@
 meta {
   name: Get a watched domain
   type: http
-  seq: 5
+  seq: 9
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  One watched domain with its stored WHOIS record, lifecycle dates, estimated drop date, the check schedule still ahead and drop statistics for its extension.
+  One watched domain with its stored WHOIS record, lifecycle dates, estimated drop date, the check schedule still ahead and drop statistics for its extension. It also carries its `reading` (the same one the list gives), `readiness` (the last "ready for the drop" check and when it ran), `registry_source` (how InfraNest checks the name and when the registry last answered), `let_go` (the signs that the owner is giving the name up, each with the date it was seen), `hears` (who is told about it: the watch's own `recipients`, or the organization's alert routing when `recipients` is null), `alerts_so_far` (how the organization's earlier alerts ended) and `self_registration` (where somebody registers it themselves when it comes free). Set `recipients` with a PATCH: `{people: [{user_id, email, app}], channels: [alert channel id]}`, or null to follow the organization again. `once_caught_applied` is what is set up on the domain once it is caught, and whose choice that is (`source`: `watch` or `organization`); set the watch's own with `once_caught` in a PATCH, or null to follow the organization. Once caught, `caught_setup` says what came of each step on the domain: `done`, `waiting`, `blocked` with a `reason`, or `off`.
 
   Scope: `drop-catch.read`
 }

@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  One status page with its settings, its components with the monitor and group behind each, and counts of components, announcements and subscribers.
+  One status page with its settings, its components with the monitor and group behind each, and counts of components, announcements and subscribers. `exclude_planned_downtime` says whether the page’s uptime figures leave planned maintenance out; when they do, the public page says so beside the figure. `uptime_target` is the uptime promised each calendar month across this page’s monitors (average), or null; `show_uptime_target` says whether the public page shows it. It is spent by the average of the monitors’ downtime, not the worst one’s, so it is not a promise that no monitor is ever down.
 
   Scope: `monitoring.read`
 }

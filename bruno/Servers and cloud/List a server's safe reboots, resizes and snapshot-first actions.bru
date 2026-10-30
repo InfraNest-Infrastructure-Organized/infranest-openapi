@@ -1,0 +1,25 @@
+meta {
+  name: List a server’s safe reboots, resizes and snapshot-first actions
+  type: http
+  seq: 28
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/operations
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The safe reboots, resizes, and rebuilds or deletes that wait for a snapshot first, on this server that are running or finished in the last seven days, newest first. Each lists its steps with their status (`pending`, `running`, `done`, `skipped`, `failed`) and, for a failure, the step and a reason code.
+
+  Scope: `cloud.read`
+}

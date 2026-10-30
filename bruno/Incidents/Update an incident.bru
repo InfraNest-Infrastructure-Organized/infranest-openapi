@@ -1,7 +1,7 @@
 meta {
   name: Update an incident
   type: http
-  seq: 2
+  seq: 3
 }
 
 patch {
@@ -26,7 +26,7 @@ body:json {
 }
 
 docs {
-  Changes an incident’s `title`, `status`, `impact`, `description` or `is_planned`. Setting `status` to `resolved` resolves an open incident, and any other status reopens a resolved one; incidents imported from a third-party status page cannot be edited.
+  Changes an incident’s `title`, `status`, `impact`, `description` or `is_planned`. Setting `status` to `resolved` resolves an open incident, and any other status reopens a resolved one; incidents imported from a third-party status page cannot be edited. The incident it returns says `alerts_silenced` when it was recorded during a maintenance window that silences alerts: it counts as planned maintenance, and nobody was notified when it opened or resolved.
 
   Scope: `monitoring.write`
 }

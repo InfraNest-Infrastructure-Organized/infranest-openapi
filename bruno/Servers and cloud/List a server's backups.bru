@@ -1,7 +1,7 @@
 meta {
   name: List a server’s backups
   type: http
-  seq: 12
+  seq: 33
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  The backups the cloud provider holds for this server, asked live. Empty when the provider account’s access does not cover it; refused when the server has no linked provider account.
+  The backups the cloud provider holds for this server, asked live. Each read also keeps when each backup was taken, so the server's events (and its Metrics charts) can mark them. Empty when the provider account’s access does not cover it; refused when the server has no linked provider account.
 
   Scope: `cloud.read`
 }

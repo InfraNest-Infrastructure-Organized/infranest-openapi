@@ -1,0 +1,25 @@
+meta {
+  name: Find where a monitor breaks
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/layers
+  body: none
+  auth: inherit
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The layers a request passes through, each `ok`, `failing` or `unknown`: the domain's registration, DNS, the certificate (for HTTPS and SSL monitors), the server (when known) and the application. `breaks_at` names the first failing layer from the top, or null. Only layers with evidence are listed.
+
+  Scope: `monitoring.read`
+}

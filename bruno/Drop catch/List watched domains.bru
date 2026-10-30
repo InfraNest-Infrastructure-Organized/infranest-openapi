@@ -1,7 +1,7 @@
 meta {
   name: List watched domains
   type: http
-  seq: 4
+  seq: 8
 }
 
 get {
@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Your watched domains, paginated with `per_page` (default 25, at most 200) and sorted with `sort` and `dir`. Filter with `search`, `tag` and flags such as `active`, `available`, `registered`, `failed`, `paused` and `in_auction`; `meta` carries counts per status.
+  Your watched domains, paginated with `per_page` (default 25, at most 200) and sorted with `sort` and `dir`. Filter with `search`, `tag` and flags such as `active`, `available`, `registered`, `failed`, `paused`, `in_auction`, `needs_you`, `drops_soon` and `no_backup`; `meta` carries counts per filter. Each watch carries a `reading`: its stage, when it is expected to drop and where that date comes from, how it will be caught, and its chances as a word with a reason.
 
   Scope: `drop-catch.read`
 }

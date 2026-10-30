@@ -1,0 +1,21 @@
+meta {
+  name: Get what a caught domain gets by default
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/drop-catch/once-caught
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What InfraNest sets up on a domain the moment a watch catches it, unless the watch chose otherwise: `auto_renew`, a DNS template (`dns_template`, a custom template id or a built-in slug) applied to a zone at `dns_credential_id`, an uptime monitor once its DNS points at a website (`monitor`), and tracking the certificate it serves (`certificate`). `is_default` is true while the organization has not changed it. `dns_hosts` lists the connected DNS accounts that can host the zone of a domain registered anywhere. Change the default with `drop_catch_once_caught` on the organization, and a single watch's choice with `once_caught` on the watch (null follows the organization).
+
+  Scope: `drop-catch.read`
+}

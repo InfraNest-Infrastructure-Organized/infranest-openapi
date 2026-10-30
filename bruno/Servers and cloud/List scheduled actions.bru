@@ -1,0 +1,25 @@
+meta {
+  name: List scheduled actions
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/scheduled-actions
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~server_id: 12
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Reboots and address moves waiting for the time they were scheduled for, and those that ran, failed or were cancelled in the last seven days. Filter to one server with `server_id`. Schedule one by sending `run_at` to the reboot or address-move endpoint.
+
+  Scope: `cloud.read`
+}

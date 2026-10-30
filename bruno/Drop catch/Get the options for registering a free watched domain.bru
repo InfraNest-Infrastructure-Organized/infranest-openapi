@@ -1,0 +1,25 @@
+meta {
+  name: Get the options for registering a free watched domain
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/watched-domains/:watchedDomain_id/register-options
+  body: none
+  auth: inherit
+}
+
+params:path {
+  watchedDomain_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What registering the watched domain by hand needs: `watch` (its name and whether it is free now), `registrars` (your connected registrar accounts that can register it, cheapest first, each with its price, `cheapest`, and `confirms_price`, whether it can check this name's own price before buying) and, when none is connected, `connectable` (the registrars you could connect for it; `sells` is true when one is known to sell the extension, null when not yet known). Register it with `POST domains/register`; on a plan without domain registration that is accepted for a watched domain that is free now.
+
+  Scope: `drop-catch.read`
+}

@@ -1,7 +1,7 @@
 meta {
   name: List deploy links
   type: http
-  seq: 33
+  seq: 47
 }
 
 get {
@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Your links between a repository and a monitor, server or tag, each with its newest deploy. Pass `monitor` to list only that monitor’s own links; `deploys_connected` says whether anything can report deploys to your organization.
+  Your links between a repository and a monitor, server or tag, each with its newest deploy and whether you allowed redeploying its previous version from a deploy's page (`allow_redeploy`, off unless you turned it on). Pass `monitor` to list only that monitor’s own links; `deploys_connected` says whether anything can report deploys to your organization.
 
   Scope: `monitoring.read`
 }

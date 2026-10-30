@@ -1,0 +1,25 @@
+meta {
+  name: Get an incident’s cause, what it affected and how it unfolded
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/story
+  body: none
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One incident as a whole. `cause` is the server whose failure took the others down when one did in the same window, otherwise the incident’s own monitor or subject. `affected` lists the other monitors, servers and status pages it touched. `events` holds what InfraNest saw, each with `at`, `kind`, `source` and `params`: `failed` and `recovered` for each affected monitor or server (`grouped` when it was folded under this incident), `alerted` with the destinations an alert actually reached (one event per minute), `acknowledged` with who did, and `handed_over` with whom it was handed `to` and `by` whom. Combine it with the incident’s updates and with what changed before it for the full timeline. `status_pages` lists every status page showing an affected monitor, with those components. `prevention` names what would have helped, or is null: an automation recipe in `template` — being told of DNS changes after a likely DNS cause, verifying deploys after a likely deploy, or announcing incidents on a status page nobody updated — and `active` says whether you already run it. When the incident drafts its own status page update, a silent status page is answered with a setting instead: `template` is null and `setting` is `auto_post_drafts`, the `auto_post` switch of the incident status rule, so the drafted update is posted without asking. With that switch on, the announcement recipe does not post for an outage the drafted update already covers, so visitors read about it once. `hand_over_to` lists the teammates you could hand an open incident to, with `on_call` set for whoever PagerDuty is paging for it; it is empty once the incident is resolved, or when you may not hand it over. Server details need a Cloud scope.
+
+  Scope: `monitoring.read`
+}

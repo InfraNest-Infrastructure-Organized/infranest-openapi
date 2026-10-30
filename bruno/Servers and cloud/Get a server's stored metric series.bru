@@ -1,7 +1,7 @@
 meta {
   name: Get a server’s stored metric series
   type: http
-  seq: 32
+  seq: 53
 }
 
 get {
@@ -29,7 +29,7 @@ headers {
 }
 
 docs {
-  Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied.
+  Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied. `normal` gives each requested metric’s normal week: `hours` holds 168 entries, one per hour of the week starting Monday 00:00 UTC, each `[p10, p50, p90]` of that hour’s averages over up to 12 weeks (null for an hour with too little history). It stays empty until `weeks` reaches `min_weeks` (4), unless a peer server behind the same load balancer or with the same role lends its week — then `borrowed_from` names it. `learning_since` and `reset_reason` (`resize`, `reinstall`, `role` or `source`) say when and why the week started again. Maintenance windows, incident hours and a memory leak’s climb are not learned.
 
   Scope: `cloud.read`
 }

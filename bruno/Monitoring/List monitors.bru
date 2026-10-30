@@ -1,7 +1,7 @@
 meta {
   name: List monitors
   type: http
-  seq: 1
+  seq: 3
 }
 
 get {
@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  A paginated list of your monitors with their type, target, interval, current status, 24-hour uptime and a 24-hour status chart, plus status counts in `meta`. Filter with `search`, `type`, `kind` (`own` or `external`), `status`, `enabled` and `tag`, and sort with `sort` and `dir`; pass `all=true` for a plain unpaginated list of every monitor.
+  A paginated list of your monitors with their type, target, interval, current status, 24-hour uptime, a 24-hour status chart (`uptime_chart_24h`, one status per hour) and the last 30 days (`bars_30d`, one entry per day with its date `d`, uptime `p` and colour `c`, ending yesterday, and for your own monitors `s`, the day’s status as the monitor’s own page draws it), plus status counts in `meta`. Filter with `search`, `type`, `kind` (`own` or `external`), `status`, `enabled` and `tag`, and sort with `sort` and `dir`; pass `all=true` for a plain unpaginated list of every monitor.
 
   Scope: `monitoring.read`
 }

@@ -1,0 +1,25 @@
+meta {
+  name: Get what a server is
+  type: http
+  seq: 26
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/role
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What the server is, in `roles`: any of `web`, `database`, `cache`, `queue` (runs background jobs), `mail`, `dns`, `backup` (keeps other servers' backups) and `containers` (runs containers), in that order. InfraNest recognises it from what runs on the server — the services and processes its agent reports, and whether it runs containers — and from what it is connected to: your other servers connecting to it on a database or cache port, a load balancer sending it traffic, and the names pointing at it. `evidence` lists, per role, what gave it away (`source` is `workload` or `relation`, a relation with its `type`, `id`, `url` and, for a server connecting to it, the `ports`); evidence you may not read is left out. `recognised` is what InfraNest recognises now, as of `recognised_at`; `corrected` is what you said instead on the server's page (null when you have not), with `corrected_at` and `corrected_by`, and `source` says which of the two `roles` is. `allow_auto_reboot` is whether automations may reboot it although it is a database; `auto_reboot_held` is true when they may not.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Get a server’s security and setup checks
+  type: http
+  seq: 58
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/advisor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every check on the server: whether a firewall protects it, whether SSH, Remote Desktop or a database is open to everyone, whether a port is reachable that should not be (from what the agent reads listening), backups, snapshots, delete protection, monitoring and alert rules, and — when the agent reports — pending reboots and uptime. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. The servers list and the attention list report the same checks.
+
+  Scope: `cloud.read`
+}

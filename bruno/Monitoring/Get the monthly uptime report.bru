@@ -1,7 +1,7 @@
 meta {
   name: Get the monthly uptime report
   type: http
-  seq: 23
+  seq: 30
 }
 
 get {
@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Uptime per monitor for one calendar month, with downtime, incidents, longest outage and the basis of each figure. Pass `month` as `YYYY-MM` (default: the last full month) and `tag` to limit it to monitors with that tag.
+  Uptime per monitor for one calendar month, with downtime, incidents, longest outage and the basis of each figure. Planned maintenance and time a monitor was paused are left out of the uptime and downtime; planned maintenance is reported beside them: `planned_minutes_excluded` per monitor and `planned_minutes` in the `summary`. A monitor with an uptime target carries `uptime_target` and an `allowance`: the month’s `allowed_minutes`, `used_minutes`, `remaining_minutes`, the `projected_uptime_pct` and `projected_miss_on` at the pace so far, and a `status` (`met` or `missed` for a closed month; `on_track`, `at_risk` or `missed` for the current one). The `summary` counts `targets_set` and `targets_missed`. Pass `month` as `YYYY-MM` (default: the last full month; the current month gives the allowance left so far) and `tag` to limit it to monitors with that tag.
 
   Scope: `monitoring.read`
 }

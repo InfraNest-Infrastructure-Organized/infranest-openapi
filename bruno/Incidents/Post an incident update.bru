@@ -1,7 +1,7 @@
 meta {
   name: Post an incident update
   type: http
-  seq: 4
+  seq: 5
 }
 
 post {
@@ -26,7 +26,7 @@ body:json {
 }
 
 docs {
-  Posts a public status update with a `status` and `message`, and moves the incident to that status (`resolved` resolves it). Status page subscribers are notified unless you send `notify_subscribers: false`; incidents imported from a third-party status page cannot be updated.
+  Posts a public status update with a `status` and `message`, and moves the incident to that status (`resolved` resolves it). Status page subscribers are notified unless you send `notify_subscribers: false`; incidents imported from a third-party status page cannot be updated. To send the incident’s drafted update (its `status_draft`, or the provider outage draft sent on this incident), pass `every_page: true`: it is then posted on each of the draft’s `targets`, so every status page the draft names shows it and each page’s subscribers are told once. The response is the first update posted.
 
   Scope: `monitoring.write`
 }

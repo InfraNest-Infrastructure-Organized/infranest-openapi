@@ -1,0 +1,21 @@
+meta {
+  name: Get when incidents draft status page updates
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incident-status-rule
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  When an incident drafts a status page update: once its monitor has been down for `min_minutes` from at least `min_locations` locations (or from every location it checks from, when that is fewer). `auto_post` is true when the drafts are posted without asking, with "resolved" posted when the monitor recovers. Unless you change it in the app, 3 minutes, 2 locations and never posted without asking.
+
+  Scope: `monitoring.read`
+}

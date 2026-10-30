@@ -1,0 +1,25 @@
+meta {
+  name: Get a safe reboot, resize or snapshot-first action
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/server-operations/:serverOperation_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  serverOperation_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  One safe reboot, or a rebuild or delete waiting for a snapshot, with every step and its status. Poll it while `status` is `queued` or `running`; `failed_step` and `error_code` say where and why it stopped. `by` names the person who started it; `via` is `automation` or `schedule` when nobody pressed it.
+
+  Scope: `cloud.read`
+}

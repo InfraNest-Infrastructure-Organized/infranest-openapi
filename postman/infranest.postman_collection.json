@@ -883,7 +883,7 @@
           "name": "Look up a domain’s WHOIS",
           "request": {
             "method": "GET",
-            "description": "A live WHOIS lookup for the domain. Answers 422 with a message when the lookup fails.\n\nScope: `domains.read`",
+            "description": "The registry’s raw answer for the domain (RDAP, or WHOIS where the registry has no RDAP) and the server that gave it — the same record as the registry record. Served from the last answer for up to six hours; add `refresh=1` to ask the registry now, which counts against your domain checks per hour. Answers 422 with a message when the registry gave no answer, and 429 with `Retry-After` when InfraNest is pacing its questions to that registry and cannot ask again yet.\n\nScope: `domains.read`",
             "header": [
               {
                 "key": "Accept",
@@ -2181,6 +2181,141 @@
           }
         },
         {
+          "name": "Edit a dynamic IP source",
+          "request": {
+            "method": "PATCH",
+            "description": "Changes the `label`, whether an address change sends an alert (`alert_on_change`), and its tags (`tag_ids`, replacing them). The firewall settings `firewall_strict` and `firewall_fail_closed` decide who can reach a server and are not accepted from an API token.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Office — Amsterdam\",\n  \"alert_on_change\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete a dynamic IP source",
+          "request": {
+            "method": "DELETE",
+            "description": "Deletes the source; its update token stops working at once. The DNS records it kept up to date stay as they are. Refused for a source that keeps a firewall rule up to date — remove those in the app first.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Take the address from a server’s agent",
+          "request": {
+            "method": "PUT",
+            "description": "Makes the source follow the public address the InfraNest agent on `server_id` reports (a server from *List servers a dynamic IP can follow*), or stop following with `server_id: null`. Refused for a source that keeps a firewall rule up to date.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id/agent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id",
+                "agent"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"server_id\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "Get a dynamic IP source’s history",
           "request": {
             "method": "GET",
@@ -2211,6 +2346,222 @@
                 },
                 {
                   "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send the current address to every target again",
+          "request": {
+            "method": "POST",
+            "description": "Re-applies the source’s current address to the DNS records and firewall rules it keeps up to date — after you fixed a record by hand, or after a provider refused an update. Changes no address. `applied` is how many targets were written.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id/recheck",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id",
+                "recheck"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check in from your own address",
+          "request": {
+            "method": "POST",
+            "description": "Sets the source’s address to the one this request comes from — for a script running on the connection itself, which need not know its address. Answers with the address and its family (`v4` or `v6`). Refused like setting the address for a source that keeps a firewall rule up to date.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id/check-in",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id",
+                "check-in"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Set a dynamic IP source’s address",
+          "request": {
+            "method": "PUT",
+            "description": "Sets the source’s current address to `ipv4` and/or `ipv6` (at least one) and updates the DNS records it keeps up to date, exactly as a router check-in would: the history, the change alert and the `dynamic_ip.changed` event follow. `changed` is false when the address was already this one. A source that keeps a firewall rule up to date answers 403 `not_token_writable`: use the app or the source’s own update URL. At most 60 calls a minute.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id/address",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id",
+                "address"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ipv4\": \"198.51.100.23\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Keep a DNS record up to date with a source",
+          "request": {
+            "method": "POST",
+            "description": "Attaches an existing A or AAAA record (`dns_record_id`), or creates one (`create`: `dns_zone_id`, `name`, `family` `v4` or `v6`), and sets it to the source’s current address. From then on every address change updates it. Firewall rules are attached in the app.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id/targets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id",
+                "targets"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dns_record_id\": 89\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Stop keeping a DNS record up to date",
+          "request": {
+            "method": "DELETE",
+            "description": "Detaches a DNS record from the source; the record keeps its current value. Detaching a firewall rule is refused for an API token.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/dynamic-ips/:dynamicIp_id/targets/:target_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "dynamic-ips",
+                ":dynamicIp_id",
+                "targets",
+                ":target_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "dynamicIp_id",
+                  "value": ""
+                },
+                {
+                  "key": "target_id",
                   "value": ""
                 }
               ]
@@ -3223,6 +3574,203 @@
       "description": "Servers, volumes, networks, firewalls and load balancers. Provider actions stay in the app; tokens edit InfraNest's own records and alerting.",
       "item": [
         {
+          "name": "Get the servers overview",
+          "request": {
+            "method": "GET",
+            "description": "What needs you across your servers, one entry per cause with every server it affects and, in `prevention`, the automation recipe that would keep the cause from coming back and whether you already run it; what your cloud resources cost this month against six months ago and which types moved most; what the savings finder could save; how many servers have backups, delete protection, the agent reporting, SSH limited and no reboot waiting; and a count of each kind of resource with the one thing worth knowing about it.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-overview"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what could be saved",
+          "request": {
+            "method": "GET",
+            "description": "Cloud resources that cost money and do nothing — idle servers, volumes attached to nothing, addresses assigned to nothing, snapshots older than 90 days or of deleted servers, load balancers with no targets — and servers that could run one size smaller. Each comes with the evidence it rests on, what it costs a month and whether it can be acted on from InfraNest; `decided` lists the ones somebody chose to keep or be asked about later.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-savings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-savings"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check whether a server could be one size smaller",
+          "request": {
+            "method": "GET",
+            "description": "Judged on the highest CPU, memory and load the monitoring agent saw over the last 30 days, moved onto the next size down at the same provider: suggested only when every peak stays under 60% of the smaller size and its disk is no smaller. `status` says why when it is not suggested — no agent, not enough data, too busy, a disk that cannot shrink, or already the smallest size.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/right-sizing",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "right-sizing"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the quietest hour for servers",
+          "request": {
+            "method": "GET",
+            "description": "The quietest hour of the day for the servers in `server_ids` (one, or a group), from the last 30 days of the agent’s readings — or the provider’s CPU graph without the agent — read in `timezone`. Each hour carries its usual load and a level (`quiet`, `normal`, `busy`); `recommended_at` is the next occurrence of the quietest hour. With too few readings, `source` is `default` and the hour is the stated default. Pass `at` to judge one time.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/quiet-hours",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "quiet-hours"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List scheduled actions",
+          "request": {
+            "method": "GET",
+            "description": "Reboots and address moves waiting for the time they were scheduled for, and those that ran, failed or were cancelled in the last seven days. Filter to one server with `server_id`. Schedule one by sending `run_at` to the reboot or address-move endpoint.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/scheduled-actions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "scheduled-actions"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a safe reboot, resize or snapshot-first action",
+          "request": {
+            "method": "GET",
+            "description": "One safe reboot, or a rebuild or delete waiting for a snapshot, with every step and its status. Poll it while `status` is `queued` or `running`; `failed_step` and `error_code` say where and why it stopped. `by` names the person who started it; `via` is `automation` or `schedule` when nobody pressed it.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/server-operations/:serverOperation_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "server-operations",
+                ":serverOperation_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "serverOperation_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List servers",
           "request": {
             "method": "GET",
@@ -3553,7 +4101,7 @@
           "name": "Get a server’s provider metrics",
           "request": {
             "method": "GET",
-            "description": "CPU, disk and network figures asked live from the cloud provider. Pick the figures with `types` (default `cpu,disk,network`) and set the window with `start`, `end` and `step` in seconds (default: the last hour at 60 seconds); refused when the server has no linked provider account.\n\nScope: `cloud.read`",
+            "description": "CPU, disk and network figures asked live from the cloud provider. Pick the figures with `types` (default `cpu,disk,network`; `memory` and `filesystem` add memory and root disk space in bytes where the provider reports them) and set the window with `start`, `end` and `step` in seconds (default: the last hour at 60 seconds); refused when the server has no linked provider account. For a server created within the last hour whose provider has no readings yet, the series are empty and `no_data_yet` is `true`.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -3572,6 +4120,561 @@
                 "cloud-servers",
                 ":cloudServer_id",
                 "metrics"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what runs on a server",
+          "request": {
+            "method": "GET",
+            "description": "The agent's processes, systemd services and timers, and containers, as workloads: processes attached to the service or container the agent says they run under (`attributed` is `cgroup`), or, where it did not say, grouped by command and attached to the service they are named after (`attributed` is `name`); timers carry `last_run_at` and `next_run_at`. Each with memory, CPU where known, restarts in the last 24 hours (`restarts_24h`) and the last 7 days (`restarts_7d`; when `restarts_7d_capped` is true the count reached the 100 InfraNest keeps, so read it as \"at least\"), a 7-day hourly memory `trend` (oldest first, null where nothing was sampled) and `observations`: `failed`, `restart_loop`, `memory_leak` (grows and resets on restart) or `no_heartbeat` (a scheduled job of yours that no heartbeat monitor watches), each with a `certainty`. Problems come first. Needs the server's agent.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/workloads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "workloads"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Compare a server's workloads with a week earlier",
+          "request": {
+            "method": "GET",
+            "description": "Each workload's average memory (`memory_bytes`) and CPU (`cpu_percent`, the share of the whole machine) between `from` and `to` (ISO 8601; default the last 24 hours, at most 8 days), as `now`, and over the same hours a week earlier (`compared_with`), as `then`. Read from the hourly samples kept for 15 days, so a window that starts more than 8 days ago has nothing to compare with. A side is null when the workload was not sampled in that window; CPU is null for a service or container whose processes your agent did not place. Workloads are services, containers and the heaviest process groups, each with its `kind`, `key` and display `name`. A longer window is refused with `range_too_large`. Needs the server's agent.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/workload-change",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "workload-change"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a server's last 24 hours",
+          "request": {
+            "method": "GET",
+            "description": "CPU in 15-minute steps (`cpu`, average and peak per step, null where nothing was reported), the `events` on the same axis (deploys, changes, restarts, certificate renewals, scheduled job runs, alerts) and up to three `sentences` as copy keys: an unexpected restart, or a CPU episode well above the day's normal with the change just before it, or said to be unexplained. Needs the server's agent or provider metrics.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/day",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "day"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what will happen to a server next",
+          "request": {
+            "method": "GET",
+            "description": "By date: disks forecast to fill (per mount), memory, CPU or load reaching its alert threshold at the current trend, scheduled reboots, certificates it serves renewing or expiring, Ubuntu Pro lapsing and the operating system leaving support. Forecasts without an honest fit and operating systems without a known support date are left out.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/coming-up",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "coming-up"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what happened on a server",
+          "request": {
+            "method": "GET",
+            "description": "Everything that happened on this server between `from` and `to` (ISO 8601; default the last 24 hours, at most 31 days), oldest first: deploys and releases, changes to the server, its firewalls and the DNS records pointing at it, reboots and unexpected restarts, provider outages, certificate renewals, scheduled job runs (timers that run more than 24 times a day are left out), backups your cloud provider took (`backup`, at the provider's own time, once your server's backup list has been read) and alerts. Each has a `kind`, the time `at`, a `title` (text, or a copy key with parameters) and a `link` to it in the app. A longer window is refused with `range_too_large`.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "events"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what is unusual on a server",
+          "request": {
+            "method": "GET",
+            "description": "What your server did in the last 24 hours that does not match its normal, in `findings`, biggest departure first. Normal is the server's own range over the 14 days before (`normal.low` and `normal.high`, the 10th and 90th percentile of its hourly averages); a finding is a run of 15-minute steps above `normal.line`, with its `from`, `to`, `peak`, whether it is `ongoing`, and the metric's 96 steps in `series`. Each finding says how sure the cause is in `certainty`: `known` (you confirmed it before, or a scheduled job ran just before the same hour on at least three of the last seven days), `likely` (one cause and a second piece of evidence agrees) or `together` (several causes, or one with nothing to back it, or none). `cause` is null whenever `certainty` is `together`; `candidates` lists what came in the half hour before (deploys, changes, reboots and restarts, provider outages, scheduled jobs, services that restarted or ran out of memory, traffic above its normal, and the mount that grew), `rejected` what lined up but you said was not it, and `evidence` the supporting facts as copy keys. `enough_history` is false, with no findings, until the server has three days of hourly history (`history_hours`).\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/unusual",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "unusual"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Replay a metric alert rule over 30 days",
+          "request": {
+            "method": "GET",
+            "description": "What a metric rule (`metric`, `operator`, `threshold`, `duration_minutes`) would have done on this server over the last 30 days, replayed on the hourly rollup: the hourly `series` (average and peak), the effective `line` (load thresholds are per CPU core), the `peak`, and `would_fire` as a range — `at_least` from hours whose average crossed for the whole window, `at_most` from hours whose peak crossed (null for a `<` rule). `firings` lists them, flagging those inside a maintenance window, which are not counted. `pattern` is set when every firing starts at the same hour (`daily`) or the same weekday and hour (`weekly`), in the organization's timezone. Pass `default_id` / `override_id` from the rule to get `fired`, the incidents it actually raised. `available` is false for a metric with no hourly history (load 5/15, inodes, security updates). `suggested` offers a better threshold, in the rule’s own units, only where the month shows one: `cannotFire` when the line sits far above the highest normal hour, `tooOften` when the rule fired ten times or more. Otherwise it is null, and always before the server has 28 days of history (`history_days`, `min_history_days`). Hours inside maintenance are not counted as normal. `normal` says where the metric normally tops out across the server’s week: the highest hour’s 90th percentile (`high`) and which hour of the week it is (`hour_of_week`, 0 = Monday 00:00 UTC), or `ready` false with the `weeks` learned so far.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/alert-rule-evidence",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "alert-rule-evidence"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a server’s restart history",
+          "request": {
+            "method": "GET",
+            "description": "When the server last started, every restart its agent has reported with who or what asked for it (`infranest`, `automation`, `outside` or `unexpected`) and any monitor outage at the same time, whether it needs a reboot and since when, and the actions scheduled on it. Without the agent, `running_since` is null and only `created_at` is known.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/reboots",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "reboots"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get what a server listens on and what its firewalls let in",
+          "request": {
+            "method": "GET",
+            "description": "Every port the server listens on, as its agent read it, and every port its firewall rules open, each with a `verdict`: `open_for_nothing` (a rule opens it and nothing listens), `only_private_peers` (open to everyone and only private addresses connect), `no_rule` (listening on every address with no firewall in front, where it should not be public), `exposed` (a database, Remote Desktop or SSH open to everyone), `expected`, `local` (loopback only), `unclear` (nothing listens on the host but that cannot prove it unused — containers, or a cut-short reading) or `rule_only` (no reading to judge with). `basis` is `agent` when a reading from the last day was judged and `rules` when only the rules are known; `reading.state` says why (`no_agent`, `too_old`, `off`, `failed`, `pending`, `stale` or `ok`). Peer counts are counts of distinct addresses by class, never the addresses. `guess` is the service usually found on a well-known port: a guess, never the program the agent saw. `new` is true for a port that started listening in the last seven days, after the agent's first reading; `listened_before_at` is set when a port came back after stopping within the week.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/ports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "ports"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List the ports that started listening on a server this week",
+          "request": {
+            "method": "GET",
+            "description": "Each port the server's agent saw start listening in the last seven days, measured against the agent's first reading of what listens there: a port that was already listening when the agent began is never new, and one that stopped and came back within the week is not either. Ports bound to loopback only are left out. Each has `first_seen_at`, `exposure` — how far it reaches, from its bind address and the firewall rules applied to the server: `everyone`, `no_firewall` (a public address with no firewall InfraNest sees in front of it), `limited`, `blocked`, `private` or `unknown` (a firewall is on whose rules are not known) — `level` (`critical`, `warning` or `info`), and `around`: deploys of a repository linked to the server, service units that started and restarts from 15 minutes before it was first seen to 2 minutes after. `guess` is the service usually found on a well-known port, never the program the agent saw. `decided` is set when someone marked the port as expected or set it aside; you make that decision with the attention decisions endpoint and the port's `key`.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/new-ports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "new-ports"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get what a server is",
+          "request": {
+            "method": "GET",
+            "description": "What the server is, in `roles`: any of `web`, `database`, `cache`, `queue` (runs background jobs), `mail`, `dns`, `backup` (keeps other servers' backups) and `containers` (runs containers), in that order. InfraNest recognises it from what runs on the server — the services and processes its agent reports, and whether it runs containers — and from what it is connected to: your other servers connecting to it on a database or cache port, a load balancer sending it traffic, and the names pointing at it. `evidence` lists, per role, what gave it away (`source` is `workload` or `relation`, a relation with its `type`, `id`, `url` and, for a server connecting to it, the `ports`); evidence you may not read is left out. `recognised` is what InfraNest recognises now, as of `recognised_at`; `corrected` is what you said instead on the server's page (null when you have not), with `corrected_at` and `corrected_by`, and `source` says which of the two `roles` is. `allow_auto_reboot` is whether automations may reboot it although it is a database; `auto_reboot_held` is true when they may not.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "role"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get what a safe reboot of a server would do",
+          "request": {
+            "method": "GET",
+            "description": "Before a safe reboot: `mode` is `safe` (it leaves a load balancer whose targets can be changed here), `plain` (no such load balancer — `reason` says which — or `server_down`: the others could not carry it, but the server is not serving anyway, so it is rebooted where it is) or `unavailable` (self-managed, no provider to ask). Lists each load balancer it is behind with the servers left to carry the traffic and whether each is healthy — by the load balancer’s own health check as well as the server’s status, agent and monitors where the provider reports one per target (`lb_health`; `judged_by` is `provider`, `signals` or, per load balancer, `mixed`) — `carry_now` and `carry_hours` (about what CPU they would run at without it, now and per hour in `timezone`), `blocked` when it cannot start now (`only_target`, `targets_unhealthy`, `no_headroom`), `group`: the other servers with a reboot waiting, for one at a time, and the dialog’s words: `provider_label` (the provider the reboot goes through), `monitors` (the names of the monitors it waits for) `reboot_required` (when the agent says a reboot is waiting: since when, the newer kernel, the reason) and `database` (the server is a database, so what uses it loses it while it reboots).\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/reboot-plan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "reboot-plan"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List a server’s safe reboots, resizes and snapshot-first actions",
+          "request": {
+            "method": "GET",
+            "description": "The safe reboots, resizes, and rebuilds or deletes that wait for a snapshot first, on this server that are running or finished in the last seven days, newest first. Each lists its steps with their status (`pending`, `running`, `done`, `skipped`, `failed`) and, for a failure, the step and a reason code.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/operations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "operations"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get whether a snapshot can be taken before a risky action",
+          "request": {
+            "method": "GET",
+            "description": "Whether a rebuild, resize or delete of this server can wait for a snapshot first (`available`, or `reason` why not: `plan`, `provider`, `no_progress`, `no_provider`), what keeping the snapshot costs a month at this account’s snapshot rate (an upper bound, from the disk size; null when there is no priced snapshot to read the rate from), and `always`: whether the organization takes one before every risky action.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/snapshot-first",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "snapshot-first"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the sizes a server can be resized to",
+          "request": {
+            "method": "GET",
+            "description": "Before a resize: whether it can be done here (`available`, or `reason` why not: `self_managed`, `no_provider`, `provider`, `catalogue`), the size the server has now (`current`, with the disk it really has), and every size its provider offers it (`targets`), each with its monthly price, the `difference` to today's price, whether its disk is larger (`disk_grows`), and `blocked: disk` when its disk is smaller than the server's — a disk never shrinks. `rules` is the provider's: `power_off` (it resizes a stopped machine only, so the server is shut down first and started after), `disk_optional` (the disk may stay as it is, which keeps a later move back down possible), `upgrade_only` (larger sizes only, with no way back). `steps` lists what the resize runs, and `limits` how long each wait may take.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/resize-options",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "resize-options"
               ],
               "variable": [
                 {
@@ -3664,7 +4767,7 @@
           "name": "List a server’s backups",
           "request": {
             "method": "GET",
-            "description": "The backups the cloud provider holds for this server, asked live. Empty when the provider account’s access does not cover it; refused when the server has no linked provider account.\n\nScope: `cloud.read`",
+            "description": "The backups the cloud provider holds for this server, asked live. Each read also keeps when each backup was taken, so the server's events (and its Metrics charts) can mark them. Empty when the provider account’s access does not cover it; refused when the server has no linked provider account.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4258,7 +5361,7 @@
           "name": "List snapshots",
           "request": {
             "method": "GET",
-            "description": "Every server snapshot InfraNest tracks in the organization, a page at a time, with the server it belongs to. Filter with `server_id`, `status`, `credential` or `search`, and sort with `sort` and `dir`.\n\nScope: `cloud.read`",
+            "description": "Every snapshot InfraNest tracks in the organization, a page at a time: of a server (`kind: server`, with the server it belongs to) or of a volume (`kind: volume`, with the volume, where the provider lists them). Filter with `server_id`, `volume_id`, `status`, `credential` or `search`, and sort with `sort` and `dir`.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4289,7 +5392,7 @@
           "name": "Get a snapshot",
           "request": {
             "method": "GET",
-            "description": "One snapshot with the server it was taken from.\n\nScope: `cloud.read`",
+            "description": "One snapshot with the server or volume it was taken from.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4325,7 +5428,7 @@
           "name": "List servers with their latest metrics",
           "request": {
             "method": "GET",
-            "description": "Every server in the organization with its latest CPU, memory, disk, load and network readings, its alert-rule counts and whether it is breaching, a page at a time. Monitored servers come first; filter with `search`, `credential`, `tag` or `status` (for example `breaching`, `norules`, `notreporting`, `monitored`).\n\nScope: `cloud.read`",
+            "description": "Every server in the organization with its latest CPU, memory, disk, load and network readings, its alert-rule counts and whether it is breaching, and `roles`: what each server is (see the server’s `role`), a page at a time. `normal_now` gives, for CPU, memory and load, the range the server normally sits in at this hour of the week (`low`, `typical`, `high`: its 10th, 50th and 90th percentile, and the `weeks` behind it); it is null until four weeks are learned, unless the range is borrowed from a peer named in `borrowed_from`. Monitored servers come first; filter with `search`, `credential`, `tag` or `status` (for example `breaching`, `norules`, `notreporting`, `monitored`).\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4357,7 +5460,7 @@
           "name": "Get a server’s stored metric series",
           "request": {
             "method": "GET",
-            "description": "Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied.\n\nScope: `cloud.read`",
+            "description": "Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied. `normal` gives each requested metric’s normal week: `hours` holds 168 entries, one per hour of the week starting Monday 00:00 UTC, each `[p10, p50, p90]` of that hour’s averages over up to 12 weeks (null for an hour with too little history). It stays empty until `weeks` reaches `min_weeks` (4), unless a peer server behind the same load balancer or with the same role lends its week — then `borrowed_from` names it. `learning_since` and `reset_reason` (`resize`, `reinstall`, `role` or `source`) say when and why the week started again. Maintenance windows, incident hours and a memory leak’s climb are not learned.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4531,7 +5634,7 @@
           "name": "Get what needs attention on a server",
           "request": {
             "method": "GET",
-            "description": "A short summary of the server: its uptime, whether alerts are quiet and until when, and the metric trend closest to crossing its alert threshold. Fields are null when there is nothing to say.\n\nScope: `cloud.read`",
+            "description": "A short summary of the server: its uptime, whether alerts are quiet and until when, and the metric trend closest to crossing its alert threshold. Fields are null when there is nothing to say. `unusual` lists the last 24 hours’ runs of hours that were unusual for this server at that hour of the week, one per metric: `from`, `to`, `peak` and `peak_at`, the `normal` range (`low`, `typical`, `high`) it was judged against, the `weeks` behind it and, when the range is a peer’s, `borrowed_from`. They are never sent as alerts.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4550,6 +5653,80 @@
                 "cloud-servers",
                 ":cloudServer_id",
                 "attention"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a server’s security and setup checks",
+          "request": {
+            "method": "GET",
+            "description": "Every check on the server: whether a firewall protects it, whether SSH, Remote Desktop or a database is open to everyone, whether a port is reachable that should not be (from what the agent reads listening), backups, snapshots, delete protection, monitoring and alert rules, and — when the agent reports — pending reboots and uptime. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. The servers list and the attention list report the same checks.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/advisor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "advisor"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get what depends on a server",
+          "request": {
+            "method": "GET",
+            "description": "What runs on the server, by role: the domains, addresses and load balancers it serves, its certificates, the monitors, alert rules and status pages watching it, the firewalls and backups protecting it, its volumes, networks and extra IP addresses, the automations aimed at it, and its recent incidents and planned maintenance. Roles with nothing in them, or that your role may not read, are left out.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/runs-here",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "runs-here"
               ],
               "variable": [
                 {
@@ -4903,7 +6080,7 @@
           "name": "List a server’s alert rules",
           "request": {
             "method": "GET",
-            "description": "Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, plus any older standalone rules. With `active=1` it returns only the rules actually being evaluated, as a flat list.\n\nScope: `cloud.read`",
+            "description": "Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, with `fired_30d`: how many incidents it raised on this server in the last 30 days. Older standalone rules are listed apart. With `active=1` it returns only the rules actually being evaluated, as a flat list.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5121,6 +6298,154 @@
           }
         },
         {
+          "name": "Get a volume’s checks and usage",
+          "request": {
+            "method": "GET",
+            "description": "Whether the volume is attached to a server, and — when the agent runs on that server — how full it is and when it will be full at its current rate, by the mount point the volume is at. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. `usage` is null when no agent reports the volume.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-volumes/:cloudVolume_id/advisor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-volumes",
+                ":cloudVolume_id",
+                "advisor"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudVolume_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a firewall’s checks",
+          "request": {
+            "method": "GET",
+            "description": "Whether the firewall is applied to any server, for providers where a firewall is applied to servers, and — where the agent reads what listens on those servers — whether a rule is open for nothing. Each check has a `status` and the evidence behind it. `rules` lists each inbound rule with its `verdict` across the servers it applies to (`in_use`, `open_for_nothing`, `unclear`, `any_port` or `rule_only`) and each server’s own answer.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-firewalls/:cloudFirewall_id/advisor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-firewalls",
+                ":cloudFirewall_id",
+                "advisor"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudFirewall_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a load balancer’s checks and targets",
+          "request": {
+            "method": "GET",
+            "description": "Whether the load balancer has services and targets, whether a target fails the provider’s health check, and — where a monitor watches the load balancer — which targets have no monitor of their own. `targets` lists each target as the server it is, with its health and whether a monitor watches it.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-load-balancers/:cloudLoadBalancer_id/advisor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-load-balancers",
+                ":cloudLoadBalancer_id",
+                "advisor"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudLoadBalancer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a network’s checks",
+          "request": {
+            "method": "GET",
+            "description": "Whether the network has a subnet a server can join through, and whether any server is on it. Each check has a `status` and the evidence behind it.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-networks/:cloudNetwork_id/advisor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-networks",
+                ":cloudNetwork_id",
+                "advisor"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudNetwork_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "Get an address’s monitor",
           "request": {
             "method": "GET",
@@ -5195,10 +6520,73 @@
       "description": "Monitors, their results and uptime, and deploy markers.",
       "item": [
         {
+          "name": "Suggest external services you depend on",
+          "request": {
+            "method": "GET",
+            "description": "The third-party services your own records say you depend on and you do not follow yet: your DNS zones and their MX, SPF, CNAME and verification TXT records, your connected integrations, your servers, your registered domains and the issuers of your certificates. Nothing is looked up and nothing is stored; each answer is worked out when you ask. Each suggestion has its `reasons` (the `signal` — `mx`, `spf`, `cname`, `txt`, `zone`, `integration`, `server`, `registrar` or `issuer` — and the record or resource it came from), whether InfraNest can read its status (`readable`), the catalogue entry to follow (`external_service_id`, null when the page is not in your catalogue yet: add it by its `status_url`), the components to follow (`component_ids`) and the resources of yours to link (`links`). A reason drawn from DNS records, a registration or an integration is shown only when you may read DNS, domains or integrations. `dismissed` lists the keys you dismissed (an advisor dismissal of type `external_service`, check `suggested`).\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/external-service-suggestions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "external-service-suggestions"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Suggest the components of an external service you use",
+          "request": {
+            "method": "GET",
+            "description": "For the service in `external_service_id`: the components you use, each with its `reasons` — a `kind` of use at the provider (`dns`, `proxy`, `server`, `registrar`, `certificates`, `load_balancer`, `api`) with how many you have or the region it is in, `probe` with the city an InfraNest probe checks your sites from, or `signal` with the record type that named the service. `dismissed` is true for a component you said not to offer again. Nothing is followed until you change your selection.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/external-service-suggestions/components",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "external-service-suggestions",
+                "components"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List monitors",
           "request": {
             "method": "GET",
-            "description": "A paginated list of your monitors with their type, target, interval, current status, 24-hour uptime and a 24-hour status chart, plus status counts in `meta`. Filter with `search`, `type`, `kind` (`own` or `external`), `status`, `enabled` and `tag`, and sort with `sort` and `dir`; pass `all=true` for a plain unpaginated list of every monitor.\n\nScope: `monitoring.read`",
+            "description": "A paginated list of your monitors with their type, target, interval, current status, 24-hour uptime, a 24-hour status chart (`uptime_chart_24h`, one status per hour) and the last 30 days (`bars_30d`, one entry per day with its date `d`, uptime `p` and colour `c`, ending yesterday, and for your own monitors `s`, the day’s status as the monitor’s own page draws it), plus status counts in `meta`. Filter with `search`, `type`, `kind` (`own` or `external`), `status`, `enabled` and `tag`, and sort with `sort` and `dir`; pass `all=true` for a plain unpaginated list of every monitor.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5273,7 +6661,7 @@
           "name": "Get a monitor",
           "request": {
             "method": "GET",
-            "description": "One monitor with its settings, alert channels, tags, dependencies, maintenance windows, the status pages it appears on, its 30 most recent results and the interval it actually runs at under your plan.\n\nScope: `monitoring.read`",
+            "description": "One monitor with its settings, alert channels, tags, dependencies, maintenance windows, the status pages it appears on, its 30 most recent results and the interval it actually runs at under your plan. A monitor that watches a third-party status page also carries `external_service` with its components (each with the `status` it reads as — `up`, `degraded` or `down` — and, where the page gives it, `vendor_status`, the provider's own word, such as `under_maintenance`), `uptime_90d`, and `provider_incidents`: the incidents open on that status page that touch the components the monitor follows, each with its `title`, the provider’s `vendor_status`, its `impact` (`up`, `degraded` or `down`), a `url` to the provider’s page, the `components` it names and the `updates` the provider posted, newest first. Each incident also carries its `key`, the provider’s own id for it (its title when the page gives none), which is what you send to say an incident does not affect you; `provider_verdicts` lists the incidents of that status page you said do not affect you, with the `keys` each covers, its `title`, who said so (`by`) and when (`at`), until the provider closes them. `provider_month` says, for this calendar month, how many `incidents` the provider had on the components the monitor follows, how many of them `reached` your own monitors (grouped under it, or failing while it lasted, among the monitors that sit behind that provider) and for how many `minutes`. `provider_probe` is what InfraNest's probes saw of the provider's open incident, when it names a place one of them stands in or near: `state` `confirmed` (one of your monitors behind the provider failed from there, named in `failing`) or `no_effect` (they were checked from there and all came back up), with the `place`, whether the probe is only `near` it (in the same country), how many monitors were `checked` and `since` when; null when there is no such incident, probe or check to go on.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5394,7 +6782,7 @@
           "name": "List a monitor’s check results",
           "request": {
             "method": "GET",
-            "description": "The monitor’s check results, newest first. With `resolution=raw` (the default) each result is one check by one probe, filterable by `status`; individual results are kept for 3 days. With `resolution=hour` or `day` each row sums one hour or one day across probes: checks by outcome (`checks_up`, `checks_degraded` for slow checks, `checks_down` for failures), `up_percent` and the p50 and p95 response times, reaching back as far as your plan keeps history. Set the window with `from` and `to` (ISO 8601; default: everything kept for raw, the last 24 hours for hours, the last 30 days for days), narrow it to one probe `region`, and page with `page` and `per_page` (up to 500, default 50). A range longer than the resolution allows — 3 days raw, 31 days by hour, 366 days by day — is refused with `range_too_large`. `window` repeats the range that was applied.\n\nScope: `monitoring.read`",
+            "description": "The monitor’s check results, newest first. With `resolution=raw` (the default) each result is one check by one probe, filterable by `status`; for HTTP, API and keyword monitors it also says where the response time went, in milliseconds: `dns_ms`, `connect_ms`, `tls_ms`, `server_ms` (waiting for the first byte) and `download_ms`, null when the location did not measure them, and `response_bytes`, how big the answer’s body was (null for a HEAD request, or a location on an older version). Its `meta` holds what the check saw: a keyword check’s `page_bytes` and, when it failed, an `excerpt` of the page’s text (at most 512 bytes); a ping’s `sent`, `received`, `loss_pct` and `jitter_ms`; a DNS check’s `records` with their `ttl` and the `resolver` asked (null for the location’s own); a redirect check’s `hops`, each `url` (without its query) and `status`; a heartbeat’s `run_duration_ms` when the check-in sent `duration`. Individual results are kept for 3 days. With `resolution=hour` or `day` each row sums one hour or one day across probes: checks by outcome (`checks_up`, `checks_degraded` for slow checks, `checks_down` for failures), `up_percent` and the p50 and p95 response times, reaching back as far as your plan keeps history. Set the window with `from` and `to` (ISO 8601; default: everything kept for raw, the last 24 hours for hours, the last 30 days for days), narrow it to one probe `region`, and page with `page` and `per_page` (up to 500, default 50). A range longer than the resolution allows — 3 days raw, 31 days by hour, 366 days by day — is refused with `range_too_large`. `window` repeats the range that was applied.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5705,6 +7093,117 @@
           }
         },
         {
+          "name": "Get a monitor on one time axis",
+          "request": {
+            "method": "GET",
+            "description": "For `period` `24h` or `7d` (hourly buckets) or `30d` or `90d` (daily): the bucket starts, an `overall` status per bucket (coloured by confirmed downtime, or `planned` when the only downtime in it was planned maintenance) and `overall_uptime` (the share of the period no confirmed, unplanned incident covered, the figure the app shows), a `lanes` entry per location with its statuses and `uptime` (the share of its checks that came back up), the type's `main` lane (`response` with p50/p95 in milliseconds for HTTP, API, keyword, port, ping and redirect monitors, plus a `summary` of the period's p50 and p95 weighted by the number of checks; `days_left` for SSL; null otherwise), `regions` (for response monitors, the same p50/p95 per location), `breakdown` (for HTTP, API and keyword monitors, where the time goes per location: the period's median `dns`, `connect`, `tls`, `server` and `download` time in milliseconds, with the number of `checks` behind them; empty until your monitor has been checked by a location that measures them), `events` on the same axis (deploys, changes to what the monitor watches, its incidents, its maintenance), `deploy_shift` for response monitors — what the newest successful deploy in the period did to response time per location: the `deploy`, the `minutes` compared on each side (up to an hour, shorter when the deploy is younger or followed another one sooner; null under 15 minutes or without a deploy), the `before` and `after` windows, and per location the `checks`, median (`p50`) and `p95` on each side with the `change` (`slower`, `faster` or `same` — a move of at least a quarter and 20 ms for the median, 50 ms for p95 — or `insufficient` under 10 checks a side) and its `percent` — `upcoming_maintenance` that will mute it in the next 30 days, and `provider_maintenance`: the planned maintenance a provider published on its status page that this monitor will see in the next 14 days — on a monitor that watches a third-party status page, maintenance on the components it follows; on any other, maintenance at the providers it sits behind — each with its `id`, `title`, `status` (`scheduled` or `in_progress`), `starts_at` and `ends_at` (null where the provider gave none), `url`, the `components` it names, the `subscription` that follows it, how many `monitors` silencing it would cover, whether it is `silenceable` (it has a start and an end) and `silenced_window_id` once you silenced it. A monitor that watches a third-party status page and follows up to 12 of its components also carries `components`: one lane per followed component, with its `id`, `name`, the worst status it had in each bucket (null before its history begins) and its `uptime`.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring-checks/:monitoringCheck_id/timeline",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring-checks",
+                ":monitoringCheck_id",
+                "timeline"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "monitoringCheck_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Find where a monitor breaks",
+          "request": {
+            "method": "GET",
+            "description": "The layers a request passes through, each `ok`, `failing` or `unknown`: the domain's registration, DNS, the certificate (for HTTPS and SSL monitors), the server (when known) and the application. `breaks_at` names the first failing layer from the top, or null. Only layers with evidence are listed.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring-checks/:monitoringCheck_id/layers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring-checks",
+                ":monitoringCheck_id",
+                "layers"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "monitoringCheck_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a monitor's locations and last 90 days",
+          "request": {
+            "method": "GET",
+            "description": "`locations`: one entry per probe location that checked the monitor in the last hour — its last `status`, response time (`ms`), when, and `failing_since` when it is failing (the first failure after its last good check). `uptime`: 90 daily `bars` (uptime, colour band, and `m`, the minutes of planned maintenance that day), the overall `pct`, the number of unplanned `incidents`, the `minutes_down` and the `planned_minutes` of planned maintenance in those 90 days. Planned maintenance is left out of `pct` and `minutes_down`.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring-checks/:monitoringCheck_id/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring-checks",
+                ":monitoringCheck_id",
+                "summary"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "monitoringCheck_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "Get a monitor’s uptime and response times for a period",
           "request": {
             "method": "GET",
@@ -5727,6 +7226,43 @@
                 "monitoring-checks",
                 ":monitoringCheck_id",
                 "aggregates"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "monitoringCheck_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a monitor’s uptime target and this month’s allowance",
+          "request": {
+            "method": "GET",
+            "description": "The monitor’s `uptime_target` (a percentage, or null) and `uptime_alerts` (`outage` alerts on each outage, `burn_rate` only when the allowance is being spent fast enough to miss the target), with the current calendar month so far: `uptime_pct` and `downtime_minutes`, the same figures the monthly uptime report gives. When a target is set, `allowance` gives the `allowed_minutes` of downtime this month, `used_minutes`, `remaining_minutes`, the month-end `projected_uptime_pct` at the pace so far, `projected_miss_on` (the day the allowance runs out at that pace, or null) and a `status`: `on_track`, `at_risk`, `missed` or `no_data`. `alerts` lists the allowance alerts sent this month. `available` is false when your plan does not include uptime targets.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring-checks/:monitoringCheck_id/uptime-target",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring-checks",
+                ":monitoringCheck_id",
+                "uptime-target"
               ],
               "variable": [
                 {
@@ -5961,7 +7497,7 @@
           "name": "List what an external service affects",
           "request": {
             "method": "GET",
-            "description": "For a monitor that watches a third-party status page: the DNS zones, domains, monitors and servers of yours that depend on that service. Each has a `source` of `manual` (linked by you) or `auto` (zones and domains at the matching provider, detected by InfraNest).\n\nScope: `monitoring.read`",
+            "description": "For a monitor that watches a third-party status page: the DNS zones, domains, monitors, servers and status page components of yours that depend on that service. Each has a `source` of `manual` (linked by you) or `auto` (detected by InfraNest at the matching provider: its DNS zones, domains and servers, and your own monitors behind it). An `auto` monitor carries `via`, how it sits behind the provider: `proxy` (its host is a record proxied through it), `dns` (its host is in a DNS zone there), `server` (it watches a server there) or `linked` (you linked it, its server, its zone, its domain or a status page component it feeds to this status monitor). A status page component is named with its page. Servers are listed only when you may read servers.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5998,7 +7534,7 @@
           "name": "Link a resource to an external service",
           "request": {
             "method": "POST",
-            "description": "Records that one of your resources, given by `resource_type` and `resource_id`, depends on the third-party service this monitor watches. Only works on monitors that watch a third-party status page.\n\nScope: `monitoring.write`",
+            "description": "Records that one of your resources, given by `resource_type` (`dns_zone`, `domain`, `monitor`, `server` or `status_page_component`) and `resource_id`, depends on the third-party service this monitor watches. A linked status page component counts through the monitor that feeds it: when the service reports an outage, that monitor is treated as behind it. Only works on monitors that watch a third-party status page.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -6017,6 +7553,43 @@
                 "monitoring-checks",
                 ":monitoringCheck_id",
                 "affected"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "monitoringCheck_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Suggest what to link to an external service",
+          "request": {
+            "method": "GET",
+            "description": "For a monitor that watches a third-party status page: your DNS zones, domains, servers and monitors that your own records tie to that service and that are not linked to it yet, each with the `reason` it was found by. A status page component is suggested only when the monitor that feeds it is already linked to the service or suggested here, never because of its name; its `reason` has `signal` `component`, the component as `subject` and that monitor as `detail`. Link one with the link endpoint above. Empty for a service InfraNest does not recognise and nothing of yours is linked to.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring-checks/:monitoringCheck_id/link-suggestions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring-checks",
+                ":monitoringCheck_id",
+                "link-suggestions"
               ],
               "variable": [
                 {
@@ -6082,7 +7655,7 @@
           "name": "Get the monthly uptime report",
           "request": {
             "method": "GET",
-            "description": "Uptime per monitor for one calendar month, with downtime, incidents, longest outage and the basis of each figure. Pass `month` as `YYYY-MM` (default: the last full month) and `tag` to limit it to monitors with that tag.\n\nScope: `monitoring.read`",
+            "description": "Uptime per monitor for one calendar month, with downtime, incidents, longest outage and the basis of each figure. Planned maintenance and time a monitor was paused are left out of the uptime and downtime; planned maintenance is reported beside them: `planned_minutes_excluded` per monitor and `planned_minutes` in the `summary`. A monitor with an uptime target carries `uptime_target` and an `allowance`: the month’s `allowed_minutes`, `used_minutes`, `remaining_minutes`, the `projected_uptime_pct` and `projected_miss_on` at the pace so far, and a `status` (`met` or `missed` for a closed month; `on_track`, `at_risk` or `missed` for the current one). The `summary` counts `targets_set` and `targets_missed`. Pass `month` as `YYYY-MM` (default: the last full month; the current month gives the allowance left so far) and `tag` to limit it to monitors with that tag.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6130,6 +7703,230 @@
                 "organizations",
                 ":organization_id",
                 "status"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get what is going on right now",
+          "request": {
+            "method": "GET",
+            "description": "One answer for the top of a monitoring page: `state` is `down`, `degraded`, `maintenance`, `recovered` or `clear`, in that order of precedence. `problems` groups what is wrong by root cause, cause first: a server and the monitors on it are one problem, with the server as `cause` and the monitors in `affected`. A problem that fails from only some locations carries `regional`, and is degraded rather than down. Each problem also says what it breaks: `why` is why its first failing monitor fails (the monitor `type`, the reason `code` and `params`, else the probe’s `message`), `locations` names the probe locations its monitors fail from right now, `status_pages` lists your status pages that show one of its monitors, with those `components`, and `long_standing` is true once it has been open for more than 7 days. Anything in a running maintenance window, silenced, or held back because its parent is down is not a problem; `maintenance` lists the windows and what they mute. For an hour after an incident closes, `recovered` says what it was and how long it lasted; after that it moves to `last_problem`. `provider_outages` lists the providers you watch with a third-party status monitor that report a problem right now, with the monitors that sit behind each one: by a DNS zone or a proxied record at that provider, a server there, or what you linked to the status monitor yourself (`via` is `dns`, `proxy`, `server` or `linked`). A provider you run on but do not watch is listed too, with `subscription` null, while it has an open incident that is a major outage or that names a region one of your servers is in there, and only when something of yours sits behind it. A server is listed only when it is in a region the provider reports failing; when the provider names no region, every server you have there is listed and `regions_unnamed` is true. Those monitors, and the status monitor itself, are listed there rather than in `problems`; if any of them fail, the state is `degraded`, never `down`. Each provider outage carries `service_id` and `incident_keys`, the provider’s own ids for the incidents it is made of. An incident you said does not affect you is left out until the provider closes it, and an incident that touches only components you stopped following is left out for good; the monitors behind either are then ordinary monitors again, listed in `problems` when they fail and alerting on their own. `provider_quieted` lists both, so they can be taken back: `incidents` with who said so and when, and `unfollowed` with the component and its provider. Pass `subject` as `monitor:{id}`, `server:{id}` or `incident:{id}` to narrow it to one thing. Server causes need a Cloud scope.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring/situation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring",
+                "situation"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List the status page updates your providers’ outages would post",
+          "request": {
+            "method": "GET",
+            "description": "One drafted status page update for each provider outage your monitors fail behind right now (the situation’s `provider_outages` where one of the `monitors` is down or degraded). The `message` names the provider as the cause, in your workspace’s language and timezone, and the components those monitors feed on your status pages, which `pages` lists. An outage gets no draft when none of your monitors behind it fail, when none of them is on a status page, when it has been going on for less than the minutes your incident status rule asks for, when you said it does not affect you, or once anybody has posted to the status page about any of those monitors’ incidents. `targets` lists every incident it is posted on, once per status page it names. To send it, post `status`, `message` and `every_page: true` to `POST /organizations/{organization}/incidents/{incident}/updates` with the draft’s `incident_id`; when `auto_post` is true, your workspace posts drafts without asking and this one is posted within a minute. Pass `group` to get only the outage with that group.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring/provider-status-drafts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring",
+                "provider-status-drafts"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the map of what reaches what",
+          "request": {
+            "method": "GET",
+            "description": "Your monitoring as a map, built only from what you already have in InfraNest. `nodes` are the visitors, every address a monitor watches, the load balancers and servers those addresses reach, and the servers they depend on; each has a `column` (0 visitors to 4 data), a `route` to its page and its `facts` (the monitors on an address, the firewalls applied to a server, how many of a load balancer’s targets your provider reports healthy). `edges` say how each link is known in `via`: `dns` (an A/AAAA record in your zones, or one CNAME inside them), `ip` (the monitor watches the address itself), `monitor` (the monitor’s server link), `load_balancer` (a target) or `agent` (connections the agent saw repeatedly, with their `ports`). Nothing is matched by name. Colours come from the situation: `problems` is the same list as the situation’s, and `paths` lists each broken path from the visitors to its cause. `replay.frames` gives the map at each moment of the window — `states` per node, the `causes`, the `broken` edges by index, and the edges that did not exist at that moment in `absent` — and `replay.events` the failures, recoveries and changes in it. A past moment is drawn as it was: `edges` also holds the links the window had that are gone now (a DNS record since moved, a server since taken out of a load balancer), and a node only such a link reaches carries `past: true`. Links are kept for 14 days from `replay.edges_since`; before it, or while it is null, a moment is drawn on today’s links. A past moment is coloured by the incidents open then, and a monitor that was slow, or failing from some places while others reached it, reads `degraded` there. Pass `hours` (1, 6 or 24) for a longer window, or `incident` to see only that incident’s path over its own span. Servers, load balancers and firewalls need a Cloud scope; links from DNS need a DNS scope. At most 150 addresses are drawn, failing ones first; `truncated` says when more exist.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring/map",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring",
+                "map"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the monitoring overview",
+          "request": {
+            "method": "GET",
+            "description": "The body of the monitoring Overview. Every figure covers your own monitors only: a subscription to a provider’s status page (a monitor with `external_service_id`) is left out of `monitors`, `days`, `month`, `key_monitors` and `locations`, and so are its incidents. `monitors` counts your enabled monitors and how many are up; `days`, the last 30 days across every enabled monitor (each day the mean uptime of the monitors measured that day as `p`, the number of unplanned incidents that started on it as `incidents`, and its colour: `red` if one of them was major or critical, `yellow` for any other, `grey` with no readings, otherwise `green`); `month`, the 30-day uptime, the number of unplanned incidents and the minutes down; `key_monitors`, the monitors on a status page (or, with none, the enabled monitors, worst first), at most eight, each with its 30 daily bars, uptime, its last 24 response times (`spark`) and its current response time; and `locations`, each probe location checking them, with how many of your monitors were checked from there in the last hour (`checking`) and how many fail from there now (`failing`); and `services`, the providers’ status pages you subscribe to: `total`, and in `problems` those reporting a problem now, down first, each with its `state`, the `provider` it speaks for (null for a page InfraNest does not recognise), how many things you linked to it by hand (`linked`) and your monitors that sit behind it (`monitors`, each with its `state` and `via`: `proxy`, `dns`, `server` or `linked`). Cached for two minutes.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring",
+                "overview"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what happens next",
+          "request": {
+            "method": "GET",
+            "description": "What will happen soon, soonest first: maintenance windows starting in the next 7 days (`maintenance`, with `until` and how many monitors and servers they mute), disks forecast to fill (`disk_full`, `at` is the forecast moment) and servers whose agent reports a reboot is required (`reboot`, `at` is when that began). At most 6 rows in `items`, the rest counted in `more`. Disks and reboots need a Cloud scope.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring/next",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring",
+                "next"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List monitors grouped by domain",
+          "request": {
+            "method": "GET",
+            "description": "Your monitors, one row per registrable domain (`shop.example.nl` and `api.example.nl` are both `example.nl`); a monitor whose target is an address is grouped under its server (`type` `server`), and one with neither under `other`. Each group has its worst `state`, how many monitors it holds, how many are down or degraded, 24 hourly `bars` (the worst monitor in each hour, oldest first) and a `note`: the newest team note on an open incident in it, or null. Paused and silenced monitors are counted but do not set the state. Problem groups come first. Answers are up to a minute old.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring",
+                "groups"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List monitors with their locations, 30 days and alert reach",
+          "request": {
+            "method": "GET",
+            "description": "Every monitor except third-party status monitors, one row each, by name: its `state` and `since` when it last changed; `group`, the key it falls under by domain (`domain:example.nl`, else `server:{id}`, else `other`) and by server (`server:{id}` or `other`, with `server_name`); `locations`, the newest result from each probe location in the last 30 minutes; `bars`, its last 30 days, each with its uptime and `s`, the day as the monitor’s own page draws it (`up`, `degraded`, `down`, `planned`, or null with nothing measured); `uptime` over them; `hours`, its last 24 hours the same way, oldest first, the last one the hour in progress; `spark`, its median response per hour over the last 12 hours (null for an hour with none); `ms`, the newest response time if it was up; `regional`, true when it fails from some locations and not from others right now; `flapping`, true while it is in an unstable period; `cause`, for a monitor that is down or degraded, the server that took it down when that server is in trouble itself (an open server incident, or not running), otherwise null; and `alerts`: `state` (`ok`, `nobody` or `failing`), the alert `channels` by name and the `people` who take the status email. Answers are up to a minute old.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring/board",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring",
+                "board"
               ],
               "variable": [
                 {
@@ -6423,7 +8220,7 @@
           "name": "List deploy links",
           "request": {
             "method": "GET",
-            "description": "Your links between a repository and a monitor, server or tag, each with its newest deploy. Pass `monitor` to list only that monitor’s own links; `deploys_connected` says whether anything can report deploys to your organization.\n\nScope: `monitoring.read`",
+            "description": "Your links between a repository and a monitor, server or tag, each with its newest deploy and whether you allowed redeploying its previous version from a deploy's page (`allow_redeploy`, off unless you turned it on). Pass `monitor` to list only that monitor’s own links; `deploys_connected` says whether anything can report deploys to your organization.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6595,10 +8392,54 @@
           }
         },
         {
+          "name": "Set which deploys of a repository are production",
+          "request": {
+            "method": "PATCH",
+            "description": "Whether deploys of a linked `repository` are treated as production, which is what decides whether a deploy is verified. `production` is `auto` (the default: a workflow run on the repository's default branch, a GitHub deployment GitHub or its environment name marks as production, and every release), `always` or `never`. Returns the setting with the `default_branch` GitHub last named. 404 for a repository this organization does not link.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/deploy-sources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "deploy-sources"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"repository\": \"northwind-cloud/app\",\n  \"production\": \"always\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "List deploys for a monitor or server",
           "request": {
             "method": "GET",
-            "description": "The deploys linked to one monitor (`monitor`) or server (`server`) between `from` and `to`; the window defaults to the 24 hours before `to`, which defaults to now. Also lists the repositories linked to it.\n\nScope: `monitoring.read`",
+            "description": "The deploys linked to one monitor (`monitor`) or server (`server`) between `from` and `to`; the window defaults to the 24 hours before `to`, which defaults to now. Also lists the repositories linked to it. Each deploy carries its `verification`: after a successful production deploy (the repository default branch, an environment GitHub or its name marks as production, or as the `production` setting of the repository says) its monitors are checked more often for an hour, then that hour is compared with the hour before it — `state` (`watching` until `until`, then `done`; `cut_at` when a newer deploy reached one of its monitors first and ended the window there for that monitor), `verdict` (`better`, `unchanged`, `worse` or `insufficient`; with `reason: plan_interval` and the plan interval in `plan_interval_seconds` when the plan check interval left too few checks for a verdict), a `summary` of the p95 response time and failure share, and per monitor and location the numbers on both sides. For a monitor, only what the deploy did to that monitor; null when the deploy was not verified.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6661,7 +8502,7 @@
           "name": "Get what a deploy changed",
           "request": {
             "method": "GET",
-            "description": "The commits and pull requests since the previous successful deploy to the same place. Returns `first: true` when there is no earlier deploy to compare with, and `unavailable: true` when GitHub could not say.\n\nScope: `monitoring.read`",
+            "description": "The commits and pull requests since the previous successful deploy to the same place, each pull request with its `author` and the `files` it touches (up to 50; `changed_files` is the full count). Returns `first: true` when there is no earlier deploy to compare with, and `unavailable: true` when GitHub could not say. `verification` says whether the deploy made its monitors worse, as in the deploy list.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6680,6 +8521,42 @@
                 "deploy-events",
                 ":deployEvent_id",
                 "changes"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "deployEvent_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Explain a deploy",
+          "request": {
+            "method": "GET",
+            "description": "One deploy and what followed it. `effects` lists what changed in the `window` minutes after it (30, 60, 240 or 1440; default 60) against as long before it, each line with its `source`: the agent (CPU, memory, services that restarted by themselves) or your monitors (p95 response time and the share of failed checks, per location, from at least 10 checks a side). `verification` is the stored verdict on the hour after the deploy, as in the deploy list; with the default window the lines for monitors are drawn from it. `servers` says, per linked server, which version it runs when your pipeline reported it through the deploy hook after the deploy began (`reported_current` for this deploy's commit or tag, `reported_other` with the `version` it still runs — reported, so a fact), and otherwise whether its agent saw something start with the deploy (`restarted`), saw nothing start (`not_restarted`, inferred), or cannot tell; `partial_rollout` is true when some got it and some did not, `partial_reported` when that comes from reported versions, and `rollout_inferred` when any line is inferred from restarts. `expected` is who marked the deploy's side effects as intended, and when (null until someone did): such a deploy is no longer named as the likely cause of the slowdowns and resource changes it explains. `redeploy` says whether the previous version can be redeployed from the page (`state` `available`, or why not: `not_allowed` until a link for these deploys allows it, `no_app`, `no_previous`, `release`, `not_github`), how (`rerun` of the previous workflow run, or a new GitHub `deployment`), the `previous` deploy, a `github_url` to do it by hand, and the `last` redeploy started from the page. `changes` lists the pull requests in it, each with a `suspicion` level (`likely`, `possible` or `unrelated`) and the reason, when something changed after the deploy.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/deploy-events/:deployEvent_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "deploy-events",
+                ":deployEvent_id"
               ],
               "variable": [
                 {
@@ -6766,7 +8643,7 @@
           "name": "List incidents",
           "request": {
             "method": "GET",
-            "description": "A paginated list of your monitors’ incidents with their monitor, status, impact, latest update and who acknowledged each one, plus counts in `meta`. `period` is `24h`, `7d` (default), `30d` or `all`; filter with `status` (`open`, `acked` or `resolved`) and `search`, or pass `incident` to fetch a single incident whatever its age.\n\nScope: `monitoring.read`",
+            "description": "A paginated list of your monitors’ incidents with their monitor, status, impact, latest update and who acknowledged each one, and `affected`: how many monitors, servers and status pages it took down, counted across the incidents grouped with it. Counts are in `meta`. `period` is `24h`, `7d` (default), `30d` or `all`; filter with `status` (`open`, `acked` or `resolved`) and `search`, or pass `incident` to fetch a single incident whatever its age.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6794,10 +8671,42 @@
           }
         },
         {
+          "name": "Get incident statistics",
+          "request": {
+            "method": "GET",
+            "description": "The last 90 days of unplanned incidents: `count`, `downtime_seconds`, the median time to acknowledge (`median_notice_seconds`) and to resolve (`median_fix_seconds`), how many started within 30 minutes of a change to what failed (`after_change` of `after_change_of` checked, the most recent 100) and the most common kind of that change (`common_change`). `previous_count` is the number of unplanned incidents in the 90 days before, to compare with. Vendor incidents are counted apart in `not_yours`. Up to ten minutes old.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incidents/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incidents",
+                "stats"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "Update an incident",
           "request": {
             "method": "PATCH",
-            "description": "Changes an incident’s `title`, `status`, `impact`, `description` or `is_planned`. Setting `status` to `resolved` resolves an open incident, and any other status reopens a resolved one; incidents imported from a third-party status page cannot be edited.\n\nScope: `monitoring.write`",
+            "description": "Changes an incident’s `title`, `status`, `impact`, `description` or `is_planned`. Setting `status` to `resolved` resolves an open incident, and any other status reopens a resolved one; incidents imported from a third-party status page cannot be edited. The incident it returns says `alerts_silenced` when it was recorded during a maintenance window that silences alerts: it counts as planned maintenance, and nobody was notified when it opened or resolved.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -6846,7 +8755,7 @@
           "name": "Get an incident’s timeline",
           "request": {
             "method": "GET",
-            "description": "The incident’s public status updates and internal team notes, plus the alert channels that were notified, deploys shortly before it began, who PagerDuty is paging, notes from PagerDuty and tickets opened for it.\n\nScope: `monitoring.read`",
+            "description": "The incident’s public status updates and internal team notes, plus the alert channels that were notified, deploys shortly before it began, who PagerDuty is paging, notes from PagerDuty and tickets opened for it. An update with `posted_automatically` was posted by InfraNest from the incident’s draft, because your workspace lets drafts post without asking. `status_draft` is the status page update this incident would post, ready for you to send with `POST …/updates`: `kind` is `opened` (the outage is real by your rule in `GET …/incident-status-rule` and nothing has been posted about it yet) or `resolved` (it recovered after an update was posted, and nobody has said it is over). It carries the `status` and `message` to send, the status `pages` and `components` it names, how long it has been down (`down_minutes`), from how many locations it was seen down (`locations_down` of `locations_checked`, null when the monitor has no per-location results) and whether your workspace posts it without asking (`auto_post`). `targets` lists where it is posted: once per status page it names, on an incident that page shows (`incident_id`, the `page_ids` showing it, and `notify_page_ids` when only some of those pages’ subscribers are told, because another update already reached the rest). For an outage across several monitors on different status pages, that is more than this incident. It is null for a blip, for an incident on no status page, for planned work and for a monitor behind a provider that reports its own outage.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6883,7 +8792,7 @@
           "name": "Post an incident update",
           "request": {
             "method": "POST",
-            "description": "Posts a public status update with a `status` and `message`, and moves the incident to that status (`resolved` resolves it). Status page subscribers are notified unless you send `notify_subscribers: false`; incidents imported from a third-party status page cannot be updated.\n\nScope: `monitoring.write`",
+            "description": "Posts a public status update with a `status` and `message`, and moves the incident to that status (`resolved` resolves it). Status page subscribers are notified unless you send `notify_subscribers: false`; incidents imported from a third-party status page cannot be updated. To send the incident’s drafted update (its `status_draft`, or the provider outage draft sent on this incident), pass `every_page: true`: it is then posted on each of the draft’s `targets`, so every status page the draft names shows it and each page’s subscribers are told once. The response is the first update posted.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -6926,6 +8835,161 @@
                   "language": "json"
                 }
               }
+            }
+          }
+        },
+        {
+          "name": "Get an incident’s cause, what it affected and how it unfolded",
+          "request": {
+            "method": "GET",
+            "description": "One incident as a whole. `cause` is the server whose failure took the others down when one did in the same window, otherwise the incident’s own monitor or subject. `affected` lists the other monitors, servers and status pages it touched. `events` holds what InfraNest saw, each with `at`, `kind`, `source` and `params`: `failed` and `recovered` for each affected monitor or server (`grouped` when it was folded under this incident), `alerted` with the destinations an alert actually reached (one event per minute), `acknowledged` with who did, and `handed_over` with whom it was handed `to` and `by` whom. Combine it with the incident’s updates and with what changed before it for the full timeline. `status_pages` lists every status page showing an affected monitor, with those components. `prevention` names what would have helped, or is null: an automation recipe in `template` — being told of DNS changes after a likely DNS cause, verifying deploys after a likely deploy, or announcing incidents on a status page nobody updated — and `active` says whether you already run it. When the incident drafts its own status page update, a silent status page is answered with a setting instead: `template` is null and `setting` is `auto_post_drafts`, the `auto_post` switch of the incident status rule, so the drafted update is posted without asking. With that switch on, the announcement recipe does not post for an outage the drafted update already covers, so visitors read about it once. `hand_over_to` lists the teammates you could hand an open incident to, with `on_call` set for whoever PagerDuty is paging for it; it is empty once the incident is resolved, or when you may not hand it over. Server details need a Cloud scope.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incidents/:incident_id/story",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incidents",
+                ":incident_id",
+                "story"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "incident_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get an incident’s drafted summary",
+          "request": {
+            "method": "GET",
+            "description": "The incident’s summary as InfraNest drafts it from what it recorded, in Markdown: what was down and for how long, what else it affected, the first failure, the alert, the acknowledgement and the recovery, the likely cause and the changes just before it, and what it was if someone said so. Written in `locale` (`en`, `nl`, `de` or `fr`; your own language by default), with times in your time zone. `summary` is the summary saved on the incident, or null; a monthly client report uses the saved one, or this draft.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incidents/:incident_id/write-up",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incidents",
+                ":incident_id",
+                "write-up"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "incident_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hand an incident over to a teammate",
+          "request": {
+            "method": "POST",
+            "description": "Passes an open incident to the teammate in `user_id`: it is acknowledged as theirs, they are told by a push notification or, when no push reaches them, by email, and the hand over appears on the incident’s timeline. An incident nobody had acknowledged is acknowledged by you first. The teammate must be able to act on incidents in this workspace; `story` lists who qualifies in `hand_over_to`. Returns the incident with who has it now.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incidents/:incident_id/hand-over",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incidents",
+                ":incident_id",
+                "hand-over"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "incident_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get when incidents draft status page updates",
+          "request": {
+            "method": "GET",
+            "description": "When an incident drafts a status page update: once its monitor has been down for `min_minutes` from at least `min_locations` locations (or from every location it checks from, when that is fewer). `auto_post` is true when the drafts are posted without asking, with \"resolved\" posted when the monitor recovers. Unless you change it in the app, 3 minutes, 2 locations and never posted without asking.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incident-status-rule",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incident-status-rule"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
             }
           }
         },
@@ -7063,7 +9127,7 @@
           "name": "Update a maintenance window",
           "request": {
             "method": "PATCH",
-            "description": "Changes the fields you send. Sending `check_ids` or `server_ids` replaces what the window covers, and an empty list clears it.\n\nScope: `monitoring.write`",
+            "description": "Changes the fields you send. Sending `check_ids` or `server_ids` replaces what the window covers, and an empty list clears it. Sending `public_notice` as null or empty takes the window off your status pages.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -7253,7 +9317,7 @@
           "name": "Create a maintenance window",
           "request": {
             "method": "POST",
-            "description": "Schedules maintenance for the monitors in `check_ids` and servers in `server_ids`; a window with no monitors applies to every monitor. A one-time window needs `starts_at` and `ends_at`, a `daily` or `weekly` one needs `start_time` and `duration_minutes`, and alerts are suppressed during it unless `suppress_alerts` is false. Subscribers of the affected status pages are told about the new window.\n\nScope: `monitoring.write`",
+            "description": "Schedules maintenance for the monitors in `check_ids` and servers in `server_ids`; a window with no monitors applies to every monitor. A one-time window needs `starts_at` and `ends_at`, a `daily` or `weekly` one needs `start_time` and `duration_minutes`, and alerts are suppressed during it unless `suppress_alerts` is false. Status pages and their subscribers see only `public_notice`, the text written for the public, and only on the pages whose monitors the window covers, from a week before a one-time window starts until it ends. Send it empty or null to keep the window internal. Leave it out and the window stays internal too, unless your workspace posts drafted status updates without asking (`auto_post` in `GET …/incident-status-rule`): then it carries the notice drafted from what it covers, the one `GET …/maintenance-windows/notice-draft` returns, and the response shows it in `public_notice`. The name and description are never published.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -7292,6 +9356,38 @@
               }
             }
           }
+        },
+        {
+          "name": "Draft a maintenance window’s public notice",
+          "request": {
+            "method": "GET",
+            "description": "The public notice a window covering the monitors in `check_ids` and the servers in `server_ids` would carry, written in your workspace’s language, and the status `pages` (with their `components`) it would appear on. With neither, the window covers every monitor, so every status page. `notice` is null when the window would appear on no status page. Nothing is saved: put the text in the window’s `public_notice` to publish it.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/maintenance-windows/notice-draft",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "maintenance-windows",
+                "notice-draft"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -7303,7 +9399,7 @@
           "name": "List status pages",
           "request": {
             "method": "GET",
-            "description": "Every status page in your organization with its component and subscriber counts, how many components are operational or degraded, which are down, and the page’s 90-day uptime.\n\nScope: `monitoring.read`",
+            "description": "Every status page in your organization with its component and subscriber counts, how many components are operational or degraded, which are down, and the page’s 90-day uptime. `component_feeds` says what feeds each component and what it shows now (`status`). `last_post` is what the page last told visitors: an incident `update` (with its `status`, and `automatic` when no person posted it) or an `announcement` (with its `title`), whichever is newer, or null.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -7334,7 +9430,7 @@
           "name": "Get a status page",
           "request": {
             "method": "GET",
-            "description": "One status page with its settings, its components with the monitor and group behind each, and counts of components, announcements and subscribers.\n\nScope: `monitoring.read`",
+            "description": "One status page with its settings, its components with the monitor and group behind each, and counts of components, announcements and subscribers. `exclude_planned_downtime` says whether the page’s uptime figures leave planned maintenance out; when they do, the public page says so beside the figure. `uptime_target` is the uptime promised each calendar month across this page’s monitors (average), or null; `show_uptime_target` says whether the public page shows it. It is spent by the average of the monitors’ downtime, not the worst one’s, so it is not a promise that no monitor is ever down.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -7370,7 +9466,7 @@
           "name": "Get the internal view of a status page",
           "request": {
             "method": "GET",
-            "description": "The team-only view of the page: each component with its monitor, runbook link, regions reporting and 30 days of uptime, plus active incidents, the next maintenance and the on-call note. These internal fields are never shown on the public page, and this view needs a plan that includes private status pages.\n\nScope: `monitoring.read`",
+            "description": "The team-only view of the page: each component with its monitor, runbook link, regions reporting and 30 days of uptime, plus active incidents, the next maintenance and the on-call note. When the page has an uptime target, `metrics.uptime_target` gives the current calendar month against it across this page’s monitors (average): `uptime_pct` and an `allowance` whose `used_minutes` is the average monitor’s downtime. These internal fields are never shown on the public page, and this view needs a plan that includes private status pages.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -8414,7 +10510,7 @@
           "name": "List automations",
           "request": {
             "method": "GET",
-            "description": "Every automation, newest first, with its tags and run statistics: runs in the last 30 and 7 days, success rate, average duration and the last run’s status. Test runs are not counted.\n\nScope: `monitoring.read`",
+            "description": "Every automation, newest first, with its tags and run statistics: runs in the last 30 and 7 days, success rate, average duration and the last run’s status. Test runs are not counted. `mode` is `act`, or `observe` for one that only records what it would have done, and `observed_30d` counts those records.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -8481,7 +10577,7 @@
           "name": "List an automation’s runs",
           "request": {
             "method": "GET",
-            "description": "The automation’s run history with each run’s steps, newest first, 25 per page. Filter with `status` and the dates `from` and `to`. Unless you may edit automations, what triggered each run is left out and `details_hidden` is true.\n\nScope: `monitoring.read`",
+            "description": "The automation’s run history with each run’s steps, newest first, 25 per page. Filter with `status` and the dates `from` and `to`, and with `observed=1` for only the runs that recorded what the automation would have done. Unless you may edit automations, what triggered each run is left out and `details_hidden` is true.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -8691,7 +10787,7 @@
           "name": "List connected integrations",
           "request": {
             "method": "GET",
-            "description": "Everything the organization has connected — cloud, DNS, registrar and certificate accounts, alert destinations, outbound webhooks, automation connections and calendars — each with its status and health. Also returns summary counts and the integrations your plan does not include (`locks`).\n\nScope: `cloud.read`",
+            "description": "Everything the organization has connected — cloud, DNS, registrar and certificate accounts, alert destinations, outbound webhooks, automation connections and calendars — each with its status and health. A cloud, DNS, registrar or certificate account also carries `provider_status`: what the provider itself has wrong right now that concerns you — open incidents from its status page or feed, and failures InfraNest sees on its own calls to the provider across several workspaces — with `explains_failures` true when it is the provider’s API that is failing, so a failing account is the provider’s outage rather than its credential. It is null when nothing is wrong. Also returns summary counts and the integrations your plan does not include (`locks`).\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -8797,7 +10893,7 @@
           "name": "Get an integration account",
           "request": {
             "method": "GET",
-            "description": "One connected account of an integration, whatever kind it is, with its status and health. Returns 404 when the account does not exist or does not belong to this integration and organization.\n\nScope: `cloud.read`",
+            "description": "One connected account of an integration, whatever kind it is, with its status and health. A provider account also carries `provider_status`, the same as in the list of integrations. Returns 404 when the account does not exist or does not belong to this integration and organization.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -9007,10 +11103,138 @@
           }
         },
         {
+          "name": "Get the drop-catch overview",
+          "request": {
+            "method": "GET",
+            "description": "Everything the Drop catch overview shows in one read: how many watches need you and why, how many are at each stage of expiry, how catching went over the last 90 days, the names expected to drop in the next 30 days, and changes that would improve your chances.\n\nScope: `drop-catch.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/drop-catch/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "drop-catch",
+                "overview"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get drop-catch results",
+          "request": {
+            "method": "GET",
+            "description": "How your watches ended over a window set with `days` (`30`, `90`, `365` or `all`; default `90`): counts of names caught, renewed by their owner, sent to auction and lost, why each was lost, what the catches cost, and one row per outcome, newest first.\n\nScope: `drop-catch.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/drop-catch/results",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "drop-catch",
+                "results"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get what a caught domain gets by default",
+          "request": {
+            "method": "GET",
+            "description": "What InfraNest sets up on a domain the moment a watch catches it, unless the watch chose otherwise: `auto_renew`, a DNS template (`dns_template`, a custom template id or a built-in slug) applied to a zone at `dns_credential_id`, an uptime monitor once its DNS points at a website (`monitor`), and tracking the certificate it serves (`certificate`). `is_default` is true while the organization has not changed it. `dns_hosts` lists the connected DNS accounts that can host the zone of a domain registered anywhere. Change the default with `drop_catch_once_caught` on the organization, and a single watch's choice with `once_caught` on the watch (null follows the organization).\n\nScope: `drop-catch.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/drop-catch/once-caught",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "drop-catch",
+                "once-caught"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List your saved Discover searches",
+          "request": {
+            "method": "GET",
+            "description": "The Discover searches you saved in this organization, newest first: the word (`q`), the window (`within`: `today`, `7d` or `30d`), the longest name wanted (`max_length`, or null for any) and whether names with a bad reputation are hidden. `last_sent_at` and `last_sent_count` say when the morning email last sent new matches and how many. Only your own searches; nobody else in the organization sees them.\n\nScope: `drop-catch.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/drop-catch/searches",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "drop-catch",
+                "searches"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List watched domains",
           "request": {
             "method": "GET",
-            "description": "Your watched domains, paginated with `per_page` (default 25, at most 200) and sorted with `sort` and `dir`. Filter with `search`, `tag` and flags such as `active`, `available`, `registered`, `failed`, `paused` and `in_auction`; `meta` carries counts per status.\n\nScope: `drop-catch.read`",
+            "description": "Your watched domains, paginated with `per_page` (default 25, at most 200) and sorted with `sort` and `dir`. Filter with `search`, `tag` and flags such as `active`, `available`, `registered`, `failed`, `paused`, `in_auction`, `needs_you`, `drops_soon` and `no_backup`; `meta` carries counts per filter. Each watch carries a `reading`: its stage, when it is expected to drop and where that date comes from, how it will be caught, and its chances as a word with a reason.\n\nScope: `drop-catch.read`",
             "header": [
               {
                 "key": "Accept",
@@ -9041,7 +11265,7 @@
           "name": "Get a watched domain",
           "request": {
             "method": "GET",
-            "description": "One watched domain with its stored WHOIS record, lifecycle dates, estimated drop date, the check schedule still ahead and drop statistics for its extension.\n\nScope: `drop-catch.read`",
+            "description": "One watched domain with its stored WHOIS record, lifecycle dates, estimated drop date, the check schedule still ahead and drop statistics for its extension. It also carries its `reading` (the same one the list gives), `readiness` (the last \"ready for the drop\" check and when it ran), `registry_source` (how InfraNest checks the name and when the registry last answered), `let_go` (the signs that the owner is giving the name up, each with the date it was seen), `hears` (who is told about it: the watch's own `recipients`, or the organization's alert routing when `recipients` is null), `alerts_so_far` (how the organization's earlier alerts ended) and `self_registration` (where somebody registers it themselves when it comes free). Set `recipients` with a PATCH: `{people: [{user_id, email, app}], channels: [alert channel id]}`, or null to follow the organization again. `once_caught_applied` is what is set up on the domain once it is caught, and whose choice that is (`source`: `watch` or `organization`); set the watch's own with `once_caught` in a PATCH, or null to follow the organization. Once caught, `caught_setup` says what came of each step on the domain: `done`, `waiting`, `blocked` with a `reason`, or `off`.\n\nScope: `drop-catch.read`",
             "header": [
               {
                 "key": "Accept",
@@ -9059,6 +11283,43 @@
                 ":organization_id",
                 "watched-domains",
                 ":watchedDomain_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "watchedDomain_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the options for registering a free watched domain",
+          "request": {
+            "method": "GET",
+            "description": "What registering the watched domain by hand needs: `watch` (its name and whether it is free now), `registrars` (your connected registrar accounts that can register it, cheapest first, each with its price, `cheapest`, and `confirms_price`, whether it can check this name's own price before buying) and, when none is connected, `connectable` (the registrars you could connect for it; `sells` is true when one is known to sell the extension, null when not yet known). Register it with `POST domains/register`; on a plan without domain registration that is accepted for a watched domain that is free now.\n\nScope: `drop-catch.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/watched-domains/:watchedDomain_id/register-options",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "watched-domains",
+                ":watchedDomain_id",
+                "register-options"
               ],
               "variable": [
                 {
@@ -9183,37 +11444,6 @@
               ]
             }
           }
-        },
-        {
-          "name": "List custom WHOIS servers",
-          "request": {
-            "method": "GET",
-            "description": "The WHOIS servers you set per extension to use instead of the default ones, sorted by extension.\n\nScope: `drop-catch.read`",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/organizations/:organization_id/whois-servers",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "organizations",
-                ":organization_id",
-                "whois-servers"
-              ],
-              "variable": [
-                {
-                  "key": "organization_id",
-                  "value": "{{organization_id}}"
-                }
-              ]
-            }
-          }
         }
       ]
     },
@@ -9327,6 +11557,37 @@
                 "organizations",
                 ":organization_id",
                 "invitations"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search everything by name",
+          "request": {
+            "method": "GET",
+            "description": "Up to five matches per kind for `q` (at least 2 characters): domains, servers, DNS zones, monitors (by name or target), certificates, contacts, status pages, watched domains, load balancers, volumes, firewalls and dynamic IP sources. Each match has its `id`, a `label`, sometimes a `sublabel` (an address or target) and the `url` of its page in the app. A kind your token or role may not read is left out. `related`, when `q` is exactly one of your domains, lists what that domain is connected to.",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "search"
               ],
               "variable": [
                 {
@@ -10103,6 +12364,38 @@
           }
         },
         {
+          "name": "Preview what a plan change would lock",
+          "request": {
+            "method": "GET",
+            "description": "What changes for this organization if it moves to another plan: the items over a limit that would be locked (with the first few named), the counts that stay but cannot grow, monitors that would check less often, and the features it would lose. Pass `plan_id` for a plan change, or leave it out to preview where the organization lands when its subscription ends. `lines` words the same changes in `locale` (en, nl, de or fr). Read-only; empty when nothing changes.\n\nScope: `billing.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/subscription/impact",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "subscription",
+                "impact"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List add-ons",
           "request": {
             "method": "GET",
@@ -10217,6 +12510,37 @@
                 "organizations",
                 ":organization_id",
                 "account-credit"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what stays active past a plan limit",
+          "request": {
+            "method": "GET",
+            "description": "Every kind of item (domains, DNS zones, servers, monitors, cloud volumes, firewalls, load balancers, networks) the organization has more of than its plan includes, with each item, whether it was chosen to stay active (`kept`) and whether it is past the limit (`locks`). Kinds within their limit are left out. Read-only.\n\nScope: `billing.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/plan-keep",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "plan-keep"
               ],
               "variable": [
                 {

@@ -1,0 +1,29 @@
+meta {
+  name: Get what a safe reboot of a server would do
+  type: http
+  seq: 27
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/reboot-plan
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~timezone: Europe/Amsterdam
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Before a safe reboot: `mode` is `safe` (it leaves a load balancer whose targets can be changed here), `plain` (no such load balancer — `reason` says which — or `server_down`: the others could not carry it, but the server is not serving anyway, so it is rebooted where it is) or `unavailable` (self-managed, no provider to ask). Lists each load balancer it is behind with the servers left to carry the traffic and whether each is healthy — by the load balancer’s own health check as well as the server’s status, agent and monitors where the provider reports one per target (`lb_health`; `judged_by` is `provider`, `signals` or, per load balancer, `mixed`) — `carry_now` and `carry_hours` (about what CPU they would run at without it, now and per hour in `timezone`), `blocked` when it cannot start now (`only_target`, `targets_unhealthy`, `no_headroom`), `group`: the other servers with a reboot waiting, for one at a time, and the dialog’s words: `provider_label` (the provider the reboot goes through), `monitors` (the names of the monitors it waits for) `reboot_required` (when the agent says a reboot is waiting: since when, the newer kernel, the reason) and `database` (the server is a database, so what uses it loses it while it reboots).
+
+  Scope: `cloud.read`
+}

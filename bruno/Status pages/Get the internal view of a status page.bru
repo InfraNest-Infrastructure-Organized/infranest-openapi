@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  The team-only view of the page: each component with its monitor, runbook link, regions reporting and 30 days of uptime, plus active incidents, the next maintenance and the on-call note. These internal fields are never shown on the public page, and this view needs a plan that includes private status pages.
+  The team-only view of the page: each component with its monitor, runbook link, regions reporting and 30 days of uptime, plus active incidents, the next maintenance and the on-call note. When the page has an uptime target, `metrics.uptime_target` gives the current calendar month against it across this page’s monitors (average): `uptime_pct` and an `allowance` whose `used_minutes` is the average monitor’s downtime. These internal fields are never shown on the public page, and this view needs a plan that includes private status pages.
 
   Scope: `monitoring.read`
 }

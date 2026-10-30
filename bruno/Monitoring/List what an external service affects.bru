@@ -1,7 +1,7 @@
 meta {
   name: List what an external service affects
   type: http
-  seq: 20
+  seq: 26
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  For a monitor that watches a third-party status page: the DNS zones, domains, monitors and servers of yours that depend on that service. Each has a `source` of `manual` (linked by you) or `auto` (zones and domains at the matching provider, detected by InfraNest).
+  For a monitor that watches a third-party status page: the DNS zones, domains, monitors, servers and status page components of yours that depend on that service. Each has a `source` of `manual` (linked by you) or `auto` (detected by InfraNest at the matching provider: its DNS zones, domains and servers, and your own monitors behind it). An `auto` monitor carries `via`, how it sits behind the provider: `proxy` (its host is a record proxied through it), `dns` (its host is in a DNS zone there), `server` (it watches a server there) or `linked` (you linked it, its server, its zone, its domain or a status page component it feeds to this status monitor). A status page component is named with its page. Servers are listed only when you may read servers.
 
   Scope: `monitoring.read`
 }

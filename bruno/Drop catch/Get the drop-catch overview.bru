@@ -1,0 +1,21 @@
+meta {
+  name: Get the drop-catch overview
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/drop-catch/overview
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Everything the Drop catch overview shows in one read: how many watches need you and why, how many are at each stage of expiry, how catching went over the last 90 days, the names expected to drop in the next 30 days, and changes that would improve your chances.
+
+  Scope: `drop-catch.read`
+}

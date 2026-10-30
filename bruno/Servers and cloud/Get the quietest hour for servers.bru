@@ -1,0 +1,27 @@
+meta {
+  name: Get the quietest hour for servers
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/quiet-hours
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~server_ids: 12,14
+  ~timezone: Europe/Amsterdam
+  ~at: 2026-01-15T09:30:00
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The quietest hour of the day for the servers in `server_ids` (one, or a group), from the last 30 days of the agent’s readings — or the provider’s CPU graph without the agent — read in `timezone`. Each hour carries its usual load and a level (`quiet`, `normal`, `busy`); `recommended_at` is the next occurrence of the quietest hour. With too few readings, `source` is `default` and the hour is the stated default. Pass `at` to judge one time.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Get incident statistics
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/stats
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The last 90 days of unplanned incidents: `count`, `downtime_seconds`, the median time to acknowledge (`median_notice_seconds`) and to resolve (`median_fix_seconds`), how many started within 30 minutes of a change to what failed (`after_change` of `after_change_of` checked, the most recent 100) and the most common kind of that change (`common_change`). `previous_count` is the number of unplanned incidents in the 90 days before, to compare with. Vendor incidents are counted apart in `not_yours`. Up to ten minutes old.
+
+  Scope: `monitoring.read`
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Edit a dynamic IP source
+  type: http
+  seq: 26
+}
+
+patch {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "label": "Office — Amsterdam",
+    "alert_on_change": true
+  }
+}
+
+docs {
+  Changes the `label`, whether an address change sends an alert (`alert_on_change`), and its tags (`tag_ids`, replacing them). The firewall settings `firewall_strict` and `firewall_fail_closed` decide who can reach a server and are not accepted from an API token.
+
+  Scope: `monitoring.write`
+}

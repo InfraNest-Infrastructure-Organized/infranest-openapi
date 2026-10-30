@@ -1,0 +1,25 @@
+meta {
+  name: Get a network’s checks
+  type: http
+  seq: 76
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-networks/:cloudNetwork_id/advisor
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudNetwork_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether the network has a subnet a server can join through, and whether any server is on it. Each check has a `status` and the evidence behind it.
+
+  Scope: `cloud.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Get a server’s restart history
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/reboots
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  When the server last started, every restart its agent has reported with who or what asked for it (`infranest`, `automation`, `outside` or `unexpected`) and any monitor outage at the same time, whether it needs a reboot and since when, and the actions scheduled on it. Without the agent, `running_since` is null and only `created_at` is known.
+
+  Scope: `cloud.read`
+}

@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  A live WHOIS lookup for the domain. Answers 422 with a message when the lookup fails.
+  The registry’s raw answer for the domain (RDAP, or WHOIS where the registry has no RDAP) and the server that gave it — the same record as the registry record. Served from the last answer for up to six hours; add `refresh=1` to ask the registry now, which counts against your domain checks per hour. Answers 422 with a message when the registry gave no answer, and 429 with `Retry-After` when InfraNest is pacing its questions to that registry and cannot ask again yet.
 
   Scope: `domains.read`
 }

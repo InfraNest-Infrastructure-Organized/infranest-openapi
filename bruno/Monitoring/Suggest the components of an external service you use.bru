@@ -1,0 +1,21 @@
+meta {
+  name: Suggest the components of an external service you use
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/external-service-suggestions/components
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For the service in `external_service_id`: the components you use, each with its `reasons` — a `kind` of use at the provider (`dns`, `proxy`, `server`, `registrar`, `certificates`, `load_balancer`, `api`) with how many you have or the region it is in, `probe` with the city an InfraNest probe checks your sites from, or `signal` with the record type that named the service. `dismissed` is true for a component you said not to offer again. Nothing is followed until you change your selection.
+
+  Scope: `monitoring.read`
+}

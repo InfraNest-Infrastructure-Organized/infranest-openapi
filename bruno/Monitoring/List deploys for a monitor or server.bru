@@ -1,7 +1,7 @@
 meta {
   name: List deploys for a monitor or server
   type: http
-  seq: 38
+  seq: 53
 }
 
 get {
@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  The deploys linked to one monitor (`monitor`) or server (`server`) between `from` and `to`; the window defaults to the 24 hours before `to`, which defaults to now. Also lists the repositories linked to it.
+  The deploys linked to one monitor (`monitor`) or server (`server`) between `from` and `to`; the window defaults to the 24 hours before `to`, which defaults to now. Also lists the repositories linked to it. Each deploy carries its `verification`: after a successful production deploy (the repository default branch, an environment GitHub or its name marks as production, or as the `production` setting of the repository says) its monitors are checked more often for an hour, then that hour is compared with the hour before it — `state` (`watching` until `until`, then `done`; `cut_at` when a newer deploy reached one of its monitors first and ended the window there for that monitor), `verdict` (`better`, `unchanged`, `worse` or `insufficient`; with `reason: plan_interval` and the plan interval in `plan_interval_seconds` when the plan check interval left too few checks for a verdict), a `summary` of the p95 response time and failure share, and per monitor and location the numbers on both sides. For a monitor, only what the deploy did to that monitor; null when the deploy was not verified.
 
   Scope: `monitoring.read`
 }

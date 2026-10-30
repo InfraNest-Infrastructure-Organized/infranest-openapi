@@ -1,0 +1,21 @@
+meta {
+  name: List what happens next
+  type: http
+  seq: 36
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring/next
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What will happen soon, soonest first: maintenance windows starting in the next 7 days (`maintenance`, with `until` and how many monitors and servers they mute), disks forecast to fill (`disk_full`, `at` is the forecast moment) and servers whose agent reports a reboot is required (`reboot`, `at` is when that began). At most 6 rows in `items`, the rest counted in `more`. Disks and reboots need a Cloud scope.
+
+  Scope: `monitoring.read`
+}

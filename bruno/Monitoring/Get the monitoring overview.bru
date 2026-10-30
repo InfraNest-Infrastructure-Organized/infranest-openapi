@@ -1,0 +1,21 @@
+meta {
+  name: Get the monitoring overview
+  type: http
+  seq: 35
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring/overview
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The body of the monitoring Overview. Every figure covers your own monitors only: a subscription to a provider’s status page (a monitor with `external_service_id`) is left out of `monitors`, `days`, `month`, `key_monitors` and `locations`, and so are its incidents. `monitors` counts your enabled monitors and how many are up; `days`, the last 30 days across every enabled monitor (each day the mean uptime of the monitors measured that day as `p`, the number of unplanned incidents that started on it as `incidents`, and its colour: `red` if one of them was major or critical, `yellow` for any other, `grey` with no readings, otherwise `green`); `month`, the 30-day uptime, the number of unplanned incidents and the minutes down; `key_monitors`, the monitors on a status page (or, with none, the enabled monitors, worst first), at most eight, each with its 30 daily bars, uptime, its last 24 response times (`spark`) and its current response time; and `locations`, each probe location checking them, with how many of your monitors were checked from there in the last hour (`checking`) and how many fail from there now (`failing`); and `services`, the providers’ status pages you subscribe to: `total`, and in `problems` those reporting a problem now, down first, each with its `state`, the `provider` it speaks for (null for a page InfraNest does not recognise), how many things you linked to it by hand (`linked`) and your monitors that sit behind it (`monitors`, each with its `state` and `via`: `proxy`, `dns`, `server` or `linked`). Cached for two minutes.
+
+  Scope: `monitoring.read`
+}

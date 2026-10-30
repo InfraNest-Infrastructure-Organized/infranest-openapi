@@ -1,7 +1,7 @@
 meta {
   name: List a server’s alert rules
   type: http
-  seq: 45
+  seq: 68
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, plus any older standalone rules. With `active=1` it returns only the rules actually being evaluated, as a flat list.
+  Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, with `fired_30d`: how many incidents it raised on this server in the last 30 days. Older standalone rules are listed apart. With `active=1` it returns only the rules actually being evaluated, as a flat list.
 
   Scope: `cloud.read`
 }

@@ -1,0 +1,25 @@
+meta {
+  name: Check in from your own address
+  type: http
+  seq: 31
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id/check-in
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Sets the source’s address to the one this request comes from — for a script running on the connection itself, which need not know its address. Answers with the address and its family (`v4` or `v6`). Refused like setting the address for a source that keeps a firewall rule up to date.
+
+  Scope: `monitoring.write`
+}

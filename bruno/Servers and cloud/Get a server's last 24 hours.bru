@@ -1,0 +1,25 @@
+meta {
+  name: Get a server's last 24 hours
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/day
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  CPU in 15-minute steps (`cpu`, average and peak per step, null where nothing was reported), the `events` on the same axis (deploys, changes, restarts, certificate renewals, scheduled job runs, alerts) and up to three `sentences` as copy keys: an unexpected restart, or a CPU episode well above the day's normal with the change just before it, or said to be unexplained. Needs the server's agent or provider metrics.
+
+  Scope: `cloud.read`
+}

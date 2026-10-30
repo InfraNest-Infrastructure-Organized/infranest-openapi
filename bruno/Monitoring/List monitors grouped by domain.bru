@@ -1,0 +1,21 @@
+meta {
+  name: List monitors grouped by domain
+  type: http
+  seq: 37
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring/groups
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your monitors, one row per registrable domain (`shop.example.nl` and `api.example.nl` are both `example.nl`); a monitor whose target is an address is grouped under its server (`type` `server`), and one with neither under `other`. Each group has its worst `state`, how many monitors it holds, how many are down or degraded, 24 hourly `bars` (the worst monitor in each hour, oldest first) and a `note`: the newest team note on an open incident in it, or null. Paused and silenced monitors are counted but do not set the state. Problem groups come first. Answers are up to a minute old.
+
+  Scope: `monitoring.read`
+}

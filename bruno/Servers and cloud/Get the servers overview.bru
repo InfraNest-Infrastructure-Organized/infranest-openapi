@@ -1,0 +1,21 @@
+meta {
+  name: Get the servers overview
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-overview
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What needs you across your servers, one entry per cause with every server it affects and, in `prevention`, the automation recipe that would keep the cause from coming back and whether you already run it; what your cloud resources cost this month against six months ago and which types moved most; what the savings finder could save; how many servers have backups, delete protection, the agent reporting, SSH limited and no reboot waiting; and a count of each kind of resource with the one thing worth knowing about it.
+
+  Scope: `cloud.read`
+}

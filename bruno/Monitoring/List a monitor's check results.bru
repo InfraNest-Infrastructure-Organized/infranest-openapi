@@ -1,7 +1,7 @@
 meta {
   name: List a monitor’s check results
   type: http
-  seq: 6
+  seq: 8
 }
 
 get {
@@ -29,7 +29,7 @@ headers {
 }
 
 docs {
-  The monitor’s check results, newest first. With `resolution=raw` (the default) each result is one check by one probe, filterable by `status`; individual results are kept for 3 days. With `resolution=hour` or `day` each row sums one hour or one day across probes: checks by outcome (`checks_up`, `checks_degraded` for slow checks, `checks_down` for failures), `up_percent` and the p50 and p95 response times, reaching back as far as your plan keeps history. Set the window with `from` and `to` (ISO 8601; default: everything kept for raw, the last 24 hours for hours, the last 30 days for days), narrow it to one probe `region`, and page with `page` and `per_page` (up to 500, default 50). A range longer than the resolution allows — 3 days raw, 31 days by hour, 366 days by day — is refused with `range_too_large`. `window` repeats the range that was applied.
+  The monitor’s check results, newest first. With `resolution=raw` (the default) each result is one check by one probe, filterable by `status`; for HTTP, API and keyword monitors it also says where the response time went, in milliseconds: `dns_ms`, `connect_ms`, `tls_ms`, `server_ms` (waiting for the first byte) and `download_ms`, null when the location did not measure them, and `response_bytes`, how big the answer’s body was (null for a HEAD request, or a location on an older version). Its `meta` holds what the check saw: a keyword check’s `page_bytes` and, when it failed, an `excerpt` of the page’s text (at most 512 bytes); a ping’s `sent`, `received`, `loss_pct` and `jitter_ms`; a DNS check’s `records` with their `ttl` and the `resolver` asked (null for the location’s own); a redirect check’s `hops`, each `url` (without its query) and `status`; a heartbeat’s `run_duration_ms` when the check-in sent `duration`. Individual results are kept for 3 days. With `resolution=hour` or `day` each row sums one hour or one day across probes: checks by outcome (`checks_up`, `checks_degraded` for slow checks, `checks_down` for failures), `up_percent` and the p50 and p95 response times, reaching back as far as your plan keeps history. Set the window with `from` and `to` (ISO 8601; default: everything kept for raw, the last 24 hours for hours, the last 30 days for days), narrow it to one probe `region`, and page with `page` and `per_page` (up to 500, default 50). A range longer than the resolution allows — 3 days raw, 31 days by hour, 366 days by day — is refused with `range_too_large`. `window` repeats the range that was applied.
 
   Scope: `monitoring.read`
 }

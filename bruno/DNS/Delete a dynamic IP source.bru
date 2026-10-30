@@ -1,0 +1,25 @@
+meta {
+  name: Delete a dynamic IP source
+  type: http
+  seq: 27
+}
+
+delete {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/dynamic-ips/:dynamicIp_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dynamicIp_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Deletes the source; its update token stops working at once. The DNS records it kept up to date stay as they are. Refused for a source that keeps a firewall rule up to date — remove those in the app first.
+
+  Scope: `monitoring.write`
+}

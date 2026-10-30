@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Every status page in your organization with its component and subscriber counts, how many components are operational or degraded, which are down, and the page’s 90-day uptime.
+  Every status page in your organization with its component and subscriber counts, how many components are operational or degraded, which are down, and the page’s 90-day uptime. `component_feeds` says what feeds each component and what it shows now (`status`). `last_post` is what the page last told visitors: an incident `update` (with its `status`, and `automatic` when no person posted it) or an `announcement` (with its `title`), whichever is newer, or null.
 
   Scope: `monitoring.read`
 }

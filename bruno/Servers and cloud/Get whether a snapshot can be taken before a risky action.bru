@@ -1,0 +1,25 @@
+meta {
+  name: Get whether a snapshot can be taken before a risky action
+  type: http
+  seq: 29
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/snapshot-first
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether a rebuild, resize or delete of this server can wait for a snapshot first (`available`, or `reason` why not: `plan`, `provider`, `no_progress`, `no_provider`), what keeping the snapshot costs a month at this account’s snapshot rate (an upper bound, from the disk size; null when there is no priced snapshot to read the rate from), and `always`: whether the organization takes one before every risky action.
+
+  Scope: `cloud.read`
+}
