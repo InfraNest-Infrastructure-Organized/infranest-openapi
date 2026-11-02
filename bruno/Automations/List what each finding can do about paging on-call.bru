@@ -1,0 +1,21 @@
+meta {
+  name: List what each finding can do about paging on-call
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/oncall-pages
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether PagerDuty is connected (`available`), and for each finding you name in `keys[]` (up to 100 of a finding’s stable keys; an incident’s is `incident:` and its id) whether it can page on-call now (`pageable`) and the page it already has (`page`): the PagerDuty service it went to, PagerDuty’s incident id and address once known, its urgency and who paged it. An incident can be paged while it is open and PagerDuty has not been paged for it. When PagerDuty is not connected, `data` is empty.
+
+  Scope: `monitoring.read`
+}

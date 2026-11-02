@@ -1,0 +1,21 @@
+meta {
+  name: List the trackers a finding can be filed into
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/finding-tickets/trackers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Your connected issue trackers that can hold a ticket, such as Jira, Linear or GitHub, the one you used last first, with what each calls the place a ticket goes (`target_noun`: `team`, `project` or `repository`) and the one you used last there. `default_target` is where a new ticket goes unless you choose otherwise — the one you used last, else the one the connection’s *Issues for Incidents* setting files into — and `destination` its name as InfraNest last read it from the tracker, or null when it never has. A paused or disconnected connection is left out, so an empty list means a finding cannot be filed anywhere yet.
+
+  Scope: `monitoring.read`
+}

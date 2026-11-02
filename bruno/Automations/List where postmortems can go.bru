@@ -1,0 +1,25 @@
+meta {
+  name: List where postmortems can go
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automation-connections/:automationConnection_id/incident-reports/targets
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The databases this connection can write a postmortem into, as `{value, label}` rows — only those shared with the connection. When the tool would not answer, `data` is empty and `error` says why.
+
+  Scope: `monitoring.read`
+}

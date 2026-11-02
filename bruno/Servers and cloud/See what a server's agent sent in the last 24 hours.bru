@@ -1,0 +1,25 @@
+meta {
+  name: See what a server’s agent sent in the last 24 hours
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/cloud-servers/:cloudServer_id/agent-sent
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cloudServer_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What your monitoring agent sent from this server in the last 24 hours (`window_hours`), counted from what InfraNest stored, with how long each kind is kept. `last_push_at` is the agent’s last push, and `networks` the networks it pushed from in the window (a /24, or a /48 for IPv6). Each of `kinds` has a `key` and `kept_days`: `readings` (`count` received, kept raw for `raw_hours` and hourly for `kept_days`, your plan’s history), `programs` (`processes` and `services` held now — each push replaces them — `process_args`, whether command lines are sent, and `kept_days` for the hourly memory and CPU per program), `cron` (`count` of jobs held now, `enabled`), `setup` (`read`, and the `ssh_settings`, `administrators` and `updates` it read; held now), `journal_events` (`count` of failed services’ last lines received), `journal_hours` (`count` of hours of error counts received), `login_counts` (`count` of hours that carried a failed-login count, and their `total` — a number only, never who or from where) and `job_runs` (`count` of job reports received). `held` is true for a kind each push replaces: its numbers are what InfraNest holds now, not what arrived. A `count` or flag is null where your agent has not said. There is no byte or push count: InfraNest does not record either.
+
+  Scope: `cloud.read`
+}

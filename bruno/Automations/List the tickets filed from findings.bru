@@ -1,0 +1,21 @@
+meta {
+  name: List the tickets filed from findings
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/finding-tickets
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The latest ticket filed from each finding you name in `keys[]` (up to 100 of a finding’s stable keys, such as `server_advisor:12:firewall`), open or closed. An incident’s key is `incident:` and its id, and answers with the incident’s own ticket. Each has the tracker, its key in the tracker (`label`) and `url`, the state you last know it in, `closed` when it was finished there, `subject_open` while the problem it is about is still there (false once the ticket was told it cleared), and who filed it. `on_clear` says what a finding’s ticket is told when the finding clears, checked within 30 minutes: `finish` (a comment, then finished), `comment`, or null when it is told nothing — that kind of finding is not re-checked after filing yet, the connection is set to leave tickets alone, or the key is an incident’s, which follows the incident instead. A finding that comes back while its ticket is open gets a comment too, unless `on_clear` is null. A finding with no ticket is left out.
+
+  Scope: `monitoring.read`
+}

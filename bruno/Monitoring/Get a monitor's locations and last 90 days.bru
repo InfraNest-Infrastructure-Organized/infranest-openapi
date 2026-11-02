@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  `locations`: one entry per probe location that checked the monitor in the last hour — its last `status`, response time (`ms`), when, and `failing_since` when it is failing (the first failure after its last good check). `uptime`: 90 daily `bars` (uptime, colour band, and `m`, the minutes of planned maintenance that day), the overall `pct`, the number of unplanned `incidents`, the `minutes_down` and the `planned_minutes` of planned maintenance in those 90 days. Planned maintenance is left out of `pct` and `minutes_down`.
+  `locations`: one entry per probe location that checked the monitor in the last hour — its last `status`, response time (`ms`), when, and `failing_since` when it is failing (the first failure after its last good check). `uptime`: 90 daily `bars` (uptime, colour band, and `m`, the minutes of planned maintenance that day), the overall `pct`, the number of unplanned `incidents`, the `minutes_down` and the `planned_minutes` of planned maintenance in those 90 days. Planned maintenance is left out of `pct` and `minutes_down`. `checked_from` says where the monitor is checked from: its first `region`, the `name` of the place a probe there checks it from, whether InfraNest picked that region for you (`auto`, closest to your site and moved only when another region is clearly faster or its probes are unavailable) and whether it is the only one (`single`). A one-off check asked of another probe — a second opinion on a failure from a single region, or a measurement of how fast another region reaches your site — is not a location and is left out of `locations`.
 
   Scope: `monitoring.read`
 }

@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  Queues an immediate check of the monitor and answers 202 straight away; the result appears in its results once the check has run. Limited by your plan’s hourly allowance of manual checks.
+  Queues an immediate check of the monitor and answers 202 straight away; the result appears in its results once the check has run. Limited by your plan’s hourly allowance of manual checks. In a sandbox nothing is ever probed, so the check is simulated instead: the answer carries `simulated: true` and the `result`, already recorded.
 
   Scope: `monitoring.write`
 }

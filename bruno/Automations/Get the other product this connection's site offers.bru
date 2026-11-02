@@ -1,0 +1,25 @@
+meta {
+  name: Get the other product this connection’s site offers
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automation-connections/:automationConnection_id/other-product
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For a connection whose account reaches more than one product (an Atlassian site with Jira and Confluence), what to offer next, seen from the tile it was connected from (`from`: `jira` or `confluence`). `offer.kind` is `grant` (allow the other product with one more sign-in on the same connection, named in `grant`), `turn_on` (turn on the switch named in `switch`, `incident_tickets`) or `ready` (the connection already reaches it), with the product, the `site`, and the current default place (`default_target`, `default_target_name`). `offer` is null when the site does not have the other product, or the offer was dismissed for this connection. Read from what InfraNest recorded; nothing is asked of the tool.
+
+  Scope: `monitoring.read`
+}

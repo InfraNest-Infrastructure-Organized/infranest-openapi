@@ -1,7 +1,7 @@
 meta {
   name: Get what needs attention on a server
   type: http
-  seq: 57
+  seq: 58
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  A short summary of the server: its uptime, whether alerts are quiet and until when, and the metric trend closest to crossing its alert threshold. Fields are null when there is nothing to say. `unusual` lists the last 24 hours’ runs of hours that were unusual for this server at that hour of the week, one per metric: `from`, `to`, `peak` and `peak_at`, the `normal` range (`low`, `typical`, `high`) it was judged against, the `weeks` behind it and, when the range is a peer’s, `borrowed_from`. They are never sent as alerts.
+  A short summary of the server: its uptime, whether alerts are quiet and until when, and the metric trend closest to crossing its alert threshold. Fields are null when there is nothing to say. `unusual` lists the last 24 hours’ runs of hours that were unusual for this server at that hour of the week, one per metric: `from`, `to`, `peak` and `peak_at`, the `normal` range (`low`, `typical`, `high`) it was judged against, the `weeks` behind it and, when the range is a peer’s, `borrowed_from`. They are never sent as alerts. `full_mounts` lists the mounts at 90% or fuller now (`mount_point`, `used_percent`, `collected_at`), whether or not an alert rule watches the disk. `alert_rules` counts the active rules watching the server; with none, `no_alert_rules` says so, with the app `route` to add one. `certificates` lists the certificate problems whose fix is on this server (`code`, `severity`, the `certificate_id` and its `route`), with the `key` and `kind` of the Home item each one is, so a ticket filed from either place is the same ticket; `key` is null for one Home does not list.
 
   Scope: `cloud.read`
 }

@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  The zone’s record changes from its last 50 operations, newest first, grouped by the operation that made each batch, each with whether it can still be undone or restored to. Also returns a merged timeline and how many days of changes your plan keeps.
+  The zone’s record changes from its last 50 operations, newest first, grouped by the operation that made each batch, each with whether it can still be undone or restored to. Every change is here, whoever made it: each batch’s `source` says where it came from — `provider` for an edit made directly at the DNS provider and found by a sync, otherwise InfraNest, an automation or a dynamic IP. Also returns a merged timeline and how many days of changes your plan keeps.
 
   Scope: `dns.read`
 }

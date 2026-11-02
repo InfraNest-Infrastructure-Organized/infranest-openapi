@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Your DNS zones, paginated with `page` and `per_page` (up to 200), each with its provider, record count, tags and delegation state. Filter with `search`, `credential`, `tag` or `status` (`active`, `stale`, `drift` for records changed at the provider, or `security`) and sort with `sort` (`zone`, `provider`, `records`, `synced`) and `dir`; `meta.counts` holds the totals.
+  Your DNS zones, paginated with `page` and `per_page` (up to 200), each with its provider, record count, tags and delegation state. Filter with `search`, `credential`, `tag` or `status` (`active`, `stale`, `drift` for zones whose live DNS disagrees with InfraNest — their nameservers or records —, `outside` for zones with edits made directly at the DNS provider that nobody has kept or undone yet, or `security`) and sort with `sort` (`zone`, `provider`, `records`, `synced`) and `dir`; `meta.counts` holds the totals. Each zone’s `outside_changes` counts its undecided edits made at the provider.
 
   Scope: `dns.read`
 }

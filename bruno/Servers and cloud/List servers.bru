@@ -20,7 +20,7 @@ headers {
 }
 
 docs {
-  Every server InfraNest tracks in the organization, a page at a time, with its provider, status, addresses and tags. Filter with `search`, `status`, `running`, `datacenter`, `tag`, `credential`, `provider` or `tracking=untracked`, and sort with `sort` and `dir`; self-managed machines are counted in `meta` but not listed.
+  Every server InfraNest tracks in the organization, a page at a time, with its provider, status, addresses and tags. Filter with `search`, `status`, `running`, `datacenter`, `tag`, `credential`, `provider` or `tracking=untracked`, and sort with `sort` and `dir`; self-managed machines are counted in `meta.counts.self_managed` and listed only with `provider=self_managed`.
 
   Scope: `cloud.read`
 }

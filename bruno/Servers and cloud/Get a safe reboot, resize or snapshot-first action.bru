@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  One safe reboot, or a rebuild or delete waiting for a snapshot, with every step and its status. Poll it while `status` is `queued` or `running`; `failed_step` and `error_code` say where and why it stopped. `by` names the person who started it; `via` is `automation` or `schedule` when nobody pressed it.
+  One safe reboot, or a rebuild or delete waiting for a snapshot, with every step and its status. Poll it while `status` is `queued` or `running`; `failed_step` and `error_code` say where and why it stopped. `by` names the person who started it; `via` is `automation` or `schedule` when nobody pressed it. `superseded`, `handled_at` and `handled_by` say whether a failure is still current, as the server’s operations list does.
 
   Scope: `cloud.read`
 }

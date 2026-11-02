@@ -1,7 +1,7 @@
 meta {
   name: Get a server’s stored metric series
   type: http
-  seq: 53
+  seq: 54
 }
 
 get {
@@ -18,6 +18,7 @@ params:query {
   ~resolution: hour
   ~per_page: 1000
   ~page: 1
+  ~include: stands_out,peers
 }
 
 params:path {
@@ -29,7 +30,7 @@ headers {
 }
 
 docs {
-  Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied. `normal` gives each requested metric’s normal week: `hours` holds 168 entries, one per hour of the week starting Monday 00:00 UTC, each `[p10, p50, p90]` of that hour’s averages over up to 12 weeks (null for an hour with too little history). It stays empty until `weeks` reaches `min_weeks` (4), unless a peer server behind the same load balancer or with the same role lends its week — then `borrowed_from` names it. `learning_since` and `reset_reason` (`resize`, `reinstall`, `role` or `source`) say when and why the week started again. Maintenance windows, incident hours and a memory leak’s climb are not learned.
+  Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied. `normal` gives each requested metric’s normal week: `hours` holds 168 entries, one per hour of the week starting Monday 00:00 UTC, each `[p10, p50, p90]` of that hour’s averages over up to 12 weeks (null for an hour with too little history). It stays empty until `weeks` reaches `min_weeks` (4), unless a peer server behind the same load balancer or with the same role lends its week — then `borrowed_from` names it. `learning_since` and `reset_reason` (`resize`, `reinstall`, `role` or `source`) say when and why the week started again. Maintenance windows, incident hours and a memory leak’s climb are not learned. Add `include=stands_out` for `stands_out`: up to three findings about the whole window (null when it spans more than one page), each with a `metric`, a `kind` and its unformatted `values` in the series’ units — `crossed` (minutes past the alert line), `aboveNormal` or `belowNormal` (minutes outside the normal range for those hours), `step` (the level `before` and `after` the deploy, change or restart in `event`), `lastWeek` (the average `now` and `then`, at the same hours a week earlier) and `followsNetwork` (load rising and falling with traffic). For a CPU or memory `step` or `lastWeek`, `behind` names the service, container or process that accounts for most of the change; it is null when none clearly does, and for a step whose either side is shorter than an hour, the workloads’ sampling interval. `normal` says where a step or a change landed against the normal range: `within`, `above`, `below` or null. Add `include=peers` for `peers`: the servers worth comparing with, those behind the same load balancer first (`reason` `load_balancer`, `via` naming it), then those with the same roles (`role`).
 
   Scope: `cloud.read`
 }

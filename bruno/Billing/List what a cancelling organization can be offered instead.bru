@@ -1,0 +1,21 @@
+meta {
+  name: List what a cancelling organization can be offered instead
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/subscription/stay-offers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The offers the cancel dialog can show this organization: `yearly` (what yearly billing would save a monthly payer, in minor units), `smaller` (the cheapest plan on which nothing locks, when it costs less), `discount` (a stay discount, when the organization is eligible) and `pause` (how many months billing can be paused). Each is null when it does not apply. Read-only; nothing is applied by reading it.
+
+  Scope: `billing.read`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List where a review can be published in a tool
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incident-review-destinations/:automationConnection_id/targets
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The places a connection can publish an incident review into, read from the tool when you ask: Notion databases, Linear projects or Confluence spaces (`target_noun`), each with its `id` and `name` — a readable `key` where it has one, and `personal` for a person’s own Confluence space — team spaces first, and `last_target`, the one its Postmortems setting writes to. `parents` says whether the tool keeps pages in a tree, so a review can go under a page. When the tool will not answer, `targets` is empty and `error` says why.
+
+  Scope: `monitoring.read`
+}

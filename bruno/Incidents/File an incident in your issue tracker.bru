@@ -1,0 +1,25 @@
+meta {
+  name: File an incident in your issue tracker
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident_id/ticket
+  body: none
+  auth: inherit
+}
+
+params:path {
+  incident_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Opens an issue for the incident in a connected Jira, Linear or GitHub, the same way the connection’s *Issues for incidents* switch does: the incident’s title, a priority from its impact where the tracker has one, and a link back to the incident. `connection_id` picks the tracker connection and `target` the team, project or repository (as owner/name); leave them out to use the connection whose *Issues for incidents* switch is on and the target it files into, or the only tracker and target there is. When there is no single choice, the answer is a 422 whose message lists the options. An incident that already has a ticket is not filed again: the answer is that ticket with `outcome: existing` and status 200. A new one answers 201 with `outcome: created`. `ticket` carries the tracker, its `key` (OPS-12, ENG-14, or a GitHub issue’s repository and number) and `url`.
+
+  Scope: `monitoring.write`
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List where a finding’s ticket can go
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/finding-tickets/trackers/:automationConnection_id/targets
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The teams, projects or repositories this tracker connection can file into, as `{id, key, name}` rows, and `last_target`, the one you used last, and `default_target`, where a new ticket goes unless you choose otherwise. When the tracker would not answer, `targets` is empty and `error` says why.
+
+  Scope: `monitoring.read`
+}

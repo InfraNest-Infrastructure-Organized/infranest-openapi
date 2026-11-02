@@ -1,0 +1,21 @@
+meta {
+  name: Read what the plan page knows about this organization
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/subscription/insights
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Facts specific to this organization, for choosing a plan: `receipt` (what InfraNest did for it in the last 30 days, when it pays), `evidence` (up to two lines from its own history that a bigger plan would have changed; empty while a critical problem is open), `plans` (per plan id: whether everything fits, and if not how many items would lock and the first of them), `forecast` (counts growing steadily toward the current limit, with the weeks left) and `asked` (entitlement keys members asked for in the last 90 days). Worded in `locale` (en, nl, de or fr). Read-only; cached for ten minutes.
+
+  Scope: `billing.read`
+}

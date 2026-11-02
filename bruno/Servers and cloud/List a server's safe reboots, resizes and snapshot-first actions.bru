@@ -1,7 +1,7 @@
 meta {
   name: List a server’s safe reboots, resizes and snapshot-first actions
   type: http
-  seq: 28
+  seq: 29
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  The safe reboots, resizes, and rebuilds or deletes that wait for a snapshot first, on this server that are running or finished in the last seven days, newest first. Each lists its steps with their status (`pending`, `running`, `done`, `skipped`, `failed`) and, for a failure, the step and a reason code.
+  The safe reboots, resizes, and rebuilds or deletes that wait for a snapshot first, on this server that are running or finished in the last seven days, newest first. Each lists its steps with their status (`pending`, `running`, `done`, `skipped`, `failed`) and, for a failure, the step and a reason code. A failure that is no longer current says why in `superseded`: `by` is `boot` (the server started again after it) or `operation` (a later operation on the server finished, `kind` naming it), with `at`; `handled_at` and `handled_by` say somebody marked it as handled.
 
   Scope: `cloud.read`
 }

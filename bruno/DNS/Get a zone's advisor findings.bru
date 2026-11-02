@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  Findings about the zone’s stored records, such as missing or weak email protection, with the snapshot those findings were judged from. Changes nothing.
+  Findings about the zone’s stored records, such as missing or weak email protection, with the snapshot those findings were judged from. `dmarc_weakened` says the zone’s DMARC policy was made weaker in the last 30 days (`weakened`: `reject` to `quarantine` or `none`; `lostReporting`: its `rua=` reporting address removed), with the record before and after in `values` and the change in `change` (`from`, `to`, `at`, `by`, `source`). Changes nothing.
 
   Scope: `dns.read`
 }

@@ -1,0 +1,21 @@
+meta {
+  name: Get the outbound heartbeat
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/alert-heartbeat
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The ping URL from your own uptime tool (Healthchecks.io, Better Stack, Cronitor and the like) that InfraNest calls every few minutes, so that tool notices if InfraNest goes quiet: its host, how often it is called, and whether the last calls were answered. `heartbeat` is null when none is set up. The URL itself is never returned.
+
+  Scope: `monitoring.read`
+}

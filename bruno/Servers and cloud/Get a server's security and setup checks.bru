@@ -1,7 +1,7 @@
 meta {
   name: Get a server’s security and setup checks
   type: http
-  seq: 58
+  seq: 59
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  Every check on the server: whether a firewall protects it, whether SSH, Remote Desktop or a database is open to everyone, whether a port is reachable that should not be (from what the agent reads listening), backups, snapshots, delete protection, monitoring and alert rules, and — when the agent reports — pending reboots and uptime. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. The servers list and the attention list report the same checks.
+  Every check on the server: whether a firewall protects it, whether SSH, Remote Desktop or a database is open to everyone, whether a port is reachable that should not be (from what the agent reads listening), backups, snapshots, delete protection, monitoring and alert rules, and — when the agent reports — pending reboots and uptime. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. The servers list and the attention list report the same checks. Where your agent reads what listens, `dbExposed` names each database or cache listening on a public address that anyone may reach: its evidence lists what listens and on which port, the firewall rule that lets everyone in (or that no firewall is attached), and the server’s public address, and `confidence` is `certain`, or `likely` where your provider has no firewall InfraNest can read. With only some of those signals it is `info`, a note. When the missing firewall is what lets a database through, `noFirewall` carries `folded: "dbExposed"` and is said inside that check rather than counted twice. Where your agent reads how the machine is set up (agent contract 24, Linux), five more checks say it: `sshPasswords` (SSH accepts passwords; `error` when its port is also open to everyone and no fail2ban or CrowdSec runs, a note when only some of that is true, and a note with `desc: "descUnknown"` when a file sshd reads could not be read. Where your agent reads the system log (agent 0.23 and later), its evidence includes `auth_failures`: the failed login attempts it counted over the last 24 hours as `count`, with `since` set to the first hour counted when that is less than the whole day — a number only, never who tried or from where — and 100 or more with passwords accepted and no fail2ban or CrowdSec running makes it `error` with `desc: "descAttempts"`, whatever the firewall seems to allow), `sshRootLogin` (`PermitRootLogin yes`), `adminAdded` (a member of the sudo, wheel or admin group since the agent first read them, until you acknowledge it — `since` is when the first appeared), `nothingBacksUp` (your provider’s backups are off, and no backup software or backup-like scheduled job is seen; always `likely`, because your users’ own crontabs and a backup taken from another machine are out of the agent’s reach) and `autoUpdatesOff` (unattended-upgrades or dnf-automatic is off or not installed; `warn` with security updates waiting). Each of these carries `confidence`, `command` — the fix as a command to run on the server, or null — and `source`, the distribution’s documentation as `key` and `url`. When `sshPasswords` fires, `sshOpen` and `noFirewall` carry `folded: "sshPasswords"`; when `nothingBacksUp` fires, `noBackups` carries `folded: "nothingBacksUp"`, and when backup software or a job is seen, `noBackups` becomes a note.
 
   Scope: `cloud.read`
 }

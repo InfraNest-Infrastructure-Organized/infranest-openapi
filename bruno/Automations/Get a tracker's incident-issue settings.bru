@@ -1,0 +1,25 @@
+meta {
+  name: Get a tracker’s incident-issue settings
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automation-connections/:automationConnection_id/incident-tickets
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For a Linear (and later Jira) connection: whether it opens an issue for every incident, which team or project gets them and which incidents count (`scope`: `all`, `critical` or `monitors`), what resolving an incident does to its issue (`on_resolve`), what closing the issue does to the incident (`on_closed`), whether notes copy both ways, the teams and finished states to choose from, and the last test’s result.
+
+  Scope: `monitoring.read`
+}

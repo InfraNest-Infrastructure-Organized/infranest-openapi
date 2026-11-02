@@ -1,0 +1,25 @@
+meta {
+  name: Get the test issue’s result
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automation-connections/:automationConnection_id/incident-tickets/test
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Where the last test issue got to: `waiting`, `passed` (it opened, closed, and the close came back), `outbound_failed`, `inbound_missing` (nothing came back within two minutes) or `no_webhook` (the connection has no way back set up yet).
+
+  Scope: `monitoring.read`
+}

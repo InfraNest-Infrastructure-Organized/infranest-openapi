@@ -1,7 +1,7 @@
 meta {
   name: Get a server’s agent snapshot
   type: http
-  seq: 54
+  seq: 55
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  The latest state the monitoring agent reported from inside the server: disk mounts with forecasts, top processes, watched services, containers and ignored units. Also includes the agent’s own health, version status and whether alerts are currently quiet.
+  The latest state the monitoring agent reported from inside the server: disk mounts with forecasts, top processes, watched services, containers and ignored units. Also includes the agent’s own health, version status and whether alerts are currently quiet. Each service has a `group` saying what it is for: `web`, `data` (databases and caches), `jobs` (timers and queue workers), `apps` (mail, DNS, backups, container runtimes) or `system`. `platform` says what your agent reads on the server’s system: its `family` (`linux`, `windows` or `other`), the `os` it reported, the `name` the app uses for it, whether the agent `supported` it, and `reads`, per section (`system`, `disks`, `services`, `processes`, `process_args`, `listening`, `containers`, `renewers`, `traffic`, `cron`, `setup`, `journal`), whether it is read there at all. A section that is not read is unknown, not empty. `platform` is null until your agent has reported its system. A failed service carries `journal`: its last lines from the server’s system log for this failure (`id`, `event`, `at`, `lines` with `at`, `priority` and masked `message`, `compressed`, `truncated`, and `lines_withheld` — `login` for a login service such as sshd, whose lines your agent never sends, so `lines` is empty — else null), or null. `lines` is filled only when you can manage servers (`cloud.write`, on your role and on your token); otherwise it is empty and `lines_hidden` is true. `lines_removed` says who removed the lines and when (`by`, `at`), or is null. `agent_health.journal` says whether your agent reads the system log (`readable`, `reason` — `ok`, `off`, `no_permission`, `no_journal` or `unknown_format` — and `at`); it is absent before agent 0.22 and off Linux, and your agent reads the log only once you add its user to the `systemd-journal` group.
 
   Scope: `cloud.read`
 }

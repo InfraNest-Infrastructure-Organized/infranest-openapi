@@ -1,0 +1,25 @@
+meta {
+  name: Get a docs tool’s postmortem settings
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automation-connections/:automationConnection_id/incident-reports
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For a Notion connection: whether it writes a postmortem when an incident resolves, the database it goes into (`target`) and which incidents count (`scope`: `all`, `critical` or `monitors`), the databases to choose from, and the last test page.
+
+  Scope: `monitoring.read`
+}

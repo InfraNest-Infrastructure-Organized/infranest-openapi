@@ -292,7 +292,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"northwind-studio.com\"\n}",
+              "raw": "{\n  \"name\": \"northwyndr-studio.com\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1371,7 +1371,7 @@
           "name": "List a zone’s recorded changes",
           "request": {
             "method": "GET",
-            "description": "The zone’s record changes from its last 50 operations, newest first, grouped by the operation that made each batch, each with whether it can still be undone or restored to. Also returns a merged timeline and how many days of changes your plan keeps.\n\nScope: `dns.read`",
+            "description": "The zone’s record changes from its last 50 operations, newest first, grouped by the operation that made each batch, each with whether it can still be undone or restored to. Every change is here, whoever made it: each batch’s `source` says where it came from — `provider` for an edit made directly at the DNS provider and found by a sync, otherwise InfraNest, an automation or a dynamic IP. Also returns a merged timeline and how many days of changes your plan keeps.\n\nScope: `dns.read`",
             "header": [
               {
                 "key": "Accept",
@@ -1551,7 +1551,7 @@
           "name": "Compare stored records with live DNS",
           "request": {
             "method": "GET",
-            "description": "Records whose stored value differs from what public resolvers last answered, each with both values, the likely cause and whether taking the live value is offered. Also returns the zone’s delegation state; changes nothing.\n\nScope: `dns.read`",
+            "description": "Records whose stored value differs from what public resolvers last answered, each with both values, the likely cause and whether taking the live value is offered. `live_status` says whether that list means anything: `compared` once the records were checked against live DNS, `unanswered` when they were asked about and no resolver could say, `never_checked` before the first check — an empty list then is not a match. Also returns the zone’s delegation state; changes nothing.\n\nScope: `dns.read`",
             "header": [
               {
                 "key": "Accept",
@@ -1792,7 +1792,7 @@
           "name": "List DNS zones",
           "request": {
             "method": "GET",
-            "description": "Your DNS zones, paginated with `page` and `per_page` (up to 200), each with its provider, record count, tags and delegation state. Filter with `search`, `credential`, `tag` or `status` (`active`, `stale`, `drift` for records changed at the provider, or `security`) and sort with `sort` (`zone`, `provider`, `records`, `synced`) and `dir`; `meta.counts` holds the totals.\n\nScope: `dns.read`",
+            "description": "Your DNS zones, paginated with `page` and `per_page` (up to 200), each with its provider, record count, tags and delegation state. Filter with `search`, `credential`, `tag` or `status` (`active`, `stale`, `drift` for zones whose live DNS disagrees with InfraNest — their nameservers or records —, `outside` for zones with edits made directly at the DNS provider that nobody has kept or undone yet, or `security`) and sort with `sort` (`zone`, `provider`, `records`, `synced`) and `dir`; `meta.counts` holds the totals. Each zone’s `outside_changes` counts its undecided edits made at the provider.\n\nScope: `dns.read`",
             "header": [
               {
                 "key": "Accept",
@@ -2517,7 +2517,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"dns_record_id\": 89\n}",
+              "raw": "{\n  \"dns_record_id\": 92\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2705,7 +2705,7 @@
           "name": "Get a zone’s advisor findings",
           "request": {
             "method": "GET",
-            "description": "Findings about the zone’s stored records, such as missing or weak email protection, with the snapshot those findings were judged from. Changes nothing.\n\nScope: `dns.read`",
+            "description": "Findings about the zone’s stored records, such as missing or weak email protection, with the snapshot those findings were judged from. `dmarc_weakened` says the zone’s DMARC policy was made weaker in the last 30 days (`weakened`: `reject` to `quarantine` or `none`; `lostReporting`: its `rua=` reporting address removed), with the record before and after in `values` and the change in `change` (`from`, `to`, `at`, `by`, `source`). Changes nothing.\n\nScope: `dns.read`",
             "header": [
               {
                 "key": "Accept",
@@ -3673,10 +3673,10 @@
           }
         },
         {
-          "name": "Get the quietest hour for servers",
+          "name": "Get the quietest time for servers",
           "request": {
             "method": "GET",
-            "description": "The quietest hour of the day for the servers in `server_ids` (one, or a group), from the last 30 days of the agent’s readings — or the provider’s CPU graph without the agent — read in `timezone`. Each hour carries its usual load and a level (`quiet`, `normal`, `busy`); `recommended_at` is the next occurrence of the quietest hour. With too few readings, `source` is `default` and the hour is the stated default. Pass `at` to judge one time.\n\nScope: `cloud.read`",
+            "description": "The quietest time for the servers in `server_ids` (one, or a group, judged on their combined load), read in `timezone`. `basis` says which answer it is: `week` — the quietest day and hour (`quietest_weekday`, 0 = Sunday, and `quietest_hour`) from each server’s own normal week, once every server has four weeks of one; `day` — the quietest hour of the day from the last 30 days of the agent’s readings, or the provider’s CPU graph without the agent; `default` — too few readings, and the hour is the stated default. `quietest_load` and `typical_load` give the load at that time and usually. `recommended_at` is its next occurrence. `hours` is always the hour-of-day profile and `week` the 168 hours of the week (empty below `week`), each with its usual load and a level (`quiet`, `normal`, `busy`). Pass `at` to judge one time.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -3738,7 +3738,7 @@
           "name": "Get a safe reboot, resize or snapshot-first action",
           "request": {
             "method": "GET",
-            "description": "One safe reboot, or a rebuild or delete waiting for a snapshot, with every step and its status. Poll it while `status` is `queued` or `running`; `failed_step` and `error_code` say where and why it stopped. `by` names the person who started it; `via` is `automation` or `schedule` when nobody pressed it.\n\nScope: `cloud.read`",
+            "description": "One safe reboot, or a rebuild or delete waiting for a snapshot, with every step and its status. Poll it while `status` is `queued` or `running`; `failed_step` and `error_code` say where and why it stopped. `by` names the person who started it; `via` is `automation` or `schedule` when nobody pressed it. `superseded`, `handled_at` and `handled_by` say whether a failure is still current, as the server’s operations list does.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -3774,7 +3774,7 @@
           "name": "List servers",
           "request": {
             "method": "GET",
-            "description": "Every server InfraNest tracks in the organization, a page at a time, with its provider, status, addresses and tags. Filter with `search`, `status`, `running`, `datacenter`, `tag`, `credential`, `provider` or `tracking=untracked`, and sort with `sort` and `dir`; self-managed machines are counted in `meta` but not listed.\n\nScope: `cloud.read`",
+            "description": "Every server InfraNest tracks in the organization, a page at a time, with its provider, status, addresses and tags. Filter with `search`, `status`, `running`, `datacenter`, `tag`, `credential`, `provider` or `tracking=untracked`, and sort with `sort` and `dir`; self-managed machines are counted in `meta.counts.self_managed` and listed only with `provider=self_managed`.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -3805,7 +3805,7 @@
           "name": "Get a server",
           "request": {
             "method": "GET",
-            "description": "One server with its volumes, tags, cost breakdown and what its provider lets InfraNest do with it. Also says whether it can be renamed and whether its monitoring agent’s readings are being refused.\n\nScope: `cloud.read`",
+            "description": "One server with its volumes, tags, cost breakdown and what its provider lets InfraNest do with it. Also says whether it can be renamed, whether its monitoring agent’s readings are being refused, and in `reconnect_for` which of `server_rebuild`, `server_restore` and `root_password_reset` its signed-in provider connection must reconnect to allow (always empty for an API token, whose permissions cannot be read).\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4135,10 +4135,47 @@
           }
         },
         {
+          "name": "See what a server’s agent sent in the last 24 hours",
+          "request": {
+            "method": "GET",
+            "description": "What your monitoring agent sent from this server in the last 24 hours (`window_hours`), counted from what InfraNest stored, with how long each kind is kept. `last_push_at` is the agent’s last push, and `networks` the networks it pushed from in the window (a /24, or a /48 for IPv6). Each of `kinds` has a `key` and `kept_days`: `readings` (`count` received, kept raw for `raw_hours` and hourly for `kept_days`, your plan’s history), `programs` (`processes` and `services` held now — each push replaces them — `process_args`, whether command lines are sent, and `kept_days` for the hourly memory and CPU per program), `cron` (`count` of jobs held now, `enabled`), `setup` (`read`, and the `ssh_settings`, `administrators` and `updates` it read; held now), `journal_events` (`count` of failed services’ last lines received), `journal_hours` (`count` of hours of error counts received), `login_counts` (`count` of hours that carried a failed-login count, and their `total` — a number only, never who or from where) and `job_runs` (`count` of job reports received). `held` is true for a kind each push replaces: its numbers are what InfraNest holds now, not what arrived. A `count` or flag is null where your agent has not said. There is no byte or push count: InfraNest does not record either.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/cloud-servers/:cloudServer_id/agent-sent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "cloud-servers",
+                ":cloudServer_id",
+                "agent-sent"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "cloudServer_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List what runs on a server",
           "request": {
             "method": "GET",
-            "description": "The agent's processes, systemd services and timers, and containers, as workloads: processes attached to the service or container the agent says they run under (`attributed` is `cgroup`), or, where it did not say, grouped by command and attached to the service they are named after (`attributed` is `name`); timers carry `last_run_at` and `next_run_at`. Each with memory, CPU where known, restarts in the last 24 hours (`restarts_24h`) and the last 7 days (`restarts_7d`; when `restarts_7d_capped` is true the count reached the 100 InfraNest keeps, so read it as \"at least\"), a 7-day hourly memory `trend` (oldest first, null where nothing was sampled) and `observations`: `failed`, `restart_loop`, `memory_leak` (grows and resets on restart) or `no_heartbeat` (a scheduled job of yours that no heartbeat monitor watches), each with a `certainty`. Problems come first. Needs the server's agent.\n\nScope: `cloud.read`",
+            "description": "The agent's processes, systemd services and timers, and containers, as workloads: processes attached to the service or container the agent says they run under (`attributed` is `cgroup`), or, where it did not say, grouped by command and attached to the service they are named after (`attributed` is `name`); timers carry `last_run_at` and `next_run_at`. Each with memory, CPU where known, restarts in the last 24 hours (`restarts_24h`) and the last 7 days (`restarts_7d`; when `restarts_7d_capped` is true the count reached the 100 InfraNest keeps, so read it as \"at least\"), a 7-day hourly memory `trend` (oldest first, null where nothing was sampled) and `observations`: `failed`, `restart_loop`, `memory_leak` (grows and resets on restart) or `no_heartbeat` (a scheduled job of yours that no heartbeat monitor watches), each with a `certainty`. Problems come first. Each row also says what it is, from InfraNest's workload catalogue: `catalogue` is the matched entry (`id`, the software's `name`, its `group`, its homepage `url`, and `generic` when it names a family such as `*-worker` rather than one product) or null when the name is not recognised — a timer is matched by the job it starts (`apt-daily.timer` is APT); `app` is the app a generic runtime runs, read from its command line (`node /srv/shop/server.js` is `shop`), or null; `group` is where it is listed (`web`, `app`, `database`, `cache`, `queue`, `search`, `storage`, `monitoring`, `security`, `network`, `mail`, `dns`, `backup`, `containers`, `panel`, `ci`, `system`, `scheduled` for a timer, `installed` for a service named by its package, `other` when not recognised); `noise` is true for the operating system's own plumbing, and for a timer the catalogue knows as part of the system — never for a unit that failed, which is always listed. `finished` is true for a service that ran once and is done — nothing of it runs and it ended without failing (`exited`, or `inactive`), like the jobs a server runs at boot; it then has `noise` true too, unless you named it, a rule watches it, or it is a stopped program that gives the server a role (a database, a web server). A container is recognised by its main process, which your agent reads from the container's cgroup (`main_process`, and `main_command` when your agent sends command lines), and by its largest reported process with an older agent; `named` is true when you saved a name for it, which wins. `ports` lists what Docker publishes for a container (`protocol`, `host_ip`, `host_port`, `container_port`), read from its `docker-proxy` processes. `package` is the Debian package a row runs from, as your agent read it from the server's package database (`name`, `version`, `description` — the package's own one-line summary — `source`, `dpkg`, and the package's `priority` and `section` as Debian sets them, null from an agent before 0.19), or null when your agent did not say; each process carries its own `package` too. For a service or timer with nothing running, `package` is the package that installed its unit file. `packaged` is true for a service or timer the catalogue does not know that is named and described by that package instead: listed under `installed`, or under `system` with `noise` true when the package's priority (`required`, `important` or `standard`) makes it part of the operating system. `local` is true for a unit written on the server itself — its file is in `/etc/systemd/system` and no package installed it — which stays yours to name. On Windows, every service your agent lists is a `service` row under its service name (`MSSQLSERVER`, `W3SVC`), with its display name as `description`: recognised by its service name (`W3SVC` is IIS), and with the process it runs in among its `processes` when that process runs it alone; Windows' own services have `noise` true. `hosts` lists the services a process row's processes run, by display name, and each process its own `services` — how one `svchost.exe` is told from another. `merged_keys` lists the other command lines folded into a process row of the same program. `evidence` lists what is known about it, each with a `key` and `params`: `identical` (`n` identical processes), `in_container` (`id`), `port` (its usual `port` is listening, with `scope` `local`, `specific` or `all`), `monitors` (`n` monitors check it), `serves` (a `name` pointing at the server and how many `more`, only when you may read domains) and `no_args` (a runtime whose command line was not reported, so the app it runs is unknown) and `published` (a container's host `port`, the `container_port` it goes to, and `scope` `local`, `specific` or `all`). `first_seen_at` is when it was first sampled, within the 15 days of samples kept; `new_this_week` is true when that was in the last 7 days and the server was already sampled before. `normal` is the range its memory keeps over the week (`low` and `high`, the 10th and 90th percentile hours) and the latest hour's `state` against it (`within`, `above` or `below`), or null with less than two days of samples. `platform` says what your agent reads on the server’s system, in the same shape as on the agent snapshot: where `reads.containers`, `reads.process_args` or `reads.cron` is false, there are no containers, command lines or cron jobs because they are not read there, not because there are none. It is null until your agent has reported its system. What you said about a workload: `identity` is the program it runs as your workspace's names are kept under (a unit's name — a timer's is the job it starts, so a timer and its service share one — a process's executable or a container's main program, normalised), or null; `custom` is the name and `group` your workspace gave that program (`id`, `name`, `group`, `hidden` when you hid it as noise — it then has `noise` true — and `shared` when you chose to share that name with InfraNest so it can recognise the program for everyone), or null; `expected` says who marked it expected this week on this server and when (`by`, `at`), or null; `watch` is how a rule watching it alone knows it (a service's unit, a container's main program and lowest published port), or null for a process or a timer; `alert` is that rule (`rule_id`, `is_active`), or null. `jobs` lists everything that runs on a schedule — cron jobs (your agent reads `/etc/crontab`, `/etc/cron.d` and the run-parts folders from 0.20; your users' own crontabs are readable by root alone and are not listed) and systemd timers — each with a `key` (`cron:<file>:<line>`, or `timer:<unit>`), `source` (`cron` or `timer`), `name` (the job name the line reports under, else the name your workspace gave the program, else the catalogue's name, else the program), `catalogue` (`id`, `name`) or null, `program`, `file`, `line`, `folder` (`hourly`, `daily`, `weekly` or `monthly` for a run-parts script), `schedule` as written, `when` (its shape: `type` `minutes` with `n`, `hourly` with `minutes`, `daily`, `weekly` with `days` (0 is Sunday) or `monthly` with `days`, each with `times` in the server's own time; `reboot`; `anacron` with its `period`; `timer` with its `cadence` in seconds; `cron` with the `expr` when none of these says it), `timezone` the schedule is read in, `run_as`, `command` (only when your agent sends command lines, else null), `job` (the `--job` name when the line runs through `infranest-agent run`), `last_run` (`at`, `outcome` `worked` or `failed`, `exit_code`, `duration_ms`) or null — a cron job's last run is only known from a job that reports through the agent, which `last_recorded` says — `next_run_at` (computed from the schedule in its time zone; null for `@reboot` and for a folder anacron runs), `cadence_seconds`, `watched` (the heartbeat monitor watching it: `id`, `name`, `status`, `last_ping_at`, and `waiting` until its first check-in) or null, `noise` (the operating system's housekeeping, or a program you hid), `identity` and `custom` as on a workload row — a cron job's `identity` is its program without its folder or a script's extension (`backup.sh` is `backup`), so naming it names it on every server of your workspace — and `overlaps`: a maintenance window naming this server (`kind` `window`, with `id`, `name` and `one_time`) or a scheduled reboot (`kind` `reboot`) that starts while the job's next run would be running, within a day, with `starts_at`, `ends_at`, the run it cuts into (`job_at`) and the first whole hour after that run (`clear_at`). `job_reports` is whether your agent has its folder for job reports (null from an agent before 0.20). A service also carries `errors_trend`, its errors per hour from the server's system log over the same 7 days, oldest first (null where your agent never named it; 0 in an hour it counted without it), and `journal`, its last lines from the system log for the failure it is in now or a restart loop in the last day — `event` (`failed`, `oom_kill` or `restart_loop`), `at`, `lines` (each with `at`, `priority` 0–7 and `message`, with anything shaped like a password, token or key masked), `compressed` (lines stored compressed that your agent does not read), `truncated`, `lines_withheld` (`login` when the service is a login service such as sshd: its lines are records of who logged in, so your agent sends none and `lines` is empty; null otherwise), `id`, `lines_hidden` (true when `lines` was left out because you cannot manage servers — `cloud.write`, on your role and on your token) and `lines_removed` (who removed the lines and when, `by` and `at`, or null) — or null. `journal` at the top says whether your agent reads the system log: `readable`, `reason` (`ok`, `off`, `no_permission`, `no_journal` or `unknown_format`) and `at` (when that last changed), or null before agent 0.22 and off Linux. Your agent reads it only once you add its user to the `systemd-journal` group, and keeps lines 30 days. Needs the server's agent.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4172,10 +4209,10 @@
           }
         },
         {
-          "name": "Compare a server's workloads with a week earlier",
+          "name": "Compare a server's workloads with a week earlier, or another window",
           "request": {
             "method": "GET",
-            "description": "Each workload's average memory (`memory_bytes`) and CPU (`cpu_percent`, the share of the whole machine) between `from` and `to` (ISO 8601; default the last 24 hours, at most 8 days), as `now`, and over the same hours a week earlier (`compared_with`), as `then`. Read from the hourly samples kept for 15 days, so a window that starts more than 8 days ago has nothing to compare with. A side is null when the workload was not sampled in that window; CPU is null for a service or container whose processes your agent did not place. Workloads are services, containers and the heaviest process groups, each with its `kind`, `key` and display `name`. A longer window is refused with `range_too_large`. Needs the server's agent.\n\nScope: `cloud.read`",
+            "description": "Each workload's average memory (`memory_bytes`) and CPU (`cpu_percent`, the share of the whole machine) between `from` and `to` (ISO 8601; default the last 24 hours, at most 8 days), as `now`, and over the same hours a week earlier (`compared_with`), as `then`. Read from the hourly samples kept for 15 days, so a window that starts more than 8 days ago has nothing to compare with. A side is null when the workload was not sampled in that window; CPU is null for a service or container whose processes your agent did not place. Workloads are services, containers and the heaviest process groups, each with its `kind`, `key` and display `name`. A longer window is refused with `range_too_large`. To compare with another window instead of a week earlier — the hours before a deploy against the hours after it — set `compare_from` and `compare_to` (ISO 8601, both or neither, at most 8 days apart); `compared_with` then repeats them. Needs the server's agent.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4249,7 +4286,7 @@
           "name": "List what will happen to a server next",
           "request": {
             "method": "GET",
-            "description": "By date: disks forecast to fill (per mount), memory, CPU or load reaching its alert threshold at the current trend, scheduled reboots, certificates it serves renewing or expiring, Ubuntu Pro lapsing and the operating system leaving support. Forecasts without an honest fit and operating systems without a known support date are left out.\n\nScope: `cloud.read`",
+            "description": "By date: disks forecast to fill (per mount), memory, CPU or load reaching its alert threshold at the current trend, scheduled reboots, certificates it serves renewing or expiring, Ubuntu Pro lapsing and the operating system leaving support. A `jobs_tonight` item lists the scheduled jobs of yours that run between 18:00 and 08:00 in the server's time (`params.jobs`, each `name` and `at`, at most four, and `more`). Forecasts without an honest fit and operating systems without a known support date are left out.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4434,7 +4471,7 @@
           "name": "Get what a server listens on and what its firewalls let in",
           "request": {
             "method": "GET",
-            "description": "Every port the server listens on, as its agent read it, and every port its firewall rules open, each with a `verdict`: `open_for_nothing` (a rule opens it and nothing listens), `only_private_peers` (open to everyone and only private addresses connect), `no_rule` (listening on every address with no firewall in front, where it should not be public), `exposed` (a database, Remote Desktop or SSH open to everyone), `expected`, `local` (loopback only), `unclear` (nothing listens on the host but that cannot prove it unused — containers, or a cut-short reading) or `rule_only` (no reading to judge with). `basis` is `agent` when a reading from the last day was judged and `rules` when only the rules are known; `reading.state` says why (`no_agent`, `too_old`, `off`, `failed`, `pending`, `stale` or `ok`). Peer counts are counts of distinct addresses by class, never the addresses. `guess` is the service usually found on a well-known port: a guess, never the program the agent saw. `new` is true for a port that started listening in the last seven days, after the agent's first reading; `listened_before_at` is set when a port came back after stopping within the week.\n\nScope: `cloud.read`",
+            "description": "Every port the server listens on, as its agent read it, and every port its firewall rules open, each with a `verdict`: `open_for_nothing` (a rule opens it and nothing listens), `only_private_peers` (open to everyone and only private addresses connect), `no_rule` (listening on every address with no firewall in front, where it should not be public), `exposed` (a database, Remote Desktop or SSH open to everyone), `expected`, `local` (loopback only), `unclear` (nothing listens on the host but that cannot prove it unused — containers, or a cut-short reading) or `rule_only` (no reading to judge with). `basis` is `agent` when a reading from the last day was judged and `rules` when only the rules are known; `reading.state` says why (`no_agent`, `too_old`, `not_read` — your agent does not read listening ports on this system at all, named in `reading.os` —, `off`, `failed`, `pending`, `stale` or `ok`). Peer counts are counts of distinct addresses by class, never the addresses. `guess` is the service usually found on a well-known port: a guess, never the program the agent saw. `new` is true for a port that started listening in the last seven days, after the agent's first reading; `listened_before_at` is set when a port came back after stopping within the week.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -4582,7 +4619,7 @@
           "name": "List a server’s safe reboots, resizes and snapshot-first actions",
           "request": {
             "method": "GET",
-            "description": "The safe reboots, resizes, and rebuilds or deletes that wait for a snapshot first, on this server that are running or finished in the last seven days, newest first. Each lists its steps with their status (`pending`, `running`, `done`, `skipped`, `failed`) and, for a failure, the step and a reason code.\n\nScope: `cloud.read`",
+            "description": "The safe reboots, resizes, and rebuilds or deletes that wait for a snapshot first, on this server that are running or finished in the last seven days, newest first. Each lists its steps with their status (`pending`, `running`, `done`, `skipped`, `failed`) and, for a failure, the step and a reason code. A failure that is no longer current says why in `superseded`: `by` is `boot` (the server started again after it) or `operation` (a later operation on the server finished, `kind` naming it), with `at`; `handled_at` and `handled_by` say somebody marked it as handled.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5460,7 +5497,7 @@
           "name": "Get a server’s stored metric series",
           "request": {
             "method": "GET",
-            "description": "Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied. `normal` gives each requested metric’s normal week: `hours` holds 168 entries, one per hour of the week starting Monday 00:00 UTC, each `[p10, p50, p90]` of that hour’s averages over up to 12 weeks (null for an hour with too little history). It stays empty until `weeks` reaches `min_weeks` (4), unless a peer server behind the same load balancer or with the same role lends its week — then `borrowed_from` names it. `learning_since` and `reset_reason` (`resize`, `reinstall`, `role` or `source`) say when and why the week started again. Maintenance windows, incident hours and a memory leak’s climb are not learned.\n\nScope: `cloud.read`",
+            "description": "Time series InfraNest has stored for this server, as `[unix seconds, value]` pairs, oldest first, with the alert threshold that applies to each metric. Pick a comma-separated `metrics` list, then either a fixed `range` (`live`, `h1`, `h12`, `h24`, `d7`, `d30`; default `h24`) or your own window with `from` and `to` (ISO 8601) and optionally `resolution`: `raw` for every sample (kept for 48 hours, at most 48 hours per request) or `hour` for hourly averages (at most 92 days per request). Without `resolution`, raw samples are used when they still cover the window. A longer range is refused with `range_too_large`. Points are paged with `page` and `per_page` (up to 10,000, the default); `pagination` says how many points the window holds and `window` the range that was applied. `normal` gives each requested metric’s normal week: `hours` holds 168 entries, one per hour of the week starting Monday 00:00 UTC, each `[p10, p50, p90]` of that hour’s averages over up to 12 weeks (null for an hour with too little history). It stays empty until `weeks` reaches `min_weeks` (4), unless a peer server behind the same load balancer or with the same role lends its week — then `borrowed_from` names it. `learning_since` and `reset_reason` (`resize`, `reinstall`, `role` or `source`) say when and why the week started again. Maintenance windows, incident hours and a memory leak’s climb are not learned. Add `include=stands_out` for `stands_out`: up to three findings about the whole window (null when it spans more than one page), each with a `metric`, a `kind` and its unformatted `values` in the series’ units — `crossed` (minutes past the alert line), `aboveNormal` or `belowNormal` (minutes outside the normal range for those hours), `step` (the level `before` and `after` the deploy, change or restart in `event`), `lastWeek` (the average `now` and `then`, at the same hours a week earlier) and `followsNetwork` (load rising and falling with traffic). For a CPU or memory `step` or `lastWeek`, `behind` names the service, container or process that accounts for most of the change; it is null when none clearly does, and for a step whose either side is shorter than an hour, the workloads’ sampling interval. `normal` says where a step or a change landed against the normal range: `within`, `above`, `below` or null. Add `include=peers` for `peers`: the servers worth comparing with, those behind the same load balancer first (`reason` `load_balancer`, `via` naming it), then those with the same roles (`role`).\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5497,7 +5534,7 @@
           "name": "Get a server’s agent snapshot",
           "request": {
             "method": "GET",
-            "description": "The latest state the monitoring agent reported from inside the server: disk mounts with forecasts, top processes, watched services, containers and ignored units. Also includes the agent’s own health, version status and whether alerts are currently quiet.\n\nScope: `cloud.read`",
+            "description": "The latest state the monitoring agent reported from inside the server: disk mounts with forecasts, top processes, watched services, containers and ignored units. Also includes the agent’s own health, version status and whether alerts are currently quiet. Each service has a `group` saying what it is for: `web`, `data` (databases and caches), `jobs` (timers and queue workers), `apps` (mail, DNS, backups, container runtimes) or `system`. `platform` says what your agent reads on the server’s system: its `family` (`linux`, `windows` or `other`), the `os` it reported, the `name` the app uses for it, whether the agent `supported` it, and `reads`, per section (`system`, `disks`, `services`, `processes`, `process_args`, `listening`, `containers`, `renewers`, `traffic`, `cron`, `setup`, `journal`), whether it is read there at all. A section that is not read is unknown, not empty. `platform` is null until your agent has reported its system. A failed service carries `journal`: its last lines from the server’s system log for this failure (`id`, `event`, `at`, `lines` with `at`, `priority` and masked `message`, `compressed`, `truncated`, and `lines_withheld` — `login` for a login service such as sshd, whose lines your agent never sends, so `lines` is empty — else null), or null. `lines` is filled only when you can manage servers (`cloud.write`, on your role and on your token); otherwise it is empty and `lines_hidden` is true. `lines_removed` says who removed the lines and when (`by`, `at`), or is null. `agent_health.journal` says whether your agent reads the system log (`readable`, `reason` — `ok`, `off`, `no_permission`, `no_journal` or `unknown_format` — and `at`); it is absent before agent 0.22 and off Linux, and your agent reads the log only once you add its user to the `systemd-journal` group.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5634,7 +5671,7 @@
           "name": "Get what needs attention on a server",
           "request": {
             "method": "GET",
-            "description": "A short summary of the server: its uptime, whether alerts are quiet and until when, and the metric trend closest to crossing its alert threshold. Fields are null when there is nothing to say. `unusual` lists the last 24 hours’ runs of hours that were unusual for this server at that hour of the week, one per metric: `from`, `to`, `peak` and `peak_at`, the `normal` range (`low`, `typical`, `high`) it was judged against, the `weeks` behind it and, when the range is a peer’s, `borrowed_from`. They are never sent as alerts.\n\nScope: `cloud.read`",
+            "description": "A short summary of the server: its uptime, whether alerts are quiet and until when, and the metric trend closest to crossing its alert threshold. Fields are null when there is nothing to say. `unusual` lists the last 24 hours’ runs of hours that were unusual for this server at that hour of the week, one per metric: `from`, `to`, `peak` and `peak_at`, the `normal` range (`low`, `typical`, `high`) it was judged against, the `weeks` behind it and, when the range is a peer’s, `borrowed_from`. They are never sent as alerts. `full_mounts` lists the mounts at 90% or fuller now (`mount_point`, `used_percent`, `collected_at`), whether or not an alert rule watches the disk. `alert_rules` counts the active rules watching the server; with none, `no_alert_rules` says so, with the app `route` to add one. `certificates` lists the certificate problems whose fix is on this server (`code`, `severity`, the `certificate_id` and its `route`), with the `key` and `kind` of the Home item each one is, so a ticket filed from either place is the same ticket; `key` is null for one Home does not list.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -5671,7 +5708,7 @@
           "name": "Get a server’s security and setup checks",
           "request": {
             "method": "GET",
-            "description": "Every check on the server: whether a firewall protects it, whether SSH, Remote Desktop or a database is open to everyone, whether a port is reachable that should not be (from what the agent reads listening), backups, snapshots, delete protection, monitoring and alert rules, and — when the agent reports — pending reboots and uptime. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. The servers list and the attention list report the same checks.\n\nScope: `cloud.read`",
+            "description": "Every check on the server: whether a firewall protects it, whether SSH, Remote Desktop or a database is open to everyone, whether a port is reachable that should not be (from what the agent reads listening), backups, snapshots, delete protection, monitoring and alert rules, and — when the agent reports — pending reboots and uptime. Each check has a `status` (`error`, `warn`, `info`, `agent` when it needs the agent, or `pass`) and the evidence behind it. The servers list and the attention list report the same checks. Where your agent reads what listens, `dbExposed` names each database or cache listening on a public address that anyone may reach: its evidence lists what listens and on which port, the firewall rule that lets everyone in (or that no firewall is attached), and the server’s public address, and `confidence` is `certain`, or `likely` where your provider has no firewall InfraNest can read. With only some of those signals it is `info`, a note. When the missing firewall is what lets a database through, `noFirewall` carries `folded: \"dbExposed\"` and is said inside that check rather than counted twice. Where your agent reads how the machine is set up (agent contract 24, Linux), five more checks say it: `sshPasswords` (SSH accepts passwords; `error` when its port is also open to everyone and no fail2ban or CrowdSec runs, a note when only some of that is true, and a note with `desc: \"descUnknown\"` when a file sshd reads could not be read. Where your agent reads the system log (agent 0.23 and later), its evidence includes `auth_failures`: the failed login attempts it counted over the last 24 hours as `count`, with `since` set to the first hour counted when that is less than the whole day — a number only, never who tried or from where — and 100 or more with passwords accepted and no fail2ban or CrowdSec running makes it `error` with `desc: \"descAttempts\"`, whatever the firewall seems to allow), `sshRootLogin` (`PermitRootLogin yes`), `adminAdded` (a member of the sudo, wheel or admin group since the agent first read them, until you acknowledge it — `since` is when the first appeared), `nothingBacksUp` (your provider’s backups are off, and no backup software or backup-like scheduled job is seen; always `likely`, because your users’ own crontabs and a backup taken from another machine are out of the agent’s reach) and `autoUpdatesOff` (unattended-upgrades or dnf-automatic is off or not installed; `warn` with security updates waiting). Each of these carries `confidence`, `command` — the fix as a command to run on the server, or null — and `source`, the distribution’s documentation as `key` and `url`. When `sshPasswords` fires, `sshOpen` and `noFirewall` carry `folded: \"sshPasswords\"`; when `nothingBacksUp` fires, `noBackups` carries `folded: \"nothingBacksUp\"`, and when backup software or a job is seen, `noBackups` becomes a note.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6080,7 +6117,7 @@
           "name": "List a server’s alert rules",
           "request": {
             "method": "GET",
-            "description": "Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, with `fired_30d`: how many incidents it raised on this server in the last 30 days. Older standalone rules are listed apart. With `active=1` it returns only the rules actually being evaluated, as a flat list.\n\nScope: `cloud.read`",
+            "description": "Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, with `fired_30d`: how many incidents it raised on this server in the last 30 days. Older standalone rules are listed apart, and `workloads` lists the rules that watch one service or container, each with its `target` (`kind`, `match` — a service’s unit, or a container’s main program and lowest published port — and `name`), `threshold` (restarts within `restart_window_minutes` that count as a loop) and `duration_minutes` (how long it may be stopped). With `active=1` it returns only the rules actually being evaluated, as a flat list.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6661,7 +6698,7 @@
           "name": "Get a monitor",
           "request": {
             "method": "GET",
-            "description": "One monitor with its settings, alert channels, tags, dependencies, maintenance windows, the status pages it appears on, its 30 most recent results and the interval it actually runs at under your plan. A monitor that watches a third-party status page also carries `external_service` with its components (each with the `status` it reads as — `up`, `degraded` or `down` — and, where the page gives it, `vendor_status`, the provider's own word, such as `under_maintenance`), `uptime_90d`, and `provider_incidents`: the incidents open on that status page that touch the components the monitor follows, each with its `title`, the provider’s `vendor_status`, its `impact` (`up`, `degraded` or `down`), a `url` to the provider’s page, the `components` it names and the `updates` the provider posted, newest first. Each incident also carries its `key`, the provider’s own id for it (its title when the page gives none), which is what you send to say an incident does not affect you; `provider_verdicts` lists the incidents of that status page you said do not affect you, with the `keys` each covers, its `title`, who said so (`by`) and when (`at`), until the provider closes them. `provider_month` says, for this calendar month, how many `incidents` the provider had on the components the monitor follows, how many of them `reached` your own monitors (grouped under it, or failing while it lasted, among the monitors that sit behind that provider) and for how many `minutes`. `provider_probe` is what InfraNest's probes saw of the provider's open incident, when it names a place one of them stands in or near: `state` `confirmed` (one of your monitors behind the provider failed from there, named in `failing`) or `no_effect` (they were checked from there and all came back up), with the `place`, whether the probe is only `near` it (in the same country), how many monitors were `checked` and `since` when; null when there is no such incident, probe or check to go on.\n\nScope: `monitoring.read`",
+            "description": "One monitor with its settings, alert channels, tags, dependencies, maintenance windows, the status pages it appears on, its 30 most recent results and the interval it actually runs at under your plan. `region_auto` is true when InfraNest picked the monitor’s one region for you; it measures that choice when you create the monitor and again every week (`region_placed_at`, the last time), and moves the monitor only to a region that is clearly faster or when the region’s probes are unavailable. Choosing regions yourself turns it off. When a monitor checked from one region fails, another probe checks it once before the failure counts: the failed result then carries `meta.second_opinion` with the place it failed `from`, the place that checked it again (`by`) and the `verdict` — `confirmed` (the failure counted) or `contradicted` (it did not, and nothing was alerted). A monitor that watches a third-party status page also carries `external_service` with its components (each with the `status` it reads as — `up`, `degraded` or `down` — and, where the page gives it, `vendor_status`, the provider's own word, such as `under_maintenance`), `uptime_90d`, and `provider_incidents`: the incidents open on that status page that touch the components the monitor follows, each with its `title`, the provider’s `vendor_status`, its `impact` (`up`, `degraded` or `down`), a `url` to the provider’s page, the `components` it names and the `updates` the provider posted, newest first. Each incident also carries its `key`, the provider’s own id for it (its title when the page gives none), which is what you send to say an incident does not affect you; `provider_verdicts` lists the incidents of that status page you said do not affect you, with the `keys` each covers, its `title`, who said so (`by`) and when (`at`), until the provider closes them. `provider_month` says, for this calendar month, how many `incidents` the provider had on the components the monitor follows, how many of them `reached` your own monitors (grouped under it, or failing while it lasted, among the monitors that sit behind that provider) and for how many `minutes`. `provider_probe` is what InfraNest's probes saw of the provider's open incident, when it names a place one of them stands in or near: `state` `confirmed` (one of your monitors behind the provider failed from there, named in `failing`) or `no_effect` (they were checked from there and all came back up), with the `place`, whether the probe is only `near` it (in the same country), how many monitors were `checked` and `since` when; null when there is no such incident, probe or check to go on.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6782,7 +6819,7 @@
           "name": "List a monitor’s check results",
           "request": {
             "method": "GET",
-            "description": "The monitor’s check results, newest first. With `resolution=raw` (the default) each result is one check by one probe, filterable by `status`; for HTTP, API and keyword monitors it also says where the response time went, in milliseconds: `dns_ms`, `connect_ms`, `tls_ms`, `server_ms` (waiting for the first byte) and `download_ms`, null when the location did not measure them, and `response_bytes`, how big the answer’s body was (null for a HEAD request, or a location on an older version). Its `meta` holds what the check saw: a keyword check’s `page_bytes` and, when it failed, an `excerpt` of the page’s text (at most 512 bytes); a ping’s `sent`, `received`, `loss_pct` and `jitter_ms`; a DNS check’s `records` with their `ttl` and the `resolver` asked (null for the location’s own); a redirect check’s `hops`, each `url` (without its query) and `status`; a heartbeat’s `run_duration_ms` when the check-in sent `duration`. Individual results are kept for 3 days. With `resolution=hour` or `day` each row sums one hour or one day across probes: checks by outcome (`checks_up`, `checks_degraded` for slow checks, `checks_down` for failures), `up_percent` and the p50 and p95 response times, reaching back as far as your plan keeps history. Set the window with `from` and `to` (ISO 8601; default: everything kept for raw, the last 24 hours for hours, the last 30 days for days), narrow it to one probe `region`, and page with `page` and `per_page` (up to 500, default 50). A range longer than the resolution allows — 3 days raw, 31 days by hour, 366 days by day — is refused with `range_too_large`. `window` repeats the range that was applied.\n\nScope: `monitoring.read`",
+            "description": "The monitor’s check results, newest first. With `resolution=raw` (the default) each result is one check by one probe, filterable by `status`; for HTTP, API and keyword monitors it also says where the response time went, in milliseconds: `dns_ms`, `connect_ms`, `tls_ms`, `server_ms` (waiting for the first byte) and `download_ms`, null when the location did not measure them, and `response_bytes`, how big the answer’s body was (null for a HEAD request, or a location on an older version). Its `meta` holds what the check saw: a keyword check’s `page_bytes` and, when it failed, an `excerpt` of the page’s text (at most 512 bytes); a ping’s `sent`, `received`, `loss_pct` and `jitter_ms`; a DNS check’s `records` with their `ttl` and the `resolver` asked (null for the location’s own); a redirect check’s `hops`, each `url` (without its query) and `status`; a heartbeat’s `run_duration_ms` when the check-in sent `duration`, and for a run your agent reported, its `exit_code`, `job_run_id` and, when it failed, the masked last lines of its `output` — only when you can manage servers (`cloud.write`, on your role and on your token); otherwise `output` is left out and `output_hidden` is true. `output_removed` says who removed that output and when (`by`, `at`). Individual results are kept for 3 days. With `resolution=hour` or `day` each row sums one hour or one day across probes: checks by outcome (`checks_up`, `checks_degraded` for slow checks, `checks_down` for failures), `up_percent` and the p50 and p95 response times, reaching back as far as your plan keeps history. Set the window with `from` and `to` (ISO 8601; default: everything kept for raw, the last 24 hours for hours, the last 30 days for days), narrow it to one probe `region`, and page with `page` and `per_page` (up to 500, default 50). A range longer than the resolution allows — 3 days raw, 31 days by hour, 366 days by day — is refused with `range_too_large`. `window` repeats the range that was applied.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -6911,7 +6948,7 @@
           "name": "Run a monitor now",
           "request": {
             "method": "POST",
-            "description": "Queues an immediate check of the monitor and answers 202 straight away; the result appears in its results once the check has run. Limited by your plan’s hourly allowance of manual checks.\n\nScope: `monitoring.write`",
+            "description": "Queues an immediate check of the monitor and answers 202 straight away; the result appears in its results once the check has run. Limited by your plan’s hourly allowance of manual checks. In a sandbox nothing is ever probed, so the check is simulated instead: the answer carries `simulated: true` and the `result`, already recorded.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -7133,7 +7170,7 @@
           "name": "Find where a monitor breaks",
           "request": {
             "method": "GET",
-            "description": "The layers a request passes through, each `ok`, `failing` or `unknown`: the domain's registration, DNS, the certificate (for HTTPS and SSL monitors), the server (when known) and the application. `breaks_at` names the first failing layer from the top, or null. Only layers with evidence are listed.\n\nScope: `monitoring.read`",
+            "description": "The layers a request passes through, each `ok`, `failing` or `unknown`: the domain's registration, DNS, the certificate (for HTTPS and SSL monitors), the `load_balancer` the monitor's address resolves to in your DNS records (with how many of its targets answer, where your provider reports it), a `web_server` row for each server behind it (or the monitor's own `server`, when known; while the monitor fails, each server with a public address is also asked the monitor's request directly, under its host name, and the row gives the status code it returned, `failing` for a 5xx), the `database` those servers use, and the application. A database is listed only on evidence: a monitor this one depends on that checks a database port, connections the server agent saw, or a firewall rule that lets a web server in by its address; when a firewall applied to it lets none of those web servers in on that port, the row names the firewall. `breaks_at` names the first failing layer from the top, or `database` when everything failing above it is only failing its load balancer's health check. Only layers with evidence are listed, and the load balancer, server and database rows only if you may read servers. `detail.key` is a translation key and `detail.params` its values.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -7170,7 +7207,7 @@
           "name": "Get a monitor's locations and last 90 days",
           "request": {
             "method": "GET",
-            "description": "`locations`: one entry per probe location that checked the monitor in the last hour — its last `status`, response time (`ms`), when, and `failing_since` when it is failing (the first failure after its last good check). `uptime`: 90 daily `bars` (uptime, colour band, and `m`, the minutes of planned maintenance that day), the overall `pct`, the number of unplanned `incidents`, the `minutes_down` and the `planned_minutes` of planned maintenance in those 90 days. Planned maintenance is left out of `pct` and `minutes_down`.\n\nScope: `monitoring.read`",
+            "description": "`locations`: one entry per probe location that checked the monitor in the last hour — its last `status`, response time (`ms`), when, and `failing_since` when it is failing (the first failure after its last good check). `uptime`: 90 daily `bars` (uptime, colour band, and `m`, the minutes of planned maintenance that day), the overall `pct`, the number of unplanned `incidents`, the `minutes_down` and the `planned_minutes` of planned maintenance in those 90 days. Planned maintenance is left out of `pct` and `minutes_down`. `checked_from` says where the monitor is checked from: its first `region`, the `name` of the place a probe there checks it from, whether InfraNest picked that region for you (`auto`, closest to your site and moved only when another region is clearly faster or its probes are unavailable) and whether it is the only one (`single`). A one-off check asked of another probe — a second opinion on a failure from a single region, or a measurement of how fast another region reaches your site — is not a location and is left out of `locations`.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -7207,7 +7244,7 @@
           "name": "Get a monitor’s uptime and response times for a period",
           "request": {
             "method": "GET",
-            "description": "Totals for one window: `uptime_percent` (the share of the time no confirmed outage covered, the figure the app shows), `up_percent` (the share of checks that came back up), checks by outcome, p50 and p95 response time in milliseconds, and the number and minutes of unplanned incidents. Pick `period` (`24h`, `7d`, `30d` or `90d`, default `24h`) or set `from` and `to` (ISO 8601, at most 366 days apart; longer is refused with `range_too_large`); the window starts on the hour `from` falls in. Pass `region` for one probe region, where `uptime_percent` is the share of checks that were up. Response times over more than one hour or probe are averaged from hourly figures, weighted by the number of checks, so they are close rather than exact. `uptime_percent` is null when nothing was measured.\n\nScope: `monitoring.read`",
+            "description": "Totals for one window: `uptime_percent` (the share of the time no confirmed outage covered, the figure the app shows), `up_percent` (the share of checks that came back up), checks by outcome, p50 and p95 response time in milliseconds, and the number and minutes of unplanned incidents. Pick `period` (`24h`, `7d`, `30d` or `90d`, default `24h`) or set `from` and `to` (ISO 8601, at most 366 days apart; longer is refused with `range_too_large`); the window starts on the hour `from` falls in. Pass `region` for one probe region, where `uptime_percent` is the share of checks that were up. One-off checks asked of another probe (a second opinion on a failure, or a measurement when a location is picked) are not counted; they stay in the monitor's results with `meta.asked`. Response times over more than one hour or probe are averaged from hourly figures, weighted by the number of checks, so they are close rather than exact. `uptime_percent` is null when nothing was measured.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -8282,7 +8319,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"repository\": \"northwind-cloud/app\",\n  \"target_type\": \"server\",\n  \"target_id\": 1\n}",
+              "raw": "{\n  \"repository\": \"northwyndr/app\",\n  \"target_type\": \"server\",\n  \"target_id\": 1\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -8426,7 +8463,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"repository\": \"northwind-cloud/app\",\n  \"production\": \"always\"\n}",
+              "raw": "{\n  \"repository\": \"northwyndr/app\",\n  \"production\": \"always\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -8640,6 +8677,117 @@
       "description": "Incidents: open, update and resolve them.",
       "item": [
         {
+          "name": "Get an incident’s review",
+          "request": {
+            "method": "GET",
+            "description": "The team’s review of a resolved incident, or `review: null` when nobody started one. Its parts are `happened`, `impact` and `why`, and `follow_ups` (the changes the team commits to), each with the ticket it became (`ticket`, as a finding’s ticket is shown) and whether it is `done`. `parts` says which of the four are written, `state` is `draft` or `done`, and `owner` is who started it. `copies` lists every place the review lives outside InfraNest: `published` copies InfraNest wrote from the review (Notion, a Linear document, Confluence, or the status page postmortem), updated from it and never read back, and `linked` write-ups made elsewhere, with their `title`, `edited_at`, `edited_by` and `status` but never their text. A Confluence copy says which page it went under (`parent_name`) and whether that page was gone and was made again (`parent_recreated`). `publish_to` is where finishing the review publishes, or null for your defaults: each entry a destination `key`, with the `target` chosen for it and, for Confluence, the `parent` page (`space` for directly in the space). `destinations` lists where it can be published: each connection whose tool can hold a review (`tool`, `target_noun`, `readiness` — `needs_grant` when a permission must be allowed first, with its `grant` — what was `published` there, `default`, ticked by your Postmortems setting or the connection’s default, and `default_target`, null when a place must be chosen on the review before it can be finished), and your status page when the incident shows on one, which is never a default. Read from InfraNest’s own records; no tool is asked.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incidents/:incident/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incidents",
+                ":incident",
+                "review"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "incident",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List where a review can be published in a tool",
+          "request": {
+            "method": "GET",
+            "description": "The places a connection can publish an incident review into, read from the tool when you ask: Notion databases, Linear projects or Confluence spaces (`target_noun`), each with its `id` and `name` — a readable `key` where it has one, and `personal` for a person’s own Confluence space — team spaces first, and `last_target`, the one its Postmortems setting writes to. `parents` says whether the tool keeps pages in a tree, so a review can go under a page. When the tool will not answer, `targets` is empty and `error` says why.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incident-review-destinations/:automationConnection_id/targets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incident-review-destinations",
+                ":automationConnection_id",
+                "targets"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List the pages a review can go under in a place",
+          "request": {
+            "method": "GET",
+            "description": "The pages of one place (`target`, a Confluence space id) that an incident review can be published under, each with its `id` and `name`, read from the tool when you ask. Empty for a tool that keeps no page tree. Pass one as `parent` when publishing, or `space` to publish directly in the place; without one, reviews go under a page called \"Incident reviews\", made the first time. When the tool will not answer, `parents` is empty and `error` says why.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incident-review-destinations/:automationConnection_id/parents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incident-review-destinations",
+                ":automationConnection_id",
+                "parents"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List incidents",
           "request": {
             "method": "GET",
@@ -8755,7 +8903,7 @@
           "name": "Get an incident’s timeline",
           "request": {
             "method": "GET",
-            "description": "The incident’s public status updates and internal team notes, plus the alert channels that were notified, deploys shortly before it began, who PagerDuty is paging, notes from PagerDuty and tickets opened for it. An update with `posted_automatically` was posted by InfraNest from the incident’s draft, because your workspace lets drafts post without asking. `status_draft` is the status page update this incident would post, ready for you to send with `POST …/updates`: `kind` is `opened` (the outage is real by your rule in `GET …/incident-status-rule` and nothing has been posted about it yet) or `resolved` (it recovered after an update was posted, and nobody has said it is over). It carries the `status` and `message` to send, the status `pages` and `components` it names, how long it has been down (`down_minutes`), from how many locations it was seen down (`locations_down` of `locations_checked`, null when the monitor has no per-location results) and whether your workspace posts it without asking (`auto_post`). `targets` lists where it is posted: once per status page it names, on an incident that page shows (`incident_id`, the `page_ids` showing it, and `notify_page_ids` when only some of those pages’ subscribers are told, because another update already reached the rest). For an outage across several monitors on different status pages, that is more than this incident. It is null for a blip, for an incident on no status page, for planned work and for a monitor behind a provider that reports its own outage.\n\nScope: `monitoring.read`",
+            "description": "The incident’s public status updates and internal team notes (each note with who wrote it and `via`, the channel: `app`, `api`, `mcp` for an AI assistant, `email`, `slack` or `telegram`), each time it was acknowledged or the acknowledgement taken back (`acknowledgements`, with who, when and `via`), plus the alert channels that were notified, deploys shortly before it began, who PagerDuty is paging, notes from PagerDuty and tickets opened for it. An update with `posted_automatically` was posted by InfraNest from the incident’s draft, because your workspace lets drafts post without asking. `status_draft` is the status page update this incident would post, ready for you to send with `POST …/updates`: `kind` is `opened` (the outage is real by your rule in `GET …/incident-status-rule` and nothing has been posted about it yet) or `resolved` (it recovered after an update was posted, and nobody has said it is over). It carries the `status` and `message` to send, the status `pages` and `components` it names, how long it has been down (`down_minutes`), from how many locations it was seen down (`locations_down` of `locations_checked`, null when the monitor has no per-location results) and whether your workspace posts it without asking (`auto_post`). `targets` lists where it is posted: once per status page it names, on an incident that page shows (`incident_id`, the `page_ids` showing it, and `notify_page_ids` when only some of those pages’ subscribers are told, because another update already reached the rest). For an outage across several monitors on different status pages, that is more than this incident. It is null for a blip, for an incident on no status page, for planned work and for a monitor behind a provider that reports its own outage. `report` is the incident’s postmortem in a docs tool such as Notion (`provider`, its title as `label`, `url` and `created_at`), or null; while it is null, `report_writer` names the connection that would write one (`connection_id`, `provider`), or is null when nothing that writes postmortems is connected. Each of `tickets` carries the link’s `id` (what unlinking it names), its own `title` when InfraNest saw it filed or linked, who it is assigned to (`assignee`, as the tracker’s webhook last said), how it came (`origin`: `filed`, `linked` or `automation`) and when InfraNest last heard of it (`synced_at`). `review` summarises the team’s review, or is null: how many of its four parts are written (`parts_filled` of `parts_total`), its follow-ups and how many are done, `state` (`draft` or `done`), `owner`, the keys of follow-up tickets still open, and `copies`, every place it is published to or linked from.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -8842,7 +8990,7 @@
           "name": "Get an incident’s cause, what it affected and how it unfolded",
           "request": {
             "method": "GET",
-            "description": "One incident as a whole. `cause` is the server whose failure took the others down when one did in the same window, otherwise the incident’s own monitor or subject. `affected` lists the other monitors, servers and status pages it touched. `events` holds what InfraNest saw, each with `at`, `kind`, `source` and `params`: `failed` and `recovered` for each affected monitor or server (`grouped` when it was folded under this incident), `alerted` with the destinations an alert actually reached (one event per minute), `acknowledged` with who did, and `handed_over` with whom it was handed `to` and `by` whom. Combine it with the incident’s updates and with what changed before it for the full timeline. `status_pages` lists every status page showing an affected monitor, with those components. `prevention` names what would have helped, or is null: an automation recipe in `template` — being told of DNS changes after a likely DNS cause, verifying deploys after a likely deploy, or announcing incidents on a status page nobody updated — and `active` says whether you already run it. When the incident drafts its own status page update, a silent status page is answered with a setting instead: `template` is null and `setting` is `auto_post_drafts`, the `auto_post` switch of the incident status rule, so the drafted update is posted without asking. With that switch on, the announcement recipe does not post for an outage the drafted update already covers, so visitors read about it once. `hand_over_to` lists the teammates you could hand an open incident to, with `on_call` set for whoever PagerDuty is paging for it; it is empty once the incident is resolved, or when you may not hand it over. Server details need a Cloud scope.\n\nScope: `monitoring.read`",
+            "description": "One incident as a whole. `cause` is the server whose failure took the others down when one did in the same window, otherwise the incident’s own monitor or subject. `affected` lists the other monitors, servers and status pages it touched. `events` holds what InfraNest saw, each with `at`, `kind`, `source` and `params`: `failed` and `recovered` for each affected monitor or server (`grouped` when it was folded under this incident), `alerted` with the destinations an alert actually reached (one event per minute), `acknowledged` with who did — and, once an acknowledgement was taken back, every `acknowledged` and `unacknowledged` with who and through which channel (`via`) — and `handed_over` with whom it was handed `to` and `by` whom. Combine it with the incident’s updates and with what changed before it for the full timeline. `status_pages` lists every status page showing an affected monitor, with those components. `prevention` names what would have helped, or is null: an automation recipe in `template` — being told of DNS changes after a likely DNS cause, verifying deploys after a likely deploy, or announcing incidents on a status page nobody updated — and `active` says whether you already run it. When the incident drafts its own status page update, a silent status page is answered with a setting instead: `template` is null and `setting` is `auto_post_drafts`, the `auto_post` switch of the incident status rule, so the drafted update is posted without asking. With that switch on, the announcement recipe does not post for an outage the drafted update already covers, so visitors read about it once. `hand_over_to` lists the teammates you could hand an open incident to, with `on_call` set for whoever PagerDuty is paging for it; it is empty once the incident is resolved, or when you may not hand it over. Server details need a Cloud scope.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -9114,6 +9262,43 @@
                   "language": "json"
                 }
               }
+            }
+          }
+        },
+        {
+          "name": "File an incident in your issue tracker",
+          "request": {
+            "method": "POST",
+            "description": "Opens an issue for the incident in a connected Jira, Linear or GitHub, the same way the connection’s *Issues for incidents* switch does: the incident’s title, a priority from its impact where the tracker has one, and a link back to the incident. `connection_id` picks the tracker connection and `target` the team, project or repository (as owner/name); leave them out to use the connection whose *Issues for incidents* switch is on and the target it files into, or the only tracker and target there is. When there is no single choice, the answer is a 422 whose message lists the options. An incident that already has a ticket is not filed again: the answer is that ticket with `outcome: existing` and status 200. A new one answers 201 with `outcome: created`. `ticket` carries the tracker, its `key` (OPS-12, ENG-14, or a GitHub issue’s repository and number) and `url`.\n\nScope: `monitoring.write`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/incidents/:incident_id/ticket",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "incidents",
+                ":incident_id",
+                "ticket"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "incident_id",
+                  "value": ""
+                }
+              ]
             }
           }
         }
@@ -10434,6 +10619,37 @@
       "description": "Alert channels, alert rules and notification settings. Read only: changing who gets alerted stays in the app.",
       "item": [
         {
+          "name": "Get the outbound heartbeat",
+          "request": {
+            "method": "GET",
+            "description": "The ping URL from your own uptime tool (Healthchecks.io, Better Stack, Cronitor and the like) that InfraNest calls every few minutes, so that tool notices if InfraNest goes quiet: its host, how often it is called, and whether the last calls were answered. `heartbeat` is null when none is set up. The URL itself is never returned.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/alert-heartbeat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "alert-heartbeat"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List alert destinations",
           "request": {
             "method": "GET",
@@ -10614,7 +10830,7 @@
           "name": "List automation connections",
           "request": {
             "method": "GET",
-            "description": "The accounts automations can act through, such as GitHub, Jira or PagerDuty, with each one’s status, whether it is paused and whether its triggers can fire.\n\nScope: `monitoring.read`",
+            "description": "The accounts automations can act through, such as GitHub, Jira or PagerDuty, with each one’s status, whether it is paused and whether its triggers can fire. `actions` lists what you can do with each one, in order — `test`, `reconnect` or `replace_key`, `rename`, `pause`, `disconnect` — and `needs_reconnect` is true when the provider no longer accepts its access, so reconnecting or replacing the key brings it back without changing its id.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -10631,6 +10847,394 @@
                 "organizations",
                 ":organization_id",
                 "automation-connections"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a docs tool’s postmortem settings",
+          "request": {
+            "method": "GET",
+            "description": "For a Notion connection: whether it writes a postmortem when an incident resolves, the database it goes into (`target`) and which incidents count (`scope`: `all`, `critical` or `monitors`), the databases to choose from, and the last test page.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/automation-connections/:automationConnection_id/incident-reports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "automation-connections",
+                ":automationConnection_id",
+                "incident-reports"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List where postmortems can go",
+          "request": {
+            "method": "GET",
+            "description": "The databases this connection can write a postmortem into, as `{value, label}` rows — only those shared with the connection. When the tool would not answer, `data` is empty and `error` says why.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/automation-connections/:automationConnection_id/incident-reports/targets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "automation-connections",
+                ":automationConnection_id",
+                "incident-reports",
+                "targets"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List switches remembered for this account",
+          "request": {
+            "method": "GET",
+            "description": "When this connection reaches an account that was disconnected in the last 30 days (the same Linear or Notion workspace, the same Jira site), the switches that account had on — `incident_tickets` (Issues for Incidents) or `incident_reports` (Postmortems) — with their `target`, its name as this connection sees it (`target_name`, null when the tool would not say), `scope` and when the offer lapses (`expires_at`). Switches this connection already has on are left out, and another account gets an empty list.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/automation-connections/:automationConnection_id/remembered-settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "automation-connections",
+                ":automationConnection_id",
+                "remembered-settings"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the other product this connection’s site offers",
+          "request": {
+            "method": "GET",
+            "description": "For a connection whose account reaches more than one product (an Atlassian site with Jira and Confluence), what to offer next, seen from the tile it was connected from (`from`: `jira` or `confluence`). `offer.kind` is `grant` (allow the other product with one more sign-in on the same connection, named in `grant`), `turn_on` (turn on the switch named in `switch`, `incident_tickets`) or `ready` (the connection already reaches it), with the product, the `site`, and the current default place (`default_target`, `default_target_name`). `offer` is null when the site does not have the other product, or the offer was dismissed for this connection. Read from what InfraNest recorded; nothing is asked of the tool.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/automation-connections/:automationConnection_id/other-product",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "automation-connections",
+                ":automationConnection_id",
+                "other-product"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get a tracker’s incident-issue settings",
+          "request": {
+            "method": "GET",
+            "description": "For a Linear (and later Jira) connection: whether it opens an issue for every incident, which team or project gets them and which incidents count (`scope`: `all`, `critical` or `monitors`), what resolving an incident does to its issue (`on_resolve`), what closing the issue does to the incident (`on_closed`), whether notes copy both ways, the teams and finished states to choose from, and the last test’s result.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/automation-connections/:automationConnection_id/incident-tickets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "automation-connections",
+                ":automationConnection_id",
+                "incident-tickets"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the test issue’s result",
+          "request": {
+            "method": "GET",
+            "description": "Where the last test issue got to: `waiting`, `passed` (it opened, closed, and the close came back), `outbound_failed`, `inbound_missing` (nothing came back within two minutes) or `no_webhook` (the connection has no way back set up yet).\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/automation-connections/:automationConnection_id/incident-tickets/test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "automation-connections",
+                ":automationConnection_id",
+                "incident-tickets",
+                "test"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List the tickets filed from findings",
+          "request": {
+            "method": "GET",
+            "description": "The latest ticket filed from each finding you name in `keys[]` (up to 100 of a finding’s stable keys, such as `server_advisor:12:firewall`), open or closed. An incident’s key is `incident:` and its id, and answers with the incident’s own ticket. Each has the tracker, its key in the tracker (`label`) and `url`, the state you last know it in, `closed` when it was finished there, `subject_open` while the problem it is about is still there (false once the ticket was told it cleared), and who filed it. `on_clear` says what a finding’s ticket is told when the finding clears, checked within 30 minutes: `finish` (a comment, then finished), `comment`, or null when it is told nothing — that kind of finding is not re-checked after filing yet, the connection is set to leave tickets alone, or the key is an incident’s, which follows the incident instead. A finding that comes back while its ticket is open gets a comment too, unless `on_clear` is null. A finding with no ticket is left out.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/finding-tickets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "finding-tickets"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List the trackers a finding can be filed into",
+          "request": {
+            "method": "GET",
+            "description": "Your connected issue trackers that can hold a ticket, such as Jira, Linear or GitHub, the one you used last first, with what each calls the place a ticket goes (`target_noun`: `team`, `project` or `repository`) and the one you used last there. `default_target` is where a new ticket goes unless you choose otherwise — the one you used last, else the one the connection’s *Issues for Incidents* setting files into — and `destination` its name as InfraNest last read it from the tracker, or null when it never has. A paused or disconnected connection is left out, so an empty list means a finding cannot be filed anywhere yet.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/finding-tickets/trackers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "finding-tickets",
+                "trackers"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List where a finding’s ticket can go",
+          "request": {
+            "method": "GET",
+            "description": "The teams, projects or repositories this tracker connection can file into, as `{id, key, name}` rows, and `last_target`, the one you used last, and `default_target`, where a new ticket goes unless you choose otherwise. When the tracker would not answer, `targets` is empty and `error` says why.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/finding-tickets/trackers/:automationConnection_id/targets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "finding-tickets",
+                "trackers",
+                ":automationConnection_id",
+                "targets"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "automationConnection_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get the ticket the last incident on the same monitor had",
+          "request": {
+            "method": "GET",
+            "description": "For the incident you name in `incident`, the newest tracker ticket an earlier incident on the same monitor (else the same server) had in the last 90 days, so the same problem is not filed twice. `ticket` has the same fields as a finding’s ticket; `about` says what the incidents share (`monitor`, `server` or `subject`), with that earlier incident’s id and when it started. `data` is null when no earlier incident had a ticket, or that ticket is already linked to this incident. Read from what InfraNest recorded; nothing is asked of the tracker.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/finding-tickets/last-time",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "finding-tickets",
+                "last-time"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what each finding can do about paging on-call",
+          "request": {
+            "method": "GET",
+            "description": "Whether PagerDuty is connected (`available`), and for each finding you name in `keys[]` (up to 100 of a finding’s stable keys; an incident’s is `incident:` and its id) whether it can page on-call now (`pageable`) and the page it already has (`page`): the PagerDuty service it went to, PagerDuty’s incident id and address once known, its urgency and who paged it. An incident can be paged while it is open and PagerDuty has not been paged for it. When PagerDuty is not connected, `data` is empty.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/oncall-pages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "oncall-pages"
               ],
               "variable": [
                 {
@@ -12428,6 +13032,38 @@
           }
         },
         {
+          "name": "Read what the plan page knows about this organization",
+          "request": {
+            "method": "GET",
+            "description": "Facts specific to this organization, for choosing a plan: `receipt` (what InfraNest did for it in the last 30 days, when it pays), `evidence` (up to two lines from its own history that a bigger plan would have changed; empty while a critical problem is open), `plans` (per plan id: whether everything fits, and if not how many items would lock and the first of them), `forecast` (counts growing steadily toward the current limit, with the weeks left) and `asked` (entitlement keys members asked for in the last 90 days). Worded in `locale` (en, nl, de or fr). Read-only; cached for ten minutes.\n\nScope: `billing.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/subscription/insights",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "subscription",
+                "insights"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List invoices",
           "request": {
             "method": "GET",
@@ -12541,6 +13177,38 @@
                 "organizations",
                 ":organization_id",
                 "plan-keep"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what a cancelling organization can be offered instead",
+          "request": {
+            "method": "GET",
+            "description": "The offers the cancel dialog can show this organization: `yearly` (what yearly billing would save a monthly payer, in minor units), `smaller` (the cheapest plan on which nothing locks, when it costs less), `discount` (a stay discount, when the organization is eligible) and `pause` (how many months billing can be paused). Each is null when it does not apply. Read-only; nothing is applied by reading it.\n\nScope: `billing.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/subscription/stay-offers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "subscription",
+                "stay-offers"
               ],
               "variable": [
                 {

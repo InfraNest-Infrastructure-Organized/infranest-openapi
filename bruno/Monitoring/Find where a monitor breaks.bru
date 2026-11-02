@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  The layers a request passes through, each `ok`, `failing` or `unknown`: the domain's registration, DNS, the certificate (for HTTPS and SSL monitors), the server (when known) and the application. `breaks_at` names the first failing layer from the top, or null. Only layers with evidence are listed.
+  The layers a request passes through, each `ok`, `failing` or `unknown`: the domain's registration, DNS, the certificate (for HTTPS and SSL monitors), the `load_balancer` the monitor's address resolves to in your DNS records (with how many of its targets answer, where your provider reports it), a `web_server` row for each server behind it (or the monitor's own `server`, when known; while the monitor fails, each server with a public address is also asked the monitor's request directly, under its host name, and the row gives the status code it returned, `failing` for a 5xx), the `database` those servers use, and the application. A database is listed only on evidence: a monitor this one depends on that checks a database port, connections the server agent saw, or a firewall rule that lets a web server in by its address; when a firewall applied to it lets none of those web servers in on that port, the row names the firewall. `breaks_at` names the first failing layer from the top, or `database` when everything failing above it is only failing its load balancer's health check. Only layers with evidence are listed, and the load balancer, server and database rows only if you may read servers. `detail.key` is a translation key and `detail.params` its values.
 
   Scope: `monitoring.read`
 }

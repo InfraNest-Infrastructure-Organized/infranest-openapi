@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  The accounts automations can act through, such as GitHub, Jira or PagerDuty, with each one’s status, whether it is paused and whether its triggers can fire.
+  The accounts automations can act through, such as GitHub, Jira or PagerDuty, with each one’s status, whether it is paused and whether its triggers can fire. `actions` lists what you can do with each one, in order — `test`, `reconnect` or `replace_key`, `rename`, `pause`, `disconnect` — and `needs_reconnect` is true when the provider no longer accepts its access, so reconnecting or replacing the key brings it back without changing its id.
 
   Scope: `monitoring.read`
 }

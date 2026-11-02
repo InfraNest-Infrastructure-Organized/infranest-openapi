@@ -1,0 +1,21 @@
+meta {
+  name: Get the ticket the last incident on the same monitor had
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/finding-tickets/last-time
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  For the incident you name in `incident`, the newest tracker ticket an earlier incident on the same monitor (else the same server) had in the last 90 days, so the same problem is not filed twice. `ticket` has the same fields as a finding’s ticket; `about` says what the incidents share (`monitor`, `server` or `subject`), with that earlier incident’s id and when it started. `data` is null when no earlier incident had a ticket, or that ticket is already linked to this incident. Read from what InfraNest recorded; nothing is asked of the tracker.
+
+  Scope: `monitoring.read`
+}

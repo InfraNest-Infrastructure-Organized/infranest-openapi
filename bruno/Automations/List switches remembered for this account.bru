@@ -1,0 +1,25 @@
+meta {
+  name: List switches remembered for this account
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/automation-connections/:automationConnection_id/remembered-settings
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  When this connection reaches an account that was disconnected in the last 30 days (the same Linear or Notion workspace, the same Jira site), the switches that account had on — `incident_tickets` (Issues for Incidents) or `incident_reports` (Postmortems) — with their `target`, its name as this connection sees it (`target_name`, null when the tool would not say), `scope` and when the offer lapses (`expires_at`). Switches this connection already has on are left out, and another account gets an empty list.
+
+  Scope: `monitoring.read`
+}

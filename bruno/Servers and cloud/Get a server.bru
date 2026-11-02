@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  One server with its volumes, tags, cost breakdown and what its provider lets InfraNest do with it. Also says whether it can be renamed and whether its monitoring agent’s readings are being refused.
+  One server with its volumes, tags, cost breakdown and what its provider lets InfraNest do with it. Also says whether it can be renamed, whether its monitoring agent’s readings are being refused, and in `reconnect_for` which of `server_rebuild`, `server_restore` and `root_password_reset` its signed-in provider connection must reconnect to allow (always empty for an API token, whose permissions cannot be read).
 
   Scope: `cloud.read`
 }

@@ -1,7 +1,7 @@
 meta {
   name: List what will happen to a server next
   type: http
-  seq: 19
+  seq: 20
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  By date: disks forecast to fill (per mount), memory, CPU or load reaching its alert threshold at the current trend, scheduled reboots, certificates it serves renewing or expiring, Ubuntu Pro lapsing and the operating system leaving support. Forecasts without an honest fit and operating systems without a known support date are left out.
+  By date: disks forecast to fill (per mount), memory, CPU or load reaching its alert threshold at the current trend, scheduled reboots, certificates it serves renewing or expiring, Ubuntu Pro lapsing and the operating system leaving support. A `jobs_tonight` item lists the scheduled jobs of yours that run between 18:00 and 08:00 in the server's time (`params.jobs`, each `name` and `at`, at most four, and `more`). Forecasts without an honest fit and operating systems without a known support date are left out.
 
   Scope: `cloud.read`
 }

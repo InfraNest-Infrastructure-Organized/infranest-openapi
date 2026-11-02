@@ -1,0 +1,25 @@
+meta {
+  name: Get an incident’s review
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incidents/:incident/review
+  body: none
+  auth: inherit
+}
+
+params:path {
+  incident: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The team’s review of a resolved incident, or `review: null` when nobody started one. Its parts are `happened`, `impact` and `why`, and `follow_ups` (the changes the team commits to), each with the ticket it became (`ticket`, as a finding’s ticket is shown) and whether it is `done`. `parts` says which of the four are written, `state` is `draft` or `done`, and `owner` is who started it. `copies` lists every place the review lives outside InfraNest: `published` copies InfraNest wrote from the review (Notion, a Linear document, Confluence, or the status page postmortem), updated from it and never read back, and `linked` write-ups made elsewhere, with their `title`, `edited_at`, `edited_by` and `status` but never their text. A Confluence copy says which page it went under (`parent_name`) and whether that page was gone and was made again (`parent_recreated`). `publish_to` is where finishing the review publishes, or null for your defaults: each entry a destination `key`, with the `target` chosen for it and, for Confluence, the `parent` page (`space` for directly in the space). `destinations` lists where it can be published: each connection whose tool can hold a review (`tool`, `target_noun`, `readiness` — `needs_grant` when a permission must be allowed first, with its `grant` — what was `published` there, `default`, ticked by your Postmortems setting or the connection’s default, and `default_target`, null when a place must be chosen on the review before it can be finished), and your status page when the incident shows on one, which is never a default. Read from InfraNest’s own records; no tool is asked.
+
+  Scope: `monitoring.read`
+}

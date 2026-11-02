@@ -1,0 +1,25 @@
+meta {
+  name: List the pages a review can go under in a place
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/incident-review-destinations/:automationConnection_id/parents
+  body: none
+  auth: inherit
+}
+
+params:path {
+  automationConnection_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The pages of one place (`target`, a Confluence space id) that an incident review can be published under, each with its `id` and `name`, read from the tool when you ask. Empty for a tool that keeps no page tree. Pass one as `parent` when publishing, or `space` to publish directly in the place; without one, reviews go under a page called "Incident reviews", made the first time. When the tool will not answer, `parents` is empty and `error` says why.
+
+  Scope: `monitoring.read`
+}

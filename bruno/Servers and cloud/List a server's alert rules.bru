@@ -1,7 +1,7 @@
 meta {
   name: List a server’s alert rules
   type: http
-  seq: 68
+  seq: 69
 }
 
 get {
@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, with `fired_30d`: how many incidents it raised on this server in the last 30 days. Older standalone rules are listed apart. With `active=1` it returns only the rules actually being evaluated, as a flat list.
+  Every alert in the catalogue for this server, each marked as inherited from the organization, overridden here or not configured, with `fired_30d`: how many incidents it raised on this server in the last 30 days. Older standalone rules are listed apart, and `workloads` lists the rules that watch one service or container, each with its `target` (`kind`, `match` — a service’s unit, or a container’s main program and lowest published port — and `name`), `threshold` (restarts within `restart_window_minutes` that count as a loop) and `duration_minutes` (how long it may be stopped). With `active=1` it returns only the rules actually being evaluated, as a flat list.
 
   Scope: `cloud.read`
 }

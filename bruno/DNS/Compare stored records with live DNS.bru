@@ -19,7 +19,7 @@ headers {
 }
 
 docs {
-  Records whose stored value differs from what public resolvers last answered, each with both values, the likely cause and whether taking the live value is offered. Also returns the zone’s delegation state; changes nothing.
+  Records whose stored value differs from what public resolvers last answered, each with both values, the likely cause and whether taking the live value is offered. `live_status` says whether that list means anything: `compared` once the records were checked against live DNS, `unanswered` when they were asked about and no resolver could say, `never_checked` before the first check — an empty list then is not a match. Also returns the zone’s delegation state; changes nothing.
 
   Scope: `dns.read`
 }
