@@ -21990,7 +21990,7 @@
               "application/json": {
                 "example": [
                   {
-                    "id": 2,
+                    "id": 3,
                     "source": "monitoring_check",
                     "title": "Brief marketing-site blip",
                     "status": "resolved",
@@ -22081,7 +22081,7 @@
             "content": {
               "application/json": {
                 "example": {
-                  "id": 2,
+                  "id": 3,
                   "monitoring_check_id": 1,
                   "started_at": "2026-01-09T11:45:00.000000Z",
                   "resolved_at": "2026-01-09T12:00:00.000000Z",
@@ -22992,7 +22992,7 @@
                       "agent_not_reporting": 0,
                       "breaching": 0
                     },
-                    "open_incidents": 1,
+                    "open_incidents": 2,
                     "active_maintenance": 0
                   },
                   "monitors": [
@@ -23036,6 +23036,16 @@
                     }
                   ],
                   "incidents": [
+                    {
+                      "id": 2,
+                      "title": "Sessions dropping on cache-01",
+                      "status": "investigating",
+                      "impact": "minor",
+                      "started_at": "2026-01-15T11:42:00Z",
+                      "acknowledged_at": "2026-01-15T11:42:00Z",
+                      "monitoring_check_id": null,
+                      "server_id": null
+                    },
                     {
                       "id": 1,
                       "title": "Checkout returning 503",
@@ -23283,7 +23293,7 @@
                   },
                   "recovered": null,
                   "last_problem": {
-                    "incident_id": 7,
+                    "incident_id": 8,
                     "title": "docs.northwyndr.com stopped resolving",
                     "resolved_at": "2026-01-12T12:00:00Z",
                     "duration_seconds": 1500
@@ -23840,8 +23850,8 @@
                   ],
                   "month": {
                     "uptime": 100,
-                    "incidents": 6,
-                    "minutes_down": 95
+                    "incidents": 7,
+                    "minutes_down": 113
                   },
                   "key_monitors": [
                     {
@@ -24387,7 +24397,7 @@
                     ],
                     "copies": [
                       {
-                        "id": 3,
+                        "id": 4,
                         "kind": "linked",
                         "provider": "linear",
                         "tool": "linear",
@@ -40472,7 +40482,7 @@
                   "current_page": 1,
                   "data": [
                     {
-                      "id": 2,
+                      "id": 3,
                       "organization_id": 1,
                       "monitoring_check_id": 1,
                       "server_id": null,
@@ -40528,7 +40538,7 @@
                       "updates": [
                         {
                           "id": 5,
-                          "monitoring_incident_id": 2,
+                          "monitoring_incident_id": 3,
                           "status": "resolved",
                           "message": "A CDN configuration change was rolled back and the site recovered. No other services were affected.",
                           "user_id": null,
@@ -40539,7 +40549,7 @@
                       ]
                     },
                     {
-                      "id": 4,
+                      "id": 5,
                       "organization_id": 1,
                       "monitoring_check_id": 7,
                       "server_id": null,
@@ -40612,13 +40622,13 @@
                   "path": "http://localhost/api/organizations/1/incidents",
                   "per_page": 25,
                   "prev_page_url": null,
-                  "to": 4,
-                  "total": 4,
+                  "to": 5,
+                  "total": 5,
                   "meta": {
                     "counts": {
-                      "total": 4,
-                      "open": 1,
-                      "acked": 0,
+                      "total": 5,
+                      "open": 2,
+                      "acked": 1,
                       "resolved": 3
                     },
                     "assistants": [
@@ -40684,12 +40694,12 @@
               "application/json": {
                 "example": {
                   "days": 90,
-                  "count": 7,
+                  "count": 8,
                   "previous_count": 0,
                   "not_yours": 0,
-                  "downtime_seconds": 7020,
+                  "downtime_seconds": 8100,
                   "median_fix_seconds": 600,
-                  "median_notice_seconds": 240,
+                  "median_notice_seconds": 120,
                   "after_change": 3,
                   "after_change_of": 7,
                   "common_change": "deploy"
@@ -40964,7 +40974,7 @@
                       "user": null
                     },
                     {
-                      "id": 8,
+                      "id": 9,
                       "monitoring_incident_id": 1,
                       "status": "investigating",
                       "message": "The provider has acknowledged an incident on their side. We are holding while they work.",
@@ -41019,6 +41029,7 @@
                   "tickets": [
                     {
                       "id": 1,
+                      "detached": false,
                       "provider": "jira",
                       "label": "OPS-318",
                       "url": "https://northwind.atlassian.net/browse/OPS-318",
@@ -41034,6 +41045,7 @@
                     },
                     {
                       "id": 2,
+                      "detached": false,
                       "provider": "linear",
                       "label": "OPS-142",
                       "url": "https://linear.app/northwind/issue/OPS-142/checkout-returning-503",
@@ -41132,7 +41144,7 @@
                   "message": "A fix is out; we are watching checkout recover.",
                   "user_id": 1,
                   "created_at": "2026-01-15T12:00:00.000000Z",
-                  "id": 9,
+                  "id": 10,
                   "incident": {
                     "id": 1,
                     "monitoring_check_id": 4,
@@ -46863,7 +46875,7 @@
                 "example": {
                   "data": [
                     {
-                      "id": 6,
+                      "id": 12,
                       "finding_key": "server_advisor:1:firewall",
                       "provider": "linear",
                       "tracker": "Linear",
@@ -47128,8 +47140,8 @@
                 "example": {
                   "data": {
                     "ticket": {
-                      "id": 7,
-                      "finding_key": "incident:6",
+                      "id": 10,
+                      "finding_key": "incident:7",
                       "provider": "linear",
                       "tracker": "Linear",
                       "connection_id": 3,
@@ -47148,7 +47160,7 @@
                       "host": null
                     },
                     "about": "monitor",
-                    "incident_id": 6,
+                    "incident_id": 7,
                     "started_at": "2025-12-28T17:45:00+00:00"
                   }
                 }
@@ -47238,7 +47250,7 @@
                         "key": "domain:1:renewal_failed",
                         "provider": "pagerduty",
                         "service": "Platform — production",
-                        "label": "Q2KX8M1",
+                        "label": "#42",
                         "url": "https://northwind.pagerduty.com/incidents/Q2KX8M1",
                         "urgency": "high",
                         "paged_by": null,
