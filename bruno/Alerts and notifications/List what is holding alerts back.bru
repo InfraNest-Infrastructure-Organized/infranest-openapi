@@ -1,0 +1,21 @@
+meta {
+  name: List what is holding alerts back
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/alerts/quiet
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Everything that keeps the organization's alerts quiet right now, wherever it was set: the whole organization paused, a running maintenance window, a snoozed server or a silenced monitor. Each item has its `kind`, `name`, `until` (null when it has no end), who started it (`by`), and `end`: the method and path that end it early, or null where it cannot be ended from here.
+
+  Scope: `monitoring.read`
+}

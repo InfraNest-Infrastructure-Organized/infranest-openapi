@@ -1,0 +1,21 @@
+meta {
+  name: List who hears what
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/alerts/members
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every member of the organization: whether they get their own email when a monitor goes down and a destination already has the alert (`own_email`, and `why`: owner, on_call or member), and which of the team's notification defaults they changed for themselves (`changed`, by setting name, never by value). For members who manage the team.
+
+  Scope: `monitoring.read`
+}

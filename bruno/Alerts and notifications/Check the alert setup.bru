@@ -1,0 +1,21 @@
+meta {
+  name: Check the alert setup
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/alerts/setup
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Whether an outage would reach anyone: `reach` (every monitor's alert reaches a destination or a person), `chat` (a shared chat channel hears alerts) and `tested` (every destination had a test that arrived in the last 30 days). Each check has `ok`, its `params`, and a `fix`: a page to open (`route`) or the destinations to test (`channel_ids`), or null when it is fine.
+
+  Scope: `monitoring.read`
+}

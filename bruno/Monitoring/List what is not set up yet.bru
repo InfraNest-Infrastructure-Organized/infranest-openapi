@@ -1,0 +1,21 @@
+meta {
+  name: List what is not set up yet
+  type: http
+  seq: 40
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/coverage-gaps
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  What is missing between your things, the same list Home suggests from: websites and servers nobody monitors, servers without the agent, no alert channel, domains with auto-renew off or not renewing, mail domains whose DNS nobody checks, zones not linked to their domain, and providers your domains use that you have not connected. Each gap has a `kind`, its `subjects` (`type`, `id`, `label` and the `signals` it was ranked by, best first) and the `fix` that closes it (`action`, and `monitors_each`, what one subject costs against your plan's monitors). A gap is listed only when you may read the module its subjects belong to — domains, servers, DNS or monitoring. `sources` says which kinds were checked: one whose check failed reads `failed`, never "nothing missing". A gap is something not set up yet, never something wrong.
+
+  Scope: `monitoring.read`
+}

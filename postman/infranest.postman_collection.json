@@ -8007,6 +8007,37 @@
           }
         },
         {
+          "name": "List what is not set up yet",
+          "request": {
+            "method": "GET",
+            "description": "What is missing between your things, the same list Home suggests from: websites and servers nobody monitors, servers without the agent, no alert channel, domains with auto-renew off or not renewing, mail domains whose DNS nobody checks, zones not linked to their domain, and providers your domains use that you have not connected. Each gap has a `kind`, its `subjects` (`type`, `id`, `label` and the `signals` it was ranked by, best first) and the `fix` that closes it (`action`, and `monitors_each`, what one subject costs against your plan's monitors). A gap is listed only when you may read the module its subjects belong to — domains, servers, DNS or monitoring. `sources` says which kinds were checked: one whose check failed reads `failed`, never \"nothing missing\". A gap is something not set up yet, never something wrong.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/coverage-gaps",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "coverage-gaps"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List active probe regions",
           "request": {
             "method": "GET",
@@ -10711,6 +10742,102 @@
                 {
                   "key": "alertChannel_id",
                   "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List what is holding alerts back",
+          "request": {
+            "method": "GET",
+            "description": "Everything that keeps the organization's alerts quiet right now, wherever it was set: the whole organization paused, a running maintenance window, a snoozed server or a silenced monitor. Each item has its `kind`, `name`, `until` (null when it has no end), who started it (`by`), and `end`: the method and path that end it early, or null where it cannot be ended from here.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/alerts/quiet",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "alerts",
+                "quiet"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check the alert setup",
+          "request": {
+            "method": "GET",
+            "description": "Whether an outage would reach anyone: `reach` (every monitor's alert reaches a destination or a person), `chat` (a shared chat channel hears alerts) and `tested` (every destination had a test that arrived in the last 30 days). Each check has `ok`, its `params`, and a `fix`: a page to open (`route`) or the destinations to test (`channel_ids`), or null when it is fine.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/alerts/setup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "alerts",
+                "setup"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List who hears what",
+          "request": {
+            "method": "GET",
+            "description": "Every member of the organization: whether they get their own email when a monitor goes down and a destination already has the alert (`own_email`, and `why`: owner, on_call or member), and which of the team's notification defaults they changed for themselves (`changed`, by setting name, never by value). For members who manage the team.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/alerts/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "alerts",
+                "members"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
                 }
               ]
             }
