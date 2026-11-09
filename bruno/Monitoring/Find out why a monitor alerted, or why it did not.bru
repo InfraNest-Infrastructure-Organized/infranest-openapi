@@ -1,0 +1,31 @@
+meta {
+  name: Find out why a monitor alerted, or why it did not
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/monitoring-checks/:monitoringCheck_id/transitions
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~rule: second_opinion
+  ~per_page: 50
+  ~page: 1
+}
+
+params:path {
+  monitoringCheck_id: 
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Every change of the monitor’s status, and every failure that was held back, newest first, kept for 30 days. Each row has `from` and `to` (the monitor’s status before and after), what the check result said (`result_status`, `reason_code`) and from which `region`, whether an incident was opened or closed (`incident_opened`, `incident_closed`), and the `rule` that decided it: `second_opinion` (the failure was checked again from another network before counting, and `counts.verdict` says whether that check confirmed or contradicted it), `consensus` (not enough locations agreed, or another location in the same region reached the site), `flap_threshold` (the failure counted; `counts.run` of `counts.threshold` failures in a row), `not_an_observation` (the result was about InfraNest’s probe or network, not your site), `recovery_threshold` (a good result; `counts.ok` of `counts.need` in a row close an outage) or `drift_repair` (InfraNest re-checked a status that disagreed with the latest results). The same held-back decision repeating with nothing else changing is one row: `repeats` says how many results it covers and `last_at` when the last one was. `result_id` is the check result it was decided on, while that result is kept (3 days). Filter with `rule`, and page with `page` and `per_page` (up to 200, default 50).
+
+  Scope: `monitoring.read`
+}

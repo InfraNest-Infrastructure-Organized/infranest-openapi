@@ -25,7 +25,7 @@ body:json {
 }
 
 docs {
-  Changes the fields you send. Sending `check_ids` or `server_ids` replaces what the window covers, and an empty list clears it. Sending `public_notice` as null or empty takes the window off your status pages.
+  Changes the fields you send. Sending `check_ids` or `server_ids` replaces what the window covers, and an empty list clears it. Sending `public_notice` as null or empty takes the window off your status pages. A monthly window moved to a day of the month forgets its weekday, and the other way round; sending `timezone` empty puts a repeating window back on your workspace’s timezone.
 
   Scope: `monitoring.write`
 }

@@ -3574,6 +3574,37 @@
       "description": "Servers, volumes, networks, firewalls and load balancers. Provider actions stay in the app; tokens edit InfraNest's own records and alerting.",
       "item": [
         {
+          "name": "List scheduled actions",
+          "request": {
+            "method": "GET",
+            "description": "Reboots and address moves waiting for the time they were scheduled for, and those that ran, failed or were cancelled in the last seven days. Filter to one server with `server_id`. Schedule one by sending `run_at` to the reboot or address-move endpoint.",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/scheduled-actions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "scheduled-actions"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "Get the servers overview",
           "request": {
             "method": "GET",
@@ -3693,37 +3724,6 @@
                 "organizations",
                 ":organization_id",
                 "quiet-hours"
-              ],
-              "variable": [
-                {
-                  "key": "organization_id",
-                  "value": "{{organization_id}}"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "List scheduled actions",
-          "request": {
-            "method": "GET",
-            "description": "Reboots and address moves waiting for the time they were scheduled for, and those that ran, failed or were cancelled in the last seven days. Filter to one server with `server_id`. Schedule one by sending `run_at` to the reboot or address-move endpoint.\n\nScope: `cloud.read`",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/organizations/:organization_id/scheduled-actions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "organizations",
-                ":organization_id",
-                "scheduled-actions"
               ],
               "variable": [
                 {
@@ -5157,6 +5157,38 @@
           }
         },
         {
+          "name": "Fit firewall rules to an account",
+          "request": {
+            "method": "GET",
+            "description": "The rules of a firewall (`firewall`, its id) or a template (`template`, a slug or a custom template’s id) as the account `provider_credential_id` would hold them, at whichever provider. `changes` names every rule that does not arrive as it was — an outbound rule at an inbound-only provider, a protocol the provider does not take, a rule only its own provider understands — and why. `creatable` says whether the account can create a firewall of its own. Nothing is changed.\n\nScope: `cloud.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/firewall-rules/fit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "firewall-rules",
+                "fit"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "List firewall templates",
           "request": {
             "method": "GET",
@@ -5191,7 +5223,7 @@
           "name": "Preview a firewall template",
           "request": {
             "method": "GET",
-            "description": "The rules a template would add to the given firewall, alongside how many rules the firewall has now. `templateKey` is a built-in template’s slug or a custom template’s id; nothing is changed.\n\nScope: `cloud.read`",
+            "description": "The rules a template would add to the given firewall, alongside how many rules the firewall has now. `changes` names every template rule the firewall’s provider cannot hold — left out, split in two or with fewer addresses — and why. `templateKey` is a built-in template’s slug or a custom template’s id; nothing is changed.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",
@@ -7389,6 +7421,43 @@
           }
         },
         {
+          "name": "Find out why a monitor alerted, or why it did not",
+          "request": {
+            "method": "GET",
+            "description": "Every change of the monitor’s status, and every failure that was held back, newest first, kept for 30 days. Each row has `from` and `to` (the monitor’s status before and after), what the check result said (`result_status`, `reason_code`) and from which `region`, whether an incident was opened or closed (`incident_opened`, `incident_closed`), and the `rule` that decided it: `second_opinion` (the failure was checked again from another network before counting, and `counts.verdict` says whether that check confirmed or contradicted it), `consensus` (not enough locations agreed, or another location in the same region reached the site), `flap_threshold` (the failure counted; `counts.run` of `counts.threshold` failures in a row), `not_an_observation` (the result was about InfraNest’s probe or network, not your site), `recovery_threshold` (a good result; `counts.ok` of `counts.need` in a row close an outage) or `drift_repair` (InfraNest re-checked a status that disagreed with the latest results). The same held-back decision repeating with nothing else changing is one row: `repeats` says how many results it covers and `last_at` when the last one was. `result_id` is the check result it was decided on, while that result is kept (3 days). Filter with `rule`, and page with `page` and `per_page` (up to 200, default 50).\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/monitoring-checks/:monitoringCheck_id/transitions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "monitoring-checks",
+                ":monitoringCheck_id",
+                "transitions"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                },
+                {
+                  "key": "monitoringCheck_id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "Edit a monitor incident",
           "request": {
             "method": "PATCH",
@@ -9343,7 +9412,7 @@
           "name": "Update a maintenance window",
           "request": {
             "method": "PATCH",
-            "description": "Changes the fields you send. Sending `check_ids` or `server_ids` replaces what the window covers, and an empty list clears it. Sending `public_notice` as null or empty takes the window off your status pages.\n\nScope: `monitoring.write`",
+            "description": "Changes the fields you send. Sending `check_ids` or `server_ids` replaces what the window covers, and an empty list clears it. Sending `public_notice` as null or empty takes the window off your status pages. A monthly window moved to a day of the month forgets its weekday, and the other way round; sending `timezone` empty puts a repeating window back on your workspace’s timezone.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -9533,7 +9602,7 @@
           "name": "Create a maintenance window",
           "request": {
             "method": "POST",
-            "description": "Schedules maintenance for the monitors in `check_ids` and servers in `server_ids`; a window with no monitors applies to every monitor. A one-time window needs `starts_at` and `ends_at`, a `daily` or `weekly` one needs `start_time` and `duration_minutes`, and alerts are suppressed during it unless `suppress_alerts` is false. Status pages and their subscribers see only `public_notice`, the text written for the public, and only on the pages whose monitors the window covers, from a week before a one-time window starts until it ends. Send it empty or null to keep the window internal. Leave it out and the window stays internal too, unless your workspace posts drafted status updates without asking (`auto_post` in `GET …/incident-status-rule`): then it carries the notice drafted from what it covers, the one `GET …/maintenance-windows/notice-draft` returns, and the response shows it in `public_notice`. The name and description are never published.\n\nScope: `monitoring.write`",
+            "description": "Schedules maintenance for the monitors in `check_ids` and servers in `server_ids`; a window with no monitors applies to every monitor. A one-time window needs `starts_at` and `ends_at`; a `daily`, `weekly` (`recurrence_days`, 0 is Sunday) or `monthly` one needs `start_time` and `duration_minutes`, and a monthly one also `recurrence_month_day` (1–31, the last day of a shorter month) or `recurrence_week` (1–4, or -1 for the last) with `recurrence_weekday`; a `cron` one needs `recurrence_cron`, a five-field cron expression, and `duration_minutes`. A repeating window runs in your workspace’s timezone, keeping its local time all year, unless you give it its own `timezone` (for example `UTC`). Alerts are suppressed during it unless `suppress_alerts` is false. Status pages and their subscribers see only `public_notice`, the text written for the public, and only on the pages whose monitors the window covers, from a week before a one-time window starts until it ends. Send it empty or null to keep the window internal. Leave it out and the window stays internal too, unless your workspace posts drafted status updates without asking (`auto_post` in `GET …/incident-status-rule`): then it carries the notice drafted from what it covers, the one `GET …/maintenance-windows/notice-draft` returns, and the response shows it in `public_notice`. The name and description are never published.\n\nScope: `monitoring.write`",
             "header": [
               {
                 "key": "Accept",
@@ -9595,6 +9664,38 @@
                 ":organization_id",
                 "maintenance-windows",
                 "notice-draft"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Preview a maintenance schedule",
+          "request": {
+            "method": "GET",
+            "description": "The next three times a repeating schedule would run, as `occurrences` with `starts_at` and `ends_at`, and the `timezone` it is read in. Send the same schedule fields as when you create a window. `valid` is false, with no occurrences, for a cron expression that cannot be read. Nothing is saved.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/maintenance-windows/schedule-preview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "maintenance-windows",
+                "schedule-preview"
               ],
               "variable": [
                 {
@@ -10751,7 +10852,7 @@
           "name": "List what is holding alerts back",
           "request": {
             "method": "GET",
-            "description": "Everything that keeps the organization's alerts quiet right now, wherever it was set: the whole organization paused, a running maintenance window, a snoozed server or a silenced monitor. Each item has its `kind`, `name`, `until` (null when it has no end), who started it (`by`), and `end`: the method and path that end it early, or null where it cannot be ended from here.\n\nScope: `monitoring.read`",
+            "description": "Everything that keeps the organization's alerts quiet right now, wherever it was set: the whole organization paused, a running maintenance window, a snoozed server, a silenced monitor, or a problem someone snoozed or marked intentional. Each item has its `kind`, `name`, `until` (null when it has no end), who started it (`by`), and `end`: the method and path that end it early, or null where it cannot be ended from here. A snoozed or intentional problem also has the `reason` given for it, if any.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",
@@ -10957,7 +11058,7 @@
           "name": "List automation connections",
           "request": {
             "method": "GET",
-            "description": "The accounts automations can act through, such as GitHub, Jira or PagerDuty, with each one’s status, whether it is paused and whether its triggers can fire. `actions` lists what you can do with each one, in order — `test`, `reconnect` or `replace_key`, `rename`, `pause`, `disconnect` — and `needs_reconnect` is true when the provider no longer accepts its access, so reconnecting or replacing the key brings it back without changing its id.\n\nScope: `monitoring.read`",
+            "description": "The accounts automations can act through, such as GitHub, Jira or PagerDuty, with each one’s status, whether it is paused and whether its triggers can fire. `actions` lists what you can do with each one, in order — `test`, `reconnect` or `replace_key`, `rename`, `pause`, `disconnect` — and `needs_reconnect` is true when the provider no longer accepts its access, so reconnecting or replacing the key brings it back without changing its id. `reconnect_reason` is `sign_in` when the connection was made with a key its provider no longer takes — a Jira API token, which InfraNest removed — so it does nothing until reconnecting signs it in; otherwise null.\n\nScope: `monitoring.read`",
             "header": [
               {
                 "key": "Accept",

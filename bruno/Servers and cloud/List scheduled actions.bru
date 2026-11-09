@@ -1,7 +1,7 @@
 meta {
   name: List scheduled actions
   type: http
-  seq: 5
+  seq: 1
 }
 
 get {
@@ -20,6 +20,4 @@ headers {
 
 docs {
   Reboots and address moves waiting for the time they were scheduled for, and those that ran, failed or were cancelled in the last seven days. Filter to one server with `server_id`. Schedule one by sending `run_at` to the reboot or address-move endpoint.
-
-  Scope: `cloud.read`
 }

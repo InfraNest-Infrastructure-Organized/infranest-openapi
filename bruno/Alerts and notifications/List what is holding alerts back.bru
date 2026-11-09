@@ -15,7 +15,7 @@ headers {
 }
 
 docs {
-  Everything that keeps the organization's alerts quiet right now, wherever it was set: the whole organization paused, a running maintenance window, a snoozed server or a silenced monitor. Each item has its `kind`, `name`, `until` (null when it has no end), who started it (`by`), and `end`: the method and path that end it early, or null where it cannot be ended from here.
+  Everything that keeps the organization's alerts quiet right now, wherever it was set: the whole organization paused, a running maintenance window, a snoozed server, a silenced monitor, or a problem someone snoozed or marked intentional. Each item has its `kind`, `name`, `until` (null when it has no end), who started it (`by`), and `end`: the method and path that end it early, or null where it cannot be ended from here. A snoozed or intentional problem also has the `reason` given for it, if any.
 
   Scope: `monitoring.read`
 }

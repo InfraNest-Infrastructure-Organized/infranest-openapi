@@ -1,0 +1,21 @@
+meta {
+  name: Preview a maintenance schedule
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/maintenance-windows/schedule-preview
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The next three times a repeating schedule would run, as `occurrences` with `starts_at` and `ends_at`, and the `timezone` it is read in. Send the same schedule fields as when you create a window. `valid` is false, with no occurrences, for a cron expression that cannot be read. Nothing is saved.
+
+  Scope: `monitoring.read`
+}

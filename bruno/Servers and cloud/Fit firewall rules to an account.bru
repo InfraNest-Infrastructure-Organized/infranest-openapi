@@ -1,0 +1,21 @@
+meta {
+  name: Fit firewall rules to an account
+  type: http
+  seq: 44
+}
+
+get {
+  url: {{baseUrl}}/api/organizations/{{organization_id}}/firewall-rules/fit
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  The rules of a firewall (`firewall`, its id) or a template (`template`, a slug or a custom template’s id) as the account `provider_credential_id` would hold them, at whichever provider. `changes` names every rule that does not arrive as it was — an outbound rule at an inbound-only provider, a protocol the provider does not take, a rule only its own provider understands — and why. `creatable` says whether the account can create a firewall of its own. Nothing is changed.
+
+  Scope: `cloud.read`
+}
