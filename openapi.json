@@ -137,6 +137,10 @@
       "description": ""
     },
     {
+      "name": "SCIM",
+      "description": ""
+    },
+    {
       "name": "Security advisor",
       "description": ""
     },
@@ -501,7 +505,7 @@
                     "analytics_opt_out": false,
                     "open_on_dashboard_id": null,
                     "default_organization_id": null,
-                    "analytics_id": "api.infranest.io-4200017",
+                    "analytics_id": null,
                     "organizations": [
                       {
                         "id": 1,
@@ -527,6 +531,19 @@
                         "sso_required_since": null,
                         "is_demo": true,
                         "is_sandbox": false,
+                        "avatar_source": null,
+                        "customer_number": "4200017",
+                        "client_field_id": null,
+                        "drop_catch_spend_limit": null,
+                        "drop_catch_once_caught": null,
+                        "brand_logo_url": "http://localhost/storage/org-brand-logos/docs-demo-northwind.svg",
+                        "brand_accent_color": "#0F766E",
+                        "brand_button_color": null,
+                        "brand_email_from_name": "Northwind Cloud",
+                        "brand_reply_to": null,
+                        "brand_logo_link": null,
+                        "ip_allowlist": null,
+                        "updated_at": "2026-01-15T12:00:00.000000Z",
                         "users_count": 4,
                         "org_role": {
                           "id": 1,
@@ -1195,6 +1212,7 @@
                         "org_role_id": 2,
                         "sso_role_managed": false,
                         "sso_external": false,
+                        "scim_managed": false,
                         "created_at": "2026-01-15T12:00:00.000000Z",
                         "updated_at": "2026-01-15T12:00:00.000000Z"
                       }
@@ -1210,6 +1228,7 @@
                         "org_role_id": 3,
                         "sso_role_managed": false,
                         "sso_external": false,
+                        "scim_managed": false,
                         "created_at": "2026-01-15T12:00:00.000000Z",
                         "updated_at": "2026-01-15T12:00:00.000000Z"
                       }
@@ -1314,7 +1333,10 @@
                       "deleted_by_label": null,
                       "deletion_reason": null
                     },
-                    "sso_external": false
+                    "sso_external": false,
+                    "scim_managed": false,
+                    "role_source": "manual",
+                    "role_groups": []
                   },
                   {
                     "id": 3,
@@ -1351,7 +1373,10 @@
                       "deleted_by_label": null,
                       "deletion_reason": null
                     },
-                    "sso_external": false
+                    "sso_external": false,
+                    "scim_managed": false,
+                    "role_source": "manual",
+                    "role_groups": []
                   }
                 ]
               }
@@ -5439,7 +5464,8 @@
                     "provider": null,
                     "hosts": [
                       "mx.northwyndr.com"
-                    ]
+                    ],
+                    "refuses": false
                   },
                   "website": {
                     "records": [
@@ -9284,7 +9310,7 @@
                       "id": 1,
                       "dns_zone_id": 1,
                       "type": "A",
-                      "name": "@",
+                      "name": "",
                       "value": "198.51.100.10",
                       "ttl": 300,
                       "priority": null,
@@ -9500,7 +9526,7 @@
                     "id": 1,
                     "dns_zone_id": 1,
                     "type": "A",
-                    "name": "@",
+                    "name": "",
                     "value": "198.51.100.10",
                     "ttl": 300,
                     "priority": null,
@@ -9904,7 +9930,7 @@
                   "id": 1,
                   "dns_zone_id": 1,
                   "type": "A",
-                  "name": "@",
+                  "name": "",
                   "value": "198.51.100.10",
                   "ttl": 300,
                   "priority": null,
@@ -34207,7 +34233,7 @@
                         "dns_record": {
                           "id": 1,
                           "type": "A",
-                          "name": "@",
+                          "name": "",
                           "value": "198.51.100.10"
                         },
                         "cloud_server": {
@@ -35912,6 +35938,11 @@
                   "entity_type": {
                     "type": "string",
                     "description": "",
+                    "example": "architecto"
+                  },
+                  "with": {
+                    "type": "string",
+                    "description": "`with=fill` (#5858): Settings › Custom fields' fill rate per field. Only there — detail pages read this too.",
                     "example": "architecto"
                   }
                 }
@@ -38332,7 +38363,8 @@
                       "purge_reminder_sent_at": null,
                       "deleted_by_id": null,
                       "deleted_by_label": null,
-                      "deletion_reason": null
+                      "deletion_reason": null,
+                      "group_mappings": []
                     },
                     {
                       "id": 3,
@@ -38362,7 +38394,8 @@
                       "purge_reminder_sent_at": null,
                       "deleted_by_id": null,
                       "deleted_by_label": null,
-                      "deletion_reason": null
+                      "deletion_reason": null,
+                      "group_mappings": []
                     }
                   ]
                 }
@@ -38826,7 +38859,7 @@
                             "records": [
                               {
                                 "type": "A",
-                                "name": "@"
+                                "name": ""
                               }
                             ],
                             "record_count": 1,
@@ -38840,7 +38873,7 @@
                               "record_id": 33,
                               "before": {
                                 "type": "A",
-                                "name": "@",
+                                "name": "",
                                 "value": "198.51.100.10",
                                 "ttl": 300,
                                 "priority": null,
@@ -38849,7 +38882,7 @@
                               },
                               "after": {
                                 "type": "A",
-                                "name": "@",
+                                "name": "",
                                 "value": "198.51.100.10",
                                 "ttl": 3600,
                                 "priority": null,
@@ -45722,6 +45755,7 @@
                         "servers": 0,
                         "status_pages": 1
                       },
+                      "review_state": null,
                       "check": {
                         "id": 1,
                         "name": "Marketing site",
@@ -45784,6 +45818,7 @@
                         "servers": 0,
                         "status_pages": 1
                       },
+                      "review_state": null,
                       "check": {
                         "id": 7,
                         "name": "Signup page copy",
@@ -46655,7 +46690,12 @@
                       "name": "Sam Okoye",
                       "on_call": false
                     }
-                  ]
+                  ],
+                  "war_room": {
+                    "people": [],
+                    "chat_url": null,
+                    "meeting_url": "https://teams.microsoft.com/l/meeting/new?subject=War%20room%3A%20Checkout%20returning%20503&content=Let%27s%20fix%20Checkout%20returning%20503%20together%20here%3A%20http%3A%2F%2Flocalhost%2Fincidents%2F1%3Fvia%3Dteams"
+                  }
                 }
               }
             },
@@ -48942,6 +48982,10 @@
                     "is_client": false,
                     "is_test": false,
                     "created_at": "2026-01-15T12:00:00.000000Z",
+                    "usage": {
+                      "servers": 3,
+                      "domains": 9
+                    },
                     "usage_count": 12
                   },
                   {
@@ -48953,6 +48997,9 @@
                     "is_client": false,
                     "is_test": false,
                     "created_at": "2026-01-15T12:00:00.000000Z",
+                    "usage": {
+                      "domains": 11
+                    },
                     "usage_count": 11
                   }
                 ]
@@ -49104,6 +49151,12 @@
                     "type": "boolean",
                     "description": "",
                     "example": true
+                  },
+                  "uptime_target_pct": {
+                    "type": "number",
+                    "description": "Settings › Clients' Add client (#5858) sets the availability agreed in the same step. Must be at least 0. Must not be greater than 100.",
+                    "example": 5,
+                    "nullable": true
                   }
                 },
                 "required": [
@@ -56631,6 +56684,76 @@
             }
           }
         },
+        "x-infranest-scope": "monitoring.read",
+        "x-infranest-token-writable": false,
+        "x-infranest-module": "integrations",
+        "x-infranest-errors": [
+          "unauthenticated",
+          "scope_missing",
+          "wrong_organization",
+          "test_token_required",
+          "test_token_sandbox_only",
+          "permission_denied",
+          "not_found",
+          "rate_limited"
+        ]
+      }
+    },
+    "/api/organizations/{organization_id}/webhook-endpoints/power-automate-flow": {
+      "get": {
+        "summary": "Download a ready-made Power Automate flow",
+        "operationId": "gETorganizationsorgwebhookEndpointspowerAutomateFlowAFinishedPowerAutomateFlowThatReceivesOurEvents2560AsAPackageToImportTriggerSetToAnyoneParseJSONWiredToTheTriggersBodyAndCarryingTodaysSchemaGeneratedOnEveryDownloadSoTheSchemaIsNeverStaleReadingOnlyLikeTheSchemaItCarriesNothingIsCreatedHereUntilTheCustomerPastesTheFlowsURLBackstarterPicksAStarterFlow6164",
+        "description": "A Power Automate flow that receives InfraNest events, as a package to import with Import Package (Legacy). Its trigger accepts InfraNest's deliveries and its Parse JSON step carries the current payload schema. Returned as a zip file; every download is a new flow.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_id",
+            "required": true,
+            "description": "Your organization's ID.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A ready-made Power Automate flow, as a package to import into your own tenant.",
+            "content": {
+              "application/zip": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "headers": {
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/X-RateLimit-Limit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/X-RateLimit-Remaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/X-RateLimit-Reset"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          }
+        },
+        "tags": [
+          "Webhooks"
+        ],
         "x-infranest-scope": "monitoring.read",
         "x-infranest-token-writable": false,
         "x-infranest-module": "integrations",

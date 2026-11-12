@@ -11830,6 +11830,38 @@
               ]
             }
           }
+        },
+        {
+          "name": "Download a ready-made Power Automate flow",
+          "request": {
+            "method": "GET",
+            "description": "A Power Automate flow that receives InfraNest events, as a package to import with Import Package (Legacy). Its trigger accepts InfraNest's deliveries and its Parse JSON step carries the current payload schema. Returned as a zip file; every download is a new flow.\n\nScope: `monitoring.read`",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/organizations/:organization_id/webhook-endpoints/power-automate-flow",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "organizations",
+                ":organization_id",
+                "webhook-endpoints",
+                "power-automate-flow"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organization_id}}"
+                }
+              ]
+            }
+          }
         }
       ]
     },
