@@ -4434,7 +4434,7 @@
           "name": "Get a server’s restart history",
           "request": {
             "method": "GET",
-            "description": "When the server last started, every restart its agent has reported with who or what asked for it (`infranest`, `automation`, `outside` or `unexpected`) and any monitor outage at the same time, whether it needs a reboot and since when, and the actions scheduled on it. Without the agent, `running_since` is null and only `created_at` is known.\n\nScope: `cloud.read`",
+            "description": "When the server last started, every restart its agent has reported with who or what asked for it (`infranest`, `automation`, `outside`, `console` — the provider's own action log has a reboot or power action at the time — or `unexpected`) and any monitor outage at the same time, whether it needs a reboot and since when, and the actions scheduled on it. Without the agent, `running_since` is null and only `created_at` is known.\n\nScope: `cloud.read`",
             "header": [
               {
                 "key": "Accept",

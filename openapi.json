@@ -15437,7 +15437,7 @@
       "get": {
         "summary": "Get a server’s restart history",
         "operationId": "getApiOrganizationsOrganization_idCloudServersCloudServer_idReboots",
-        "description": "When the server last started, every restart its agent has reported with who or what asked for it (`infranest`, `automation`, `outside` or `unexpected`) and any monitor outage at the same time, whether it needs a reboot and since when, and the actions scheduled on it. Without the agent, `running_since` is null and only `created_at` is known.",
+        "description": "When the server last started, every restart its agent has reported with who or what asked for it (`infranest`, `automation`, `outside`, `console` — the provider's own action log has a reboot or power action at the time — or `unexpected`) and any monitor outage at the same time, whether it needs a reboot and since when, and the actions scheduled on it. Without the agent, `running_since` is null and only `created_at` is known.",
         "parameters": [
           {
             "in": "path",
@@ -37157,7 +37157,7 @@
                   "asn_org": null,
                   "is_hosting": false,
                   "silent_notified_at": null,
-                  "public_id": "dyn-qjjqj7rs",
+                  "public_id": "dyn-tjjq3h6s",
                   "last_attempt_at": null,
                   "last_attempt_result": null,
                   "last_attempt_ip": null,
@@ -38734,7 +38734,7 @@
                     "from": "2026-01-08T12:00:00+00:00",
                     "entries": [
                       {
-                        "key": "batch:06a7d512-82a0-43b6-b53c-465e0307cdba",
+                        "key": "batch:9c87c2fe-93cc-4e20-87c8-f20b040d8634",
                         "kind": "batch",
                         "action": "dns_record.updated",
                         "at": "2026-01-15T12:00:00+00:00",
@@ -38755,7 +38755,7 @@
                           "type": "A"
                         },
                         "batch": {
-                          "batch_id": "06a7d512-82a0-43b6-b53c-465e0307cdba",
+                          "batch_id": "9c87c2fe-93cc-4e20-87c8-f20b040d8634",
                           "at": "2026-01-15T12:00:00+00:00",
                           "source": "provider",
                           "operation": "sync",
@@ -38815,7 +38815,7 @@
                         "provider": "Hetzner"
                       },
                       {
-                        "key": "batch:30d8e56f-4024-454e-a0be-d9b5d3bcd268",
+                        "key": "batch:b68b28ac-2db7-4630-8270-deb40cc0d882",
                         "kind": "batch",
                         "action": "dns_record.updated",
                         "at": "2026-01-15T12:00:00+00:00",
@@ -38836,7 +38836,7 @@
                           "type": "A"
                         },
                         "batch": {
-                          "batch_id": "30d8e56f-4024-454e-a0be-d9b5d3bcd268",
+                          "batch_id": "b68b28ac-2db7-4630-8270-deb40cc0d882",
                           "at": "2026-01-15T12:00:00+00:00",
                           "source": "infranest",
                           "operation": null,
