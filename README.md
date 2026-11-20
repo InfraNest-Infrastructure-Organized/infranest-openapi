@@ -21,7 +21,7 @@
 
 ---
 
-[InfraNest](https://infranest.io) keeps your domains, DNS, servers and monitoring in one place. This repository holds
+[InfraNest](https://infranest.io/?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi) keeps your domains, DNS, servers and monitoring in one place. This repository holds
 the description of its public API — every endpoint an API token may call, the fields each takes, a recorded example
 of each answer, the token scope it needs and the errors it can give — and ready-made collections for API clients.
 It is copied here once a day from the [developer site](https://developers.infranest.io), which is built from the
@@ -123,10 +123,10 @@ InfraNest and reaches this repository from there.
 The files are provided "as is", under the [Apache License 2.0](LICENSE). A client or collection calls the real API
 with your token: what it changes is your responsibility, and can cause costs at your providers (see
 [Responsibility and costs](https://developers.infranest.io/responsibility-and-costs)). Your use of InfraNest is
-governed by its [Terms of Service](https://infranest.io/terms).
+governed by its [Terms of Service](https://infranest.io/terms/?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi).
 
 Found a mistake? Please open an [issue](https://github.com/InfraNest-Infrastructure-Organized/infranest-openapi/issues).
-For a security issue in InfraNest, see [infranest.io/security](https://infranest.io/security).
+For a security issue in InfraNest, see [infranest.io/security](https://infranest.io/security/?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi).
 
 ## Licence
 
