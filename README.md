@@ -24,7 +24,7 @@
 [InfraNest](https://infranest.io/?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi) keeps your domains, DNS, servers and monitoring in one place. This repository holds
 the description of its public API — every endpoint an API token may call, the fields each takes, a recorded example
 of each answer, the token scope it needs and the errors it can give — and ready-made collections for API clients.
-It is copied here once a day from the [developer site](https://developers.infranest.io), which is built from the
+It is copied here once a day from the [developer site](https://developers.infranest.io/?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi), which is built from the
 same files.
 
 | File | What it is |
@@ -83,14 +83,14 @@ codes it can answer (`x-infranest-errors`).
 To have an assistant or coding agent write code against the API, point it at
 [`llms.txt`](https://developers.infranest.io/llms.txt), the developer site's index for AI tools, or give it
 `openapi.json` itself. To let an assistant *read your account* — "which monitors were down last night?" — connect it
-to the [MCP server](https://developers.infranest.io/ai-assistants) instead; it only reads.
+to the [MCP server](https://developers.infranest.io/ai-assistants?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi) instead; it only reads.
 
 ## Versions and changes
 
 - InfraNest **adds** fields and endpoints without notice: write clients that ignore what they do not know.
 - It never **removes or renames** a field, or changes what one means, without **six months' notice** in the
-  [changelog](https://developers.infranest.io/changelog) ([RSS](https://developers.infranest.io/changelog.xml)).
-- Error codes never change. See [Versioning and deprecation](https://developers.infranest.io/versioning).
+  [changelog](https://developers.infranest.io/changelog?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi) ([RSS](https://developers.infranest.io/changelog.xml)).
+- Error codes never change. See [Versioning and deprecation](https://developers.infranest.io/versioning?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi).
 
 Each change here is a [release](https://github.com/InfraNest-Infrastructure-Organized/infranest-openapi/releases) with
 a dated tag, such as `v2026.11.02`, listing the operations added, removed and changed, and which collections
@@ -107,12 +107,12 @@ InfraNest and reaches this repository from there.
 
 ## Links
 
-- [Developer site](https://developers.infranest.io): the [quickstart](https://developers.infranest.io/quickstart),
-  the [API reference](https://developers.infranest.io/reference), [limits](https://developers.infranest.io/limits)
-  and [errors](https://developers.infranest.io/errors)
-- [Sandbox](https://developers.infranest.io/sandbox): a free organization to try everything safely
-- [Use with Postman, Bruno or Insomnia](https://developers.infranest.io/api-clients)
-- [MCP server](https://developers.infranest.io/ai-assistants): Claude, ChatGPT, Cursor and VS Code read your account
+- [Developer site](https://developers.infranest.io/?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi): the [quickstart](https://developers.infranest.io/quickstart?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi),
+  the [API reference](https://developers.infranest.io/reference?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi), [limits](https://developers.infranest.io/limits?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi)
+  and [errors](https://developers.infranest.io/errors?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi)
+- [Sandbox](https://developers.infranest.io/sandbox?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi): a free organization to try everything safely
+- [Use with Postman, Bruno or Insomnia](https://developers.infranest.io/api-clients?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi)
+- [MCP server](https://developers.infranest.io/ai-assistants?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi): Claude, ChatGPT, Cursor and VS Code read your account
   ([infranest-mcp](https://github.com/InfraNest-Infrastructure-Organized/infranest-mcp))
 - [infranest-examples](https://github.com/InfraNest-Infrastructure-Organized/infranest-examples): ready-to-run scripts
 - [infranest-action](https://github.com/InfraNest-Infrastructure-Organized/infranest-action): InfraNest in a GitHub Actions workflow
@@ -122,7 +122,7 @@ InfraNest and reaches this repository from there.
 
 The files are provided "as is", under the [Apache License 2.0](LICENSE). A client or collection calls the real API
 with your token: what it changes is your responsibility, and can cause costs at your providers (see
-[Responsibility and costs](https://developers.infranest.io/responsibility-and-costs)). Your use of InfraNest is
+[Responsibility and costs](https://developers.infranest.io/responsibility-and-costs?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi)). Your use of InfraNest is
 governed by its [Terms of Service](https://infranest.io/terms/?utm_source=github&utm_medium=readme&utm_campaign=infranest-openapi).
 
 Found a mistake? Please open an [issue](https://github.com/InfraNest-Infrastructure-Organized/infranest-openapi/issues).
